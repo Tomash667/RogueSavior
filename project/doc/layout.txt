@@ -1,0 +1,59 @@
+1 Load screen
+	black background
+	rotating image at center
+	small white text at bottom
+	-> main menu
+2 Main menu
+	Logo, background, buttons, copyright, version
+	2.1 New game
+		enter name
+		-> game
+	2.2 Multiplayer
+		enter name at top
+		servers list
+		buttons at bottom
+		2.2.1 host
+			server name
+			password
+			max players
+			host/cancel
+			-> server lobby
+		2.2.2 join
+			connecting popup
+			message box if failed
+			input box if require password
+			-> server lobby
+		2.2.3 enter ip
+			enter ip popup
+			connecting popup
+			message box if failed
+			input box if require password
+			-> server lobby
+		2.2.4 cancel
+	2.3 Continue game
+		Wybierz postaæ/anuluj
+		Msg - Brak zapisanej gry
+		?????????????
+	2.4 Options
+		show options (resolution, fullscreen, multisampling, sound, music)
+		apply/cancel
+	2.5 About
+		show authors, version, compile time, link to website
+	2.6 Exit
+		are you sure?
+3 Server lobby
+	listbox of player
+	chat
+	buttons
+		3.1 kick
+		3.2 start
+			timer
+			-> game
+		3.3 cancel
+4 Game
+	act like there always is a server
+	4.0 Show load screen
+	4.1 Generate world if required
+	4.2 Send to players
+	4.3 Load data and wait for player
+	-> play

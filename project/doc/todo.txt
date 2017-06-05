@@ -1,0 +1,43 @@
+v0:
++ zombie
++ rat
+
+v1:
++ new items
+	+ granade
+	+ leather armor
+	+ axe
+	+ police baton
+	+ shotgun
+	+ shotgun shells
++ new units
+	+ fresh zombie
+	+ shambler
+	+ skeleton
+	+ ghoul
+	+ bandits
++ check version
++ lobby
++ perks
++ change keybindings
++ load items from file
++ character creation (visuals/perks)
++ womans
++ allow players to join game on fly, with new character
+
+v2+:
++ sleeping
++ bed
++ load units from file
++ translation
++ new items
+	+ anti sleep pills
+	+ machine gun
+	+ machine gun ammo
+	+ c4
+	+ air gun ? (rifle?)
+	+ air gun ammo
+	+ sniper rifle
+	+ uzi
+	+ backpack
+	+ iron rations
