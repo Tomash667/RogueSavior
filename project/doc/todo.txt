@@ -24,6 +24,7 @@ v1:
 + character creation (visuals/perks)
 + womans
 + allow players to join game on fly, with new character
++ multisampling
 
 v2+:
 + sleeping
@@ -41,3 +42,5 @@ v2+:
 	+ uzi
 	+ backpack
 	+ iron rations
++ fullscreen windowed mode
++ allow to pick sound output device (default/headphones/speakers)
