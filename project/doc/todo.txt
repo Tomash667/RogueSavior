@@ -1,6 +1,12 @@
 v0:
-+ zombie
-+ rat
++ units
+	+ zombie
+	+ rat
+	+ human
++ buildings
+	+ house
+	+ big house
++ hiscores
 
 v1:
 + new items
@@ -16,6 +22,7 @@ v1:
 	+ skeleton
 	+ ghoul
 	+ bandits
+	+ policeman
 + check version
 + lobby
 + perks
@@ -25,12 +32,16 @@ v1:
 + womans
 + allow players to join game on fly, with new character
 + multisampling
++ online hiscores
++ minimap/big map M
++ inventory shortcuts
 
 v2+:
 + sleeping
 + bed
 + load units from file
 + translation
++ uft8
 + new items
 	+ anti sleep pills
 	+ machine gun
@@ -42,5 +53,29 @@ v2+:
 	+ uzi
 	+ backpack
 	+ iron rations
+	+ molotov
+	+ flashlight
+	+ bodyarmor
+	+ kevlar
++ new units
+	+ soldier
+	+ medic (soldier)
+	+ doctor/nurse
+	+ boss zombies
+	+ zombie soldier
+	+ zombies carrying melee weapons
+	+ trader
++ shadows
++ quests
+	+ escape from city
+	+ find vaccine
+	+ find cure
+	+ save people
++ create party, recruit npcs
++ sneaking
++ grab/shove
++ trade, price inflation, money deflation
++ bike, car, tank, heli
+
 + fullscreen windowed mode
 + allow to pick sound output device (default/headphones/speakers)

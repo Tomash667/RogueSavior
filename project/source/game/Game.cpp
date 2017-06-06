@@ -34,6 +34,6 @@ void Game::SetGameDefaults()
 void Game::InitConfig()
 {
 	config = new Config("config.txt");
-	config->Add(options.window_size, "engine.window_size");
-	config->Add(options.fullscreen, "engine.fullscreen");
+	config->Add("engine.window_size", options.window_size);
+	config->Add("engine.fullscreen", options.fullscreen);
 }

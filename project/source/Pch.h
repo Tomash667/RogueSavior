@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 #include <map>
 #include <cassert>
 
@@ -9,3 +10,6 @@
 
 using std::string;
 using std::vector;
+using std::list;
+
+#undef NULL

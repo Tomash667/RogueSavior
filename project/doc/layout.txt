@@ -1,3 +1,5 @@
+player_uuid in config - random player guid
+
 1 Load screen
 	black background
 	rotating image at center
@@ -16,13 +18,14 @@
 			server name
 			password
 			max players
-			host/cancel
+			checkbox - allow players to join any time (defaults to true) or only in lobby
+			Start lobby/start game/cancel
 			-> server lobby
 		2.2.2 join
 			connecting popup
 			message box if failed
 			input box if require password
-			-> server lobby
+			-> server lobby/game
 		2.2.3 enter ip
 			enter ip popup
 			connecting popup
@@ -31,9 +34,10 @@
 			-> server lobby
 		2.2.4 cancel
 	2.3 Continue game
-		Wybierz postaæ/anuluj
-		Msg - Brak zapisanej gry
-		?????????????
+		Select game
+			Texts - player(s) name, level, game time
+		Buttons - Continue singleplayer, Host game
+		Msg - No saved games
 	2.4 Options
 		show options (resolution, fullscreen, multisampling, sound, music)
 		apply/cancel
@@ -57,3 +61,47 @@
 	4.2 Send to players
 	4.3 Load data and wait for player
 	-> play
+5 Menu
+	5.1 Continue game
+	5.2 Host game / Server options / Server info
+		5.2.1 Host game - if singleplayer
+			open create server dialog
+		5.2.2 Server options - if server owner
+			open host options to allow change (different buttons: apply/cancel)
+		5.2.3 Server info
+			show server name, players, time
+	5.3 Options
+	5.4 Surrender?
+		are you sure?
+		-> exit to menu without saving
+	5.5 Save & exit
+		are you sure?
+		-> exit to menu
+6. Game GUI & controls
+	Esc -> open menu
+	+-----------------------+
+	|Name  - weapon ammo    | <- icon
+	|=====hp================| <- health bar
+	|=====sat===============| <- satiation
+	+-----------------------+
+	
+	R -> reload
+	I -> inventory
+		not sorted
+		slots on left for equipped
+			left click to change equipped
+			right to put in inventory or drop if no space
+			hold right to choose between drop and store
+		on right grid for items
+			left - use/equip
+			right - drop like above
+	1 - pick melee weapon
+	2 - pick ranged weapon
+	auto equip weapon if none
+	WSAD - move
+	left mouse button - attack
+
+
+Alt-f4 -> save & exit
+Alt-enter -> toggle fullscreen
+crash handler = save

@@ -1,4 +1,7 @@
-﻿.vs/
+﻿/project/.vs/
+/project/output/
 
 *.db
 *.opendb
+*.idb
+*.pdb

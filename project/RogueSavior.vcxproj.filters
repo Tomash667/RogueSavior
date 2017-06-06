@@ -31,9 +31,6 @@
     <ClInclude Include="source\engine\Engine.h">
       <Filter>2. engine</Filter>
     </ClInclude>
-    <ClInclude Include="source\engine\WindowsIncl.h">
-      <Filter>1. core</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\Game.h">
       <Filter>3. game</Filter>
     </ClInclude>
@@ -43,13 +40,31 @@
     <ClInclude Include="source\core\Core.h">
       <Filter>1. core</Filter>
     </ClInclude>
-    <ClInclude Include="source\core\CoreMath.h">
-      <Filter>1. core</Filter>
-    </ClInclude>
     <ClInclude Include="source\core\FastFunc.h">
       <Filter>1. core</Filter>
     </ClInclude>
     <ClInclude Include="source\core\Tokenizer.h">
+      <Filter>1. core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\Containers.h">
+      <Filter>1. core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\Timer.h">
+      <Filter>1. core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\Text.h">
+      <Filter>1. core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\CoreMath.h">
+      <Filter>1. core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\Render.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\UnitData.h">
+      <Filter>3. game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\WindowsIncl.h">
       <Filter>1. core</Filter>
     </ClInclude>
   </ItemGroup>
@@ -70,6 +85,15 @@
     </ClCompile>
     <ClCompile Include="source\core\Tokenizer.cpp">
       <Filter>1. core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\core\Timer.cpp">
+      <Filter>1. core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\core\Text.cpp">
+      <Filter>1. core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\UnitData.cpp">
+      <Filter>3. game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

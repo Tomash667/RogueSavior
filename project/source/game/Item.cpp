@@ -2,6 +2,8 @@
 #include "Core.h"
 #include "Item.h"
 
+// mesh is name.mesh
+// tex is name_icon.png
 std::map<string, Item*> g_items = {
 	{ "baseball_bat", new MeleeWeapon("baseball_bat", "Baseball bat", 10.f) },
 	{ "handgun", new RangedWeapon("handgun", "Handgun", 25.f, "handgun_ammo", 10) },
