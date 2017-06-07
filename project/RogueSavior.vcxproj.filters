@@ -67,6 +67,9 @@
     <ClInclude Include="source\core\WindowsIncl.h">
       <Filter>1. core</Filter>
     </ClInclude>
+    <ClInclude Include="source\core\File.h">
+      <Filter>1. core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Pch.cpp" />
@@ -92,7 +95,13 @@
     <ClCompile Include="source\core\Text.cpp">
       <Filter>1. core</Filter>
     </ClCompile>
-    <ClCompile Include="source\engine\UnitData.cpp">
+    <ClCompile Include="source\engine\Engine.cpp">
+      <Filter>2. engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\Window.cpp">
+      <Filter>2. engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\UnitData.cpp">
       <Filter>3. game</Filter>
     </ClCompile>
   </ItemGroup>

@@ -655,7 +655,7 @@ namespace tokenizer
 		const string& MustGetStringTrim()
 		{
 			AssertString();
-			trim(normal_seek.item);
+			Trim(normal_seek.item);
 			if(normal_seek.item.empty())
 				Throw("Expected not empty string.");
 			return normal_seek.item;
@@ -788,7 +788,7 @@ namespace tokenizer
 
 		//===========================================================================================================================
 		void Parse(INT2& i);
-		void Parse(IBOX2D& b);
+		void Parse(Rect& r);
 		void Parse(VEC2& v);
 
 		template<typename Top, typename Action>

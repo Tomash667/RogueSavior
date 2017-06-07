@@ -11,7 +11,7 @@ static char escape_from[] = { '\n', '\t', '\r', ' ' };
 static cstring escape_to[] = { "\\n", "\\t", "\\r", " " };
 
 //=================================================================================================
-cstring text::Format(cstring str, ...)
+cstring Format(cstring str, ...)
 {
 	assert(str);
 
@@ -27,7 +27,7 @@ cstring text::Format(cstring str, ...)
 }
 
 //=================================================================================================
-cstring text::FormatList(cstring str, va_list list)
+cstring FormatList(cstring str, va_list list)
 {
 	assert(str);
 
@@ -40,7 +40,7 @@ cstring text::FormatList(cstring str, va_list list)
 }
 
 //=================================================================================================
-cstring text::Upper(cstring str)
+cstring Upper(cstring str)
 {
 	assert(str);
 
@@ -58,7 +58,7 @@ cstring text::Upper(cstring str)
 }
 
 //=================================================================================================
-void text::SplitText(char* buf, vector<cstring>& lines)
+void SplitText(char* buf, vector<cstring>& lines)
 {
 	cstring start = buf;
 	int len = 0;
@@ -89,7 +89,7 @@ void text::SplitText(char* buf, vector<cstring>& lines)
 }
 
 //=================================================================================================
-bool text::Unescape(const string& str_in, uint pos, uint size, string& str_out)
+bool Unescape(const string& str_in, uint pos, uint size, string& str_out)
 {
 	str_out.clear();
 	str_out.reserve(str_in.length());
@@ -125,7 +125,7 @@ bool text::Unescape(const string& str_in, uint pos, uint size, string& str_out)
 }
 
 //=================================================================================================
-cstring text::Escape(const InString& s, char quote)
+cstring Escape(const InString& s, char quote)
 {
 	cstring str = s.s;
 	char* out = format_buf[format_marker];
@@ -158,7 +158,7 @@ cstring text::Escape(const InString& s, char quote)
 }
 
 //=================================================================================================
-cstring text::Escape(const InString& str, string& out, char quote)
+cstring Escape(const InString& str, string& out, char quote)
 {
 	cstring s = str.s;
 	out.clear();
@@ -187,7 +187,7 @@ cstring text::Escape(const InString& str, string& out, char quote)
 }
 
 //=================================================================================================
-cstring text::EscapeChar(char c)
+cstring EscapeChar(char c)
 {
 	char* out = format_buf[format_marker];
 	for(int i = 0; i < countof(escape_from); ++i)
@@ -213,7 +213,7 @@ cstring text::EscapeChar(char c)
 }
 
 //=================================================================================================
-cstring text::EscapeChar(char c, string& out)
+cstring EscapeChar(char c, string& out)
 {
 	cstring esc = EscapeChar(c);
 	out = esc;
@@ -221,7 +221,7 @@ cstring text::EscapeChar(char c, string& out)
 }
 
 //=================================================================================================
-bool text::StringInString(cstring s1, cstring s2)
+bool StringInString(cstring s1, cstring s2)
 {
 	while(true)
 	{
@@ -238,7 +238,7 @@ bool text::StringInString(cstring s1, cstring s2)
 }
 
 //=================================================================================================
-string* text::ToString(const wchar_t* str)
+string* ToString(const wchar_t* str)
 {
 	string* s = StringPool.Get();
 	if(str == nullptr)
@@ -253,7 +253,7 @@ string* text::ToString(const wchar_t* str)
 }
 
 //=================================================================================================
-int text::ToNumber(cstring s, __int64& i, float& f)
+int ToNumber(cstring s, __int64& i, float& f)
 {
 	assert(s);
 
@@ -322,7 +322,7 @@ int text::ToNumber(cstring s, __int64& i, float& f)
 }
 
 //=================================================================================================
-bool text::ToInt(cstring s, int& result)
+bool ToInt(cstring s, int& result)
 {
 	__int64 i;
 	float f;
@@ -336,7 +336,7 @@ bool text::ToInt(cstring s, int& result)
 }
 
 //=================================================================================================
-bool text::ToUint(cstring s, uint& result)
+bool ToUint(cstring s, uint& result)
 {
 	__int64 i;
 	float f;
@@ -350,7 +350,7 @@ bool text::ToUint(cstring s, uint& result)
 }
 
 //=================================================================================================
-bool text::ToFloat(cstring s, float& result)
+bool ToFloat(cstring s, float& result)
 {
 	__int64 i;
 	float f;
@@ -364,7 +364,7 @@ bool text::ToFloat(cstring s, float& result)
 }
 
 //=================================================================================================
-bool text::ToBool(cstring s, bool& result)
+bool ToBool(cstring s, bool& result)
 {
 	if(_stricmp(s, "true") == 0)
 	{
@@ -387,7 +387,7 @@ bool text::ToBool(cstring s, bool& result)
 }
 
 //=================================================================================================
-int text::StrCharIndex(cstring chrs, char c)
+int StrCharIndex(cstring chrs, char c)
 {
 	assert(chrs);
 
@@ -404,7 +404,7 @@ int text::StrCharIndex(cstring chrs, char c)
 }
 
 //=================================================================================================
-char text::StrContains(cstring s, cstring chrs)
+char StrContains(cstring s, cstring chrs)
 {
 	assert(s && chrs);
 
