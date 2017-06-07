@@ -50,7 +50,7 @@ cstring Upper(cstring str)
 	else
 	{
 		cbuf[0] = toupper(str[0]);
-		strcpy(cbuf + 1, str + 1);
+		strcpy_s(cbuf + 1, FORMAT_LENGTH - 1, str + 1);
 	}
 
 	format_marker = (format_marker + 1) % FORMAT_STRINGS;
@@ -89,45 +89,37 @@ void SplitText(char* buf, vector<cstring>& lines)
 }
 
 //=================================================================================================
-bool Unescape(const string& str_in, uint pos, uint size, string& str_out)
+void Split(cstring str, vector<string>& splitted, char split_char, bool add_empty)
 {
-	str_out.clear();
-	str_out.reserve(str_in.length());
+	assert(str);
 
-	cstring unesc = "nt\\\"'";
-	cstring esc = "\n\t\\\"'";
-	uint end = pos + size;
+	string s;
+	char c;
 
-	for(; pos<end; ++pos)
+	while((c = *str) != 0)
 	{
-		if(str_in[pos] == '\\')
+		if(c == split_char)
 		{
-			++pos;
-			if(pos == size)
+			if(!s.empty() || add_empty)
 			{
-				ERROR(Format("Unescape error in string \"%.*s\", character '\\' at end of string.", size, str_in.c_str() + pos));
-				return false;
-			}
-			int index = strchr_index(unesc, str_in[pos]);
-			if(index != -1)
-				str_out += esc[index];
-			else
-			{
-				ERROR(Format("Unescape error in string \"%.*s\", unknown escape sequence '\\%c'.", size, str_in.c_str() + pos, str_in[pos]));
-				return false;
+				splitted.push_back(std::move(s));
+				s.clear();
 			}
 		}
 		else
-			str_out += str_in[pos];
+			s.push_back(c);
+
+		++str;
 	}
 
-	return true;
+	if(!s.empty() || add_empty)
+		splitted.push_back(std::move(s));
 }
 
+
 //=================================================================================================
-cstring Escape(const InString& s, char quote)
+cstring Escape(cstring str, char quote)
 {
-	cstring str = s.s;
 	char* out = format_buf[format_marker];
 	char* out_buf = out;
 	cstring from = "\n\t\r";
@@ -136,7 +128,7 @@ cstring Escape(const InString& s, char quote)
 	char c;
 	while((c = *str) != 0)
 	{
-		int index = strchr_index(from, c);
+		int index = StrCharIndex(from, c);
 		if(index == -1)
 		{
 			if(c == quote)
@@ -158,17 +150,16 @@ cstring Escape(const InString& s, char quote)
 }
 
 //=================================================================================================
-cstring Escape(const InString& str, string& out, char quote)
+cstring Escape(cstring str, string& out, char quote)
 {
-	cstring s = str.s;
 	out.clear();
 	cstring from = "\n\t\r";
 	cstring to = "ntr";
 
 	char c;
-	while((c = *s) != 0)
+	while((c = *str) != 0)
 	{
-		int index = strchr_index(from, c);
+		int index = StrCharIndex(from, c);
 		if(index == -1)
 		{
 			if(c == quote)
@@ -180,7 +171,7 @@ cstring Escape(const InString& str, string& out, char quote)
 			out += '\\';
 			out += to[index];
 		}
-		++s;
+		++str;
 	}
 
 	return out.c_str();
@@ -194,7 +185,7 @@ cstring EscapeChar(char c)
 	{
 		if(c == escape_from[i])
 		{
-			strcpy(out, escape_to[i]);
+			strcpy_s(out, FORMAT_LENGTH, escape_to[i]);
 			format_marker = (format_marker + 1) % FORMAT_STRINGS;
 			return out;
 		}
@@ -221,6 +212,41 @@ cstring EscapeChar(char c, string& out)
 }
 
 //=================================================================================================
+bool Unescape(const string& str_in, uint pos, uint size, string& str_out)
+{
+	str_out.clear();
+	str_out.reserve(str_in.length());
+
+	cstring unesc = "nt\\\"'";
+	cstring esc = "\n\t\\\"'";
+	uint end = pos + size;
+
+	for(; pos < end; ++pos)
+	{
+		if(str_in[pos] == '\\')
+		{
+			++pos;
+			if(pos == size)
+			{
+				// character \ at end of string
+				assert_once(0);
+				str_out += '\\';
+				return true;
+			}
+
+			int index = StrCharIndex(unesc, str_in[pos]);
+			assert_once(index != -1); // unknown escape sequences are removed
+			if(index != -1)
+				str_out += esc[index];
+		}
+		else
+			str_out += str_in[pos];
+	}
+
+	return true;
+}
+
+//=================================================================================================
 bool StringInString(cstring s1, cstring s2)
 {
 	while(true)
@@ -235,21 +261,6 @@ bool StringInString(cstring s1, cstring s2)
 		else
 			return false;
 	}
-}
-
-//=================================================================================================
-string* ToString(const wchar_t* str)
-{
-	string* s = StringPool.Get();
-	if(str == nullptr)
-	{
-		*s = "null";
-		return s;
-	}
-	int len = lstrlenW(str);
-	s->resize(len);
-	wcstombs((char*)s->c_str(), str, len);
-	return s;
 }
 
 //=================================================================================================
@@ -326,7 +337,7 @@ bool ToInt(cstring s, int& result)
 {
 	__int64 i;
 	float f;
-	if(ToNumber(s, i, f) != 0 && in_range<int>(i))
+	if(ToNumber(s, i, f) != 0 && InRange<int>(i))
 	{
 		result = (int)i;
 		return true;
@@ -340,7 +351,7 @@ bool ToUint(cstring s, uint& result)
 {
 	__int64 i;
 	float f;
-	if(ToNumber(s, i, f) != 0 && in_range<uint>(i))
+	if(ToNumber(s, i, f) != 0 && InRange<uint>(i))
 	{
 		result = (uint)i;
 		return true;
@@ -422,5 +433,20 @@ char StrContains(cstring s, cstring chrs)
 			if(c == c2)
 				return c;
 		}
+	}
+}
+
+//=================================================================================================
+char CharInStr(char c, cstring chrs)
+{
+	assert(chrs);
+
+	while(true)
+	{
+		char c2 = *chrs++;
+		if(c2 == 0)
+			return 0;
+		if(c == c2)
+			return c;
 	}
 }

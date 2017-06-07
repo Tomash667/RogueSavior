@@ -70,6 +70,15 @@
     <ClInclude Include="source\core\File.h">
       <Filter>1. core</Filter>
     </ClInclude>
+    <ClInclude Include="source\engine\Scene.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\SceneNode.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\Version.h">
+      <Filter>3. game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Pch.cpp" />
@@ -103,6 +112,18 @@
     </ClCompile>
     <ClCompile Include="source\game\UnitData.cpp">
       <Filter>3. game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\Render.cpp">
+      <Filter>2. engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\Scene.cpp">
+      <Filter>2. engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\core\File.cpp">
+      <Filter>1. core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\core\Containers.cpp">
+      <Filter>1. core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

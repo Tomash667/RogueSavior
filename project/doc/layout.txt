@@ -100,7 +100,11 @@ player_uuid in config - random player guid
 	auto equip weapon if none
 	WSAD - move
 	left mouse button - attack
-
+7. Intro - image + some text
+8. Death screen - image + text, score info, hiscores
+9. Hiscores
+	X, level Y, survived for Z days
+	W points, "killed by"
 
 Alt-f4 -> save & exit
 Alt-enter -> toggle fullscreen

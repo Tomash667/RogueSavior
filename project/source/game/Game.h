@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Engine.h"
-
 class Config;
+class Engine;
 
-class Game : Engine
+class Game
 {
 public:
 	Game();
+	~Game();
 	bool Start();
 
 private:
@@ -16,10 +16,18 @@ private:
 	void SetGameDefaults();
 	void InitConfig();
 
+	void LoadHiscores();
+	void SaveHiscores();
+
+	cstring GetWindowTitle();
+
+private:
 	struct Options
 	{
 		INT2 window_size;
 		bool fullscreen;
 	} options;
+	Engine* engine;
 	Config* config;
+	string title;
 };

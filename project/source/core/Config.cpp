@@ -71,15 +71,11 @@ Config::Config(cstring _path)
 	path = _path;
 }
 
-Config::~Config()
-{
-	DeleteElements(items);
-}
-
 ConfigItem* Config::Add(cstring id)
 {
 	assert(id);
 
+	splitted.clear();
 	Split(id, splitted, '.');
 
 	ConfigItem* top = this;
@@ -109,7 +105,6 @@ ConfigItem* Config::Add(cstring id)
 bool Config::Load()
 {
 	t.FromFile(path.c_str());
-	Item* top = nullptr;
 
 	try
 	{
@@ -181,7 +176,7 @@ bool Config::Load()
 				item->type = type;
 			else if(item->type < ConfigItem::ContainerTypes && type != ConfigItem::Container)
 				t.Throw("Config item '%s' has invalid type %s (expecting %s).", item->GetPath().c_str(), config_item_infos[type].name, config_item_infos[item->type].name);
-			
+
 			// set value
 			switch(item->type)
 			{
@@ -214,22 +209,27 @@ bool Config::Load()
 			}
 			t.Next();
 		}
-	}
-	catch(Tokenizer::Exception& e)
-	{
 
+		return true;
+	}
+	catch(Tokenizer::Exception&)
+	{
+		return false;
 	}
 }
 
 bool Config::Save()
 {
 	TextWriter f(path);
+	if(!f)
+		return false;
 
 	int tabs = 1;
 	f << "{\n";
 
 	ConfigItem* parent = this;
 
-
 	f << "}\n";
+
+	return true;
 }

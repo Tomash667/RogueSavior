@@ -14,8 +14,10 @@ class Engine
 {
 public:
 	Engine();
+	~Engine();
 
-	bool InitEngine(const EngineInitOptions& options);
+	bool Init(const EngineInitOptions& options);
+	void ShowError(cstring msg);
 
 private:
 	Render* render;

@@ -1,7 +1,6 @@
 #pragma once
 
-class Render
+class SceneNode
 {
 public:
-	Render();
 };

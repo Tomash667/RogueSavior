@@ -8,13 +8,9 @@
 #	define NDEBUG
 #	define _SECURE_SCL 0
 #	define _HAS_ITERATOR_DEBUGGING 0
+#else
+#	include <vld.h>
 #endif
-/*#else
-#	define D3D_DEBUG_INFO
-#	ifndef COMMON_ONLY
-#		include <vld.h>
-#	endif
-#endif*/
 
 #include <algorithm>
 #include <string>

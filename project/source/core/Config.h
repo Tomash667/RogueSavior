@@ -35,9 +35,9 @@ struct ConfigItem
 	~ConfigItem();
 
 	template<typename T>
-	void Set(T& value)
+	void Set(T& val)
 	{
-		_int = &value;
+		value = (int)&val;
 		type = Helper<T>::value;
 		backing_field = true;
 	}
@@ -67,7 +67,6 @@ class Config : ConfigItem
 {
 public:
 	Config(cstring path);
-	~Config();
 
 	bool Save();
 	bool Load();

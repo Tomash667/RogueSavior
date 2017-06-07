@@ -1,4 +1,5 @@
-﻿/project/.vs/
+﻿/bin/
+/project/.vs/
 /project/ipch/
 /project/output/
 
@@ -6,3 +7,4 @@
 *.opendb
 *.idb
 *.pdb
+*.vcxproj.user

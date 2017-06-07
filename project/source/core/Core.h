@@ -42,8 +42,11 @@ char(&_ArraySizeHelper(T(&array)[N]))[N];
 #define __LOC2__ __FILE__ "("STRING(__LINE__)") : "
 #ifndef _DEBUG
 #	define FIXME __pragma(message(__LOC2__ "error: FIXME in release build!"))
+#	define assert_once(expression)
 #else
 #	define FIXME
+#	define assert_once(expression) { static bool _once = false; if(!_once && !(expression)) { _once = true; \
+            _wassert(_CRT_WIDE(#expression), _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); }}
 #endif
 
 //-----------------------------------------------------------------------------
@@ -247,6 +250,11 @@ class Singleton
 public:
 	static T& Get() { return instance; }
 };
+
+//-----------------------------------------------------------------------------
+// Pseudohandle for system objects
+struct _Handle {};
+typedef _Handle* Handle;
 
 //-----------------------------------------------------------------------------
 // More includes

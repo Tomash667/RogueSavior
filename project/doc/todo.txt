@@ -7,6 +7,7 @@ v0:
 	+ house
 	+ big house
 + hiscores
++ unit have negative hp/2 until they die, time to use medipack
 
 v1:
 + new items
@@ -65,6 +66,8 @@ v2+:
 	+ zombie soldier
 	+ zombies carrying melee weapons
 	+ trader
+	+ ghost (invisible zombie)
+	+ mother (powerful scent that other zombies fallow)
 + shadows
 + quests
 	+ escape from city
@@ -76,6 +79,7 @@ v2+:
 + grab/shove
 + trade, price inflation, money deflation
 + bike, car, tank, heli
++ scent, zombies fallow humans scent - spray (scent killer)
 
 + fullscreen windowed mode
 + allow to pick sound output device (default/headphones/speakers)

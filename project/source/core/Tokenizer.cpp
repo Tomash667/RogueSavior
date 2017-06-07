@@ -11,17 +11,39 @@ static cstring WHITESPACE_SYMBOLS_DOT = " \t\n\r,/;'\\[]`<>?:|{}=~!@#$%^&*()+-\"
 static cstring SYMBOLS = ",./;'\\[]`<>?:|{}=~!@#$%^&*()+-";
 
 //=================================================================================================
+Tokenizer::Tokenizer(int _flags) : need_sorting(false), formatter(this), seek(nullptr), own_string(false)
+{
+	SetFlags(_flags);
+	Reset();
+}
+
+//=================================================================================================
+Tokenizer::~Tokenizer()
+{
+	if(own_string)
+		StringPool.Free(const_cast<string*>(str));
+	delete seek;
+}
+
+//=================================================================================================
 void Tokenizer::FromString(cstring _str)
 {
 	assert(_str);
-	g_tmp_string = _str;
-	str = &g_tmp_string;
+	if(!own_string)
+		str = StringPool.Get();
+	*const_cast<string*>(str) = _str;
+	own_string = true;
 	Reset();
 }
 
 //=================================================================================================
 void Tokenizer::FromString(const string& _str)
 {
+	if(own_string)
+	{
+		StringPool.Free(const_cast<string*>(str));
+		own_string = false;
+	}
 	str = &_str;
 	Reset();
 }
@@ -30,9 +52,13 @@ void Tokenizer::FromString(const string& _str)
 bool Tokenizer::FromFile(cstring path)
 {
 	assert(path);
-	if(!io::LoadFileToString(path, g_tmp_string))
+	if(!own_string)
+	{
+		str = StringPool.Get();
+		own_string = true;
+	}
+	if(!LoadFileToString(path, *const_cast<string*>(str)))
 		return false;
-	str = &g_tmp_string;
 	filename = path;
 	Reset();
 	return true;
@@ -281,7 +307,7 @@ redo:
 				}
 				else
 				{
-					WARN(Format("Tokenizer: Broken hex number at %u:%u.", s.line + 1, s.charpos + 1));
+					// broken hex number
 					s.token = T_BROKEN_NUMBER;
 					return true;
 				}
@@ -360,7 +386,7 @@ void Tokenizer::ParseNumber(SeekData& s, uint pos2, bool negative)
 				break;
 			}
 		}
-		else if(strchr2(c, WHITESPACE_SYMBOLS) != 0)
+		else if(CharInStr(c, WHITESPACE_SYMBOLS) != 0)
 		{
 			// found symbol or whitespace, break
 			s.pos = pos2;
@@ -396,7 +422,7 @@ void Tokenizer::ParseNumber(SeekData& s, uint pos2, bool negative)
 
 	// parse number
 	__int64 val;
-	int type = TextHelper::ToNumber(s.item.c_str(), val, s._float);
+	int type = ToNumber(s.item.c_str(), val, s._float);
 	assert(type > 0);
 	s._int = (int)val;
 	if(s._int < 0)
@@ -405,7 +431,7 @@ void Tokenizer::ParseNumber(SeekData& s, uint pos2, bool negative)
 		s._uint = s._int;
 	if(val > UINT_MAX)
 	{
-		WARN(Format("Tokenizer: Too big number %I64.", val));
+		// too big number
 		type = 0;
 	}
 	if(type == 2)
@@ -880,15 +906,15 @@ bool Tokenizer::CheckMultiKeywords()
 		if(strcmp(keywords[i].name, prev->name) == 0)
 		{
 			++errors;
-			ERROR(Format("Keyword '%s' multiple definitions (%d,%d) and (%d,%d).", prev->name, prev->id, prev->group,
-				keywords[i].id, keywords[i].group));
+			Error("Keyword '%s' multiple definitions (%d,%d) and (%d,%d).", prev->name, prev->id, prev->group,
+				keywords[i].id, keywords[i].group);
 		}
 		prev = &keywords[i];
 	}
 
 	if(errors > 0)
 	{
-		ERROR(Format("Multiple keywords %d with same id. Use F_MULTI_KEYWORDS or fix that.", errors));
+		Error("Multiple keywords %d with same id. Use F_MULTI_KEYWORDS or fix that.", errors);
 		return false;
 	}
 	else
@@ -1007,24 +1033,6 @@ void Tokenizer::Parse(INT2& i)
 }
 
 //=================================================================================================
-void Tokenizer::Parse(IBOX2D& b)
-{
-	AssertSymbol('{');
-	Next();
-	b.p1.x = MustGetInt();
-	Next();
-	b.p1.y = MustGetInt();
-	Next();
-	b.p2.x = MustGetInt();
-	Next();
-	b.p2.y = MustGetInt();
-	Next();
-	AssertSymbol('}');
-	Next();
-}
-
-//=================================================================================================
-#ifndef NO_DIRECT_X
 void Tokenizer::Parse(VEC2& v)
 {
 	if(IsSymbol('{'))
@@ -1043,7 +1051,23 @@ void Tokenizer::Parse(VEC2& v)
 		Next();
 	}
 }
-#endif
+
+//=================================================================================================
+void Tokenizer::Parse(Rect& r)
+{
+	AssertSymbol('{');
+	Next();
+	r.p1.x = MustGetInt();
+	Next();
+	r.p1.y = MustGetInt();
+	Next();
+	r.p2.x = MustGetInt();
+	Next();
+	r.p2.y = MustGetInt();
+	Next();
+	AssertSymbol('}');
+	Next();
+}
 
 //=================================================================================================
 const string& Tokenizer::GetBlock(char open, char close)

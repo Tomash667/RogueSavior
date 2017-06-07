@@ -49,8 +49,18 @@ cstring Format(cstring fmt, ...);
 cstring FormatList(cstring fmt, va_list lis);
 // Return string with first character uper-case, use global bufer
 cstring Upper(cstring str);
-// Split text and end of line, modify passed string
+// Split text on end of line, modify passed string
 void SplitText(char* buf, vector<cstring>& lines);
+// Split text on character, store splitted strings in vector
+void Split(cstring str, vector<string>& splitted, char split_char, bool add_empty = false);
+// Escape special characters and quote, use global bufer
+cstring Escape(cstring str, char quote = '"');
+// Escape special characters and qoute
+cstring Escape(cstring str, string& out, char quote = '"');
+// Escape single character, use global bufer
+cstring EscapeChar(char c);
+// Escape single character
+cstring EscapeChar(char c, string& out);
 // Reverse escape string operation on part of string
 bool Unescape(const string& str_in, uint pos, uint length, string& str_out);
 // Reverse escape string operation
@@ -60,16 +70,6 @@ inline bool Unescape(const string& str_in, string& str_out)
 }
 // Return true if string contains other string
 bool StringInString(cstring s1, cstring s2);
-// Escape special characters and quote, use global bufer
-cstring Escape(cstring str, char quote = '"');
-// Escape special characters and qoute
-cstring Escape(cstring str, string& out, char quote = '"');
-// Escape single character, use global bufer
-cstring EscapeChar(char c);
-// Escape single character
-cstring EscapeChar(char c, string& out);
-// Convert from wide char, return pooled string
-string* ToString(const wchar_t* str);
 // Convert string to number, returns type 0-broken, 1-int, 2-float
 int ToNumber(cstring s, __int64& i, float& f);
 // Convert string to int
@@ -128,3 +128,5 @@ inline void Join(const vector<T>& v, string& s, cstring separator, Action action
 int StrCharIndex(cstring chrs, char c);
 // Checks if string contains any character and return it or 0
 char StrContains(cstring s, cstring chrs);
+// Return char contained in string or 0
+char CharInStr(char c, cstring chrs);

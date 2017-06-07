@@ -1275,9 +1275,9 @@ struct BOX
 //-----------------------------------------------------------------------------
 // Definitions for forwarded types
 //-----------------------------------------------------------------------------
-INT2::INT2(const VEC2& v) : x(int(v.x)), y(int(v.y)) {}
-INT2::INT2(const VEC3& v) : x(int(v.x)), y(int(v.z)) {}
-VEC2 INT2::ToVEC2() const
+inline INT2::INT2(const VEC2& v) : x(int(v.x)), y(int(v.y)) {}
+inline INT2::INT2(const VEC3& v) : x(int(v.x)), y(int(v.z)) {}
+inline VEC2 INT2::ToVEC2() const
 {
 	return VEC2(float(x), float(y));
 }
