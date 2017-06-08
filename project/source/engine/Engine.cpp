@@ -1,9 +1,11 @@
 #include "Pch.h"
 #include "Core.h"
 #include "Engine.h"
+#include "GameHandler.h"
+#include "Input.h"
 #include "Window.h"
 
-Engine::Engine() : render(nullptr), window(nullptr)
+Engine::Engine() : render(nullptr), window(nullptr), closing(false)
 {
 
 }
@@ -16,6 +18,9 @@ Engine::~Engine()
 bool Engine::Init(const EngineInitOptions& options)
 {
 	assert(!window);
+	assert(options.handler);
+
+	handler = options.handler;
 	
 	try
 	{
@@ -24,7 +29,7 @@ bool Engine::Init(const EngineInitOptions& options)
 	}
 	catch(cstring err)
 	{
-		ShowError(err);
+		ShowError(Format("Failed to initialize engine.\n%s", err));
 		return false;
 	}
 
@@ -41,4 +46,49 @@ void Engine::ShowError(cstring msg)
 
 	// show message
 	window->ShowError(msg);
+}
+
+void Engine::StartLoop()
+{
+	timer.Start();
+	frames = 0;
+	frame_time = 0.f;
+	fps = 0.f;
+
+	while(window->HandleMessages())
+	{
+		const float dt = timer.Tick();
+
+		CalculateFps(dt);
+
+		handler->OnTick(dt);
+		if(closing)
+			break;
+
+		Input.Update();
+	}
+
+	Cleanup();
+}
+
+void Engine::CalculateFps(float dt)
+{
+	frames++;
+	frame_time += dt;
+	if(frame_time >= 1.f)
+	{
+		fps = frames / frame_time;
+		frames = 0;
+		frame_time = 0.f;
+	}
+}
+
+void Engine::Cleanup()
+{
+	handler->OnCleanup();
+}
+
+void Engine::Shutdown()
+{
+	closing = true;
 }

@@ -1,9 +1,10 @@
 #include "Pch.h"
 #include "Core.h"
+#include "Input.h"
 #include "Window.h"
 #include "WindowsIncl.h"
 
-Window::Window()
+Window::Window() : closed(false)
 {
 }
 
@@ -68,6 +69,32 @@ long Window::HandleEventStatic(Handle hwnd, uint msg, uint wParam, long lParam)
 
 long Window::HandleEvent(Handle in_hwnd, uint msg, uint wParam, long lParam)
 {
+	switch(msg)
+	{
+	case WM_CLOSE:
+	case WM_DESTROY:
+		closed = true;
+		return 0;
+
+	case WM_ACTIVATE:
+		{
+			bool active = (wParam != WA_INACTIVE);
+			if(!active)
+				Input.ReleaseKeys();
+		}
+		return 0;
+
+	case WM_SYSKEYDOWN:
+	case WM_KEYDOWN:
+		Input.Process(wParam, true);
+		return 0;
+
+	case WM_SYSKEYUP:
+	case WM_KEYUP:
+		Input.Process(wParam, false);
+		return 0;
+	}
+
 	return DefWindowProc((HWND)in_hwnd, msg, wParam, lParam);
 }
 
@@ -100,4 +127,20 @@ void Window::ShowError(cstring msg)
 	ShowWindow((HWND)hwnd, SW_HIDE);
 	ShowCursor(TRUE);
 	MessageBox(nullptr, msg, nullptr, MB_OK | MB_ICONERROR | MB_APPLMODAL);
+}
+
+bool Window::HandleMessages()
+{
+	MSG msg = { 0 };
+	
+	while(PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+
+		if(msg.message == WM_QUIT)
+			return false;
+	}
+
+	return !closed;
 }

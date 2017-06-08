@@ -1,9 +1,11 @@
 #pragma once
 
+#include "GameHandler.h"
+
 class Config;
 class Engine;
 
-class Game
+class Game : public GameHandler
 {
 public:
 	Game();
@@ -11,7 +13,11 @@ public:
 	bool Start();
 
 private:
+	void OnCleanup() override;
+	void OnTick(float dt) override;
+
 	bool InitGame();
+	void Loop();
 
 	void SetGameDefaults();
 	void InitConfig();
@@ -21,7 +27,6 @@ private:
 
 	cstring GetWindowTitle();
 
-private:
 	struct Options
 	{
 		INT2 window_size;

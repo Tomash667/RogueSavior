@@ -9,3 +9,5 @@ struct UnitData
 
 	}
 };
+
+void CleanupUnitDatas();

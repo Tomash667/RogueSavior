@@ -8,7 +8,8 @@ public:
 	void Hide();
 	void Init(cstring title, const INT2& size, bool fullscreen);
 	static long HandleEventStatic(Handle in_hwnd, uint msg, uint wParam, long lParam);
-	void ShowError(cstring msg);
+	bool HandleMessages();
+	void ShowError(cstring msg); 
 
 private:
 	void AdjustWindowSize();
@@ -16,5 +17,5 @@ private:
 
 	Handle hwnd;
 	INT2 size, real_size;
-	bool fullscreen;
+	bool fullscreen, closed;
 };

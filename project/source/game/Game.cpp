@@ -3,6 +3,9 @@
 #include "Config.h"
 #include "Engine.h"
 #include "Game.h"
+#include "Input.h"
+#include "Item.h"
+#include "UnitData.h"
 #include "Version.h"
 
 Game::Game() : config(nullptr), engine(new Engine)
@@ -24,6 +27,7 @@ bool Game::Start()
 	config->Save();
 
 	EngineInitOptions engine_options;
+	engine_options.handler = this;
 	engine_options.fullscreen = options.fullscreen;
 	engine_options.window_size = options.window_size;
 	engine_options.window_title = GetWindowTitle();
@@ -33,7 +37,7 @@ bool Game::Start()
 	if(!InitGame())
 		return false;
 
-	// go to load screen
+	engine->StartLoop();
 	return true;
 }
 
@@ -65,5 +69,32 @@ cstring Game::GetWindowTitle()
 
 bool Game::InitGame()
 {
-	return true;
+	try
+	{
+		SetItemPointers();
+		return true;
+	}
+	catch(cstring err)
+	{
+		engine->ShowError(Format("Failed to initialize game.\n%s", err));
+		return false;
+	}
+}
+
+void Game::OnTick(float dt)
+{
+	if(Input.Down(K_ALT) && Input.Pressed(K_F4))
+	{
+		engine->Shutdown();
+		return;
+	}
+
+	if(Input.Down('A'))
+		engine->ShowError("Hahaha");
+}
+
+void Game::OnCleanup()
+{
+	CleanupUnitDatas();
+	CleanupItems();
 }

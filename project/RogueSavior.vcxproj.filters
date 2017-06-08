@@ -61,9 +61,6 @@
     <ClInclude Include="source\engine\Render.h">
       <Filter>2. engine</Filter>
     </ClInclude>
-    <ClInclude Include="source\engine\UnitData.h">
-      <Filter>3. game</Filter>
-    </ClInclude>
     <ClInclude Include="source\core\WindowsIncl.h">
       <Filter>1. core</Filter>
     </ClInclude>
@@ -78,6 +75,18 @@
     </ClInclude>
     <ClInclude Include="source\engine\Version.h">
       <Filter>3. game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\GameHandler.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\UnitData.h">
+      <Filter>3. game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\Input.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\Key.h">
+      <Filter>2. engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="source\core\Containers.cpp">
       <Filter>1. core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\Input.cpp">
+      <Filter>2. engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

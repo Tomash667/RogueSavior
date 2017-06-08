@@ -37,3 +37,9 @@ void SetItemPointers()
 		}
 	}
 }
+
+void CleanupItems()
+{
+	for(auto& i : g_items)
+		delete i.second;
+}

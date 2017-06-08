@@ -171,15 +171,18 @@
     <ClInclude Include="source\core\Tokenizer.h" />
     <ClInclude Include="source\core\WindowsIncl.h" />
     <ClInclude Include="source\engine\Engine.h" />
+    <ClInclude Include="source\engine\GameHandler.h" />
+    <ClInclude Include="source\engine\Input.h" />
+    <ClInclude Include="source\engine\Key.h" />
     <ClInclude Include="source\engine\Render.h" />
     <ClInclude Include="source\engine\Scene.h" />
     <ClInclude Include="source\engine\SceneNode.h" />
-    <ClInclude Include="source\engine\UnitData.h" />
     <ClInclude Include="source\engine\Version.h" />
     <ClInclude Include="source\engine\Window.h" />
     <ClInclude Include="source\game\Game.h" />
     <ClInclude Include="source\game\Item.h" />
     <ClInclude Include="source\game\Unit.h" />
+    <ClInclude Include="source\game\UnitData.h" />
     <ClInclude Include="source\Pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +194,7 @@
     <ClCompile Include="source\core\Timer.cpp" />
     <ClCompile Include="source\core\Tokenizer.cpp" />
     <ClCompile Include="source\engine\Engine.cpp" />
+    <ClCompile Include="source\engine\Input.cpp" />
     <ClCompile Include="source\engine\Render.cpp" />
     <ClCompile Include="source\engine\Scene.cpp" />
     <ClCompile Include="source\engine\Window.cpp" />

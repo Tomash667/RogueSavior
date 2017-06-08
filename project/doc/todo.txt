@@ -80,6 +80,6 @@ v2+:
 + trade, price inflation, money deflation
 + bike, car, tank, heli
 + scent, zombies fallow humans scent - spray (scent killer)
-
++ ragdoll
 + fullscreen windowed mode
 + allow to pick sound output device (default/headphones/speakers)

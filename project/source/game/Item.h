@@ -20,6 +20,8 @@ struct Item
 	{
 
 	}
+
+	virtual ~Item() {}
 };
 
 struct MeleeWeapon : Item
@@ -48,7 +50,7 @@ struct RangedWeapon : Item
 
 struct Ammo : Item
 {
-	Ammo(cstring id, cstring name, uint stack_size) : Item(ItemType::RangedWeapon, id, name, stack_size)
+	Ammo(cstring id, cstring name, uint stack_size) : Item(ItemType::Ammo, id, name, stack_size)
 	{
 
 	}
@@ -70,3 +72,6 @@ struct Useable : Item
 
 	}
 };
+
+void SetItemPointers();
+void CleanupItems();
