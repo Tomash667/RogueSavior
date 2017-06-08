@@ -20,6 +20,8 @@ bool Engine::Init(const EngineInitOptions& options)
 	assert(!window);
 	assert(options.handler);
 
+	Info("Initializing engine.");
+
 	handler = options.handler;
 	
 	try
@@ -60,6 +62,7 @@ void Engine::StartLoop()
 		const float dt = timer.Tick();
 
 		CalculateFps(dt);
+		Input.UpdateShortcuts();
 
 		handler->OnTick(dt);
 		if(closing)

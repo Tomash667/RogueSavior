@@ -93,6 +93,42 @@ long Window::HandleEvent(Handle in_hwnd, uint msg, uint wParam, long lParam)
 	case WM_KEYUP:
 		Input.Process(wParam, false);
 		return 0;
+
+	case WM_LBUTTONDOWN:
+	case WM_RBUTTONDOWN:
+	case WM_MBUTTONDOWN:
+	case WM_XBUTTONDOWN:
+		{
+			byte key;
+			int ret;
+			MsgToKey(msg, wParam, key, ret);
+			Input.Process(key, true);
+			return ret;
+		}
+
+	case WM_LBUTTONUP:
+	case WM_RBUTTONUP:
+	case WM_MBUTTONUP:
+	case WM_XBUTTONUP:
+		{
+			byte key;
+			int ret;
+			MsgToKey(msg, wParam, key, ret);
+			Input.Process(key, false);
+			return ret;
+		}
+
+	case WM_LBUTTONDBLCLK:
+	case WM_RBUTTONDBLCLK:
+	case WM_MBUTTONDBLCLK:
+	case WM_XBUTTONDBLCLK:
+		{
+			byte key;
+			int ret = 0;
+			MsgToKey(msg, wParam, key, ret);
+			Input.ProcessDoubleClick(key);
+			return ret;
+		}
 	}
 
 	return DefWindowProc((HWND)in_hwnd, msg, wParam, lParam);
@@ -143,4 +179,37 @@ bool Window::HandleMessages()
 	}
 
 	return !closed;
+}
+
+void Window::MsgToKey(uint msg, uint wParam, byte& key, int& result)
+{
+	result = 0;
+
+	switch(msg)
+	{
+	default:
+		assert(0);
+		break;
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_LBUTTONDBLCLK:
+		key = VK_LBUTTON;
+		break;
+	case WM_RBUTTONDOWN:
+	case WM_RBUTTONUP:
+	case WM_RBUTTONDBLCLK:
+		key = VK_RBUTTON;
+		break;
+	case WM_MBUTTONDOWN:
+	case WM_MBUTTONUP:
+	case WM_MBUTTONDBLCLK:
+		key = VK_MBUTTON;
+		break;
+	case WM_XBUTTONDOWN:
+	case WM_XBUTTONUP:
+	case WM_XBUTTONDBLCLK:
+		key = (GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? VK_XBUTTON1 : VK_XBUTTON2);
+		result = TRUE;
+		break;
+	}
 }

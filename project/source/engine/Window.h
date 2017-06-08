@@ -14,6 +14,7 @@ public:
 private:
 	void AdjustWindowSize();
 	long HandleEvent(Handle in_hwnd, uint msg, uint wParam, long lParam);
+	void MsgToKey(uint msg, uint wParam, byte& key, int& result);
 
 	Handle hwnd;
 	INT2 size, real_size;

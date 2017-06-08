@@ -78,3 +78,10 @@ enum Key
 	K_NUMLOCK = 0x90,
 	K_SCROLL = 0x91
 };
+
+enum ModifierKey
+{
+	KEY_SHIFT = 1 << 0,
+	KEY_CONTROL = 1 << 1,
+	KEY_ALT = 1 << 2
+};

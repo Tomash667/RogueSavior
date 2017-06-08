@@ -21,10 +21,12 @@ Game::~Game()
 
 bool Game::Start()
 {
+	Info("Game start");
+
 	SetGameDefaults();
 	InitConfig();
-	config->Load();
-	config->Save();
+	LoadConfig();
+	SaveConfig();
 
 	EngineInitOptions engine_options;
 	engine_options.handler = this;
@@ -69,6 +71,8 @@ cstring Game::GetWindowTitle()
 
 bool Game::InitGame()
 {
+	Info("Initializing game.");
+
 	try
 	{
 		SetItemPointers();
@@ -88,13 +92,27 @@ void Game::OnTick(float dt)
 		engine->Shutdown();
 		return;
 	}
-
-	if(Input.Down('A'))
-		engine->ShowError("Hahaha");
 }
 
 void Game::OnCleanup()
 {
 	CleanupUnitDatas();
 	CleanupItems();
+}
+
+void Game::LoadConfig()
+{
+	Info("Loading config.");
+	config->Load();
+
+	if(options.window_size.x < 800)
+		options.window_size.x = 800;
+	if(options.window_size.y < 600)
+		options.window_size.y = 600;
+}
+
+void Game::SaveConfig()
+{
+	Info("Saving config.");
+	config->Save();
 }
