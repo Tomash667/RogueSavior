@@ -28,7 +28,7 @@ Render::~Render()
 
 void Render::Init(HWND _hwnd, const INT2& _window_size, int _hz, bool _fullscreen)
 {
-	Info("Initializing render.");
+	Info("Creating render.");
 
 	hwnd = _hwnd;
 	window_size = _window_size;

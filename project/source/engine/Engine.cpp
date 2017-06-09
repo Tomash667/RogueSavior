@@ -4,15 +4,19 @@
 #include "GameHandler.h"
 #include "Input.h"
 #include "Render.h"
+#include "ResourceManager.h"
+#include "Scene.h"
 #include "Window.h"
 
-Engine::Engine() : render(nullptr), window(nullptr), closing(false)
+Engine::Engine() : render(nullptr), resource_manager(nullptr), scene(nullptr), window(nullptr), closing(false), inside_loop(false)
 {
 
 }
 
 Engine::~Engine()
 {
+	delete scene;
+	delete resource_manager;
 	delete render;
 	delete window;
 }
@@ -33,6 +37,10 @@ bool Engine::Init(const EngineInitOptions& options)
 
 		render = new Render;
 		render->Init(window->GetHandle(), options.window_size, options.hz, options.fullscreen);
+
+		resource_manager = new ResourceManager;
+
+		scene = new Scene;
 	}
 	catch(cstring err)
 	{
@@ -61,6 +69,7 @@ void Engine::StartLoop()
 	frames = 0;
 	frame_time = 0.f;
 	fps = 0.f;
+	inside_loop = true;
 
 	while(window->HandleMessages())
 	{
@@ -99,5 +108,9 @@ void Engine::Cleanup()
 
 void Engine::Shutdown()
 {
-	closing = true;
+	Info("Shutting down engine.");
+	if(inside_loop)
+		closing = true;
+	else
+		Cleanup();
 }

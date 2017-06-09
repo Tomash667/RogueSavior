@@ -17,6 +17,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <fstream>
 #include <cstdarg>
 #include <cassert>
 

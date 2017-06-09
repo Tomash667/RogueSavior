@@ -1,6 +1,9 @@
 #pragma once
 
-class SceneNode
+class Mesh;
+
+struct SceneNode
 {
-public:
+	Mesh* mesh;
+	VEC3 pos;
 };

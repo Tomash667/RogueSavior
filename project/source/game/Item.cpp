@@ -1,5 +1,6 @@
 #include "Pch.h"
 #include "Core.h"
+#include "GameLoader.h"
 #include "Item.h"
 
 // mesh is name.mesh
@@ -31,9 +32,9 @@ void SetItemPointers()
 			auto weapon = (RangedWeapon*)item;
 			auto ammo = FindItem(weapon->ammo_id);
 			if(ammo && ammo->type == ItemType::Ammo)
-				Error("Missing ammo '%s' for ranged weapon '%s'.", weapon->id.c_str(), weapon->ammo_id.c_str());
-			else
 				weapon->ammo = (Ammo*)ammo;
+			else
+				GameLoader.AddError("Missing ammo '%s' for ranged weapon '%s'.", weapon->ammo_id.c_str(), weapon->id.c_str());
 		}
 	}
 }

@@ -91,6 +91,24 @@
     <ClInclude Include="source\core\ForwardInternal.h">
       <Filter>1. core</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\Server.h">
+      <Filter>3. game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\GameLoader.h">
+      <Filter>3. game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\Mesh.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\ResourceManager.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\Resource.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\Texture.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Pch.cpp" />
@@ -138,6 +156,12 @@
       <Filter>1. core</Filter>
     </ClCompile>
     <ClCompile Include="source\engine\Input.cpp">
+      <Filter>2. engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\GameLoader.cpp">
+      <Filter>3. game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\ResourceManager.cpp">
       <Filter>2. engine</Filter>
     </ClCompile>
   </ItemGroup>

@@ -10,6 +10,7 @@ Window::Window() : closed(false)
 
 void Window::Init(cstring title, const INT2& _size, bool _fullscreen)
 {
+	Info("Creating window.");
 	size = _size;
 	fullscreen = _fullscreen;
 

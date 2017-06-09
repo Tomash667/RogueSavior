@@ -29,13 +29,17 @@ private:
 
 	cstring GetWindowTitle();
 
+	void ConfigureLogger();
+
 	struct Options
 	{
 		INT2 window_size;
 		int window_hz;
 		bool fullscreen;
+		string log_file;
+		bool log_console;
 	} options;
 	Engine* engine;
 	Config* config;
-	string title;
+	string title, compile_time;
 };
