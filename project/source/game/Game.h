@@ -21,6 +21,8 @@ private:
 
 	void SetGameDefaults();
 	void InitConfig();
+	void LoadConfig();
+	void SaveConfig();
 
 	void LoadHiscores();
 	void SaveHiscores();
@@ -30,6 +32,7 @@ private:
 	struct Options
 	{
 		INT2 window_size;
+		int window_hz;
 		bool fullscreen;
 	} options;
 	Engine* engine;

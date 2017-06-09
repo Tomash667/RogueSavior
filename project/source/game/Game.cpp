@@ -46,6 +46,7 @@ bool Game::Start()
 void Game::SetGameDefaults()
 {
 	options.window_size = INT2(1024, 768);
+	options.window_hz = 0;
 	options.fullscreen = false;
 }
 
@@ -53,6 +54,7 @@ void Game::InitConfig()
 {
 	config = new Config("config.txt");
 	config->Add("engine.window_size", options.window_size);
+	config->Add("engine.window_hz", options.window_hz);
 	config->Add("engine.fullscreen", options.fullscreen);
 }
 

@@ -36,6 +36,7 @@ v1:
 + online hiscores
 + minimap/big map M
 + inventory shortcuts
++ vsync option
 
 v2+:
 + sleeping
@@ -83,3 +84,4 @@ v2+:
 + ragdoll
 + fullscreen windowed mode
 + allow to pick sound output device (default/headphones/speakers)
++ set adapter in options

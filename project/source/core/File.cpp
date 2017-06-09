@@ -220,7 +220,7 @@ bool FileReader::Open(cstring filename)
 	assert(filename);
 	if(file != INVALID_FILE)
 		CloseHandle((HANDLE)file);
-	file = (Handle)CreateFile(filename, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	file = CreateFile(filename, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 	own_handle = true;
 	return (file != INVALID_FILE);
 }
@@ -256,7 +256,7 @@ bool FileWriter::Open(cstring filename)
 	assert(filename);
 	if(file != INVALID_FILE)
 		CloseHandle((HANDLE)file);
-	file = (Handle)CreateFile(filename, GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+	file = CreateFile(filename, GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 	return (file != INVALID_FILE);
 }
 

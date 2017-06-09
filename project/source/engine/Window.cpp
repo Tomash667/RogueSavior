@@ -25,7 +25,7 @@ void Window::Init(cstring title, const INT2& _size, bool _fullscreen)
 
 	// create window
 	AdjustWindowSize();
-	hwnd = (Handle)CreateWindowEx(0, "RogueSaviorWndCls", title, fullscreen ? WS_POPUPWINDOW : WS_OVERLAPPEDWINDOW, 0, 0, real_size.x, real_size.y,
+	hwnd = CreateWindowEx(0, "RogueSaviorWndCls", title, fullscreen ? WS_POPUPWINDOW : WS_OVERLAPPEDWINDOW, 0, 0, real_size.x, real_size.y,
 		nullptr, nullptr, GetModuleHandle(nullptr), this);
 	if(!hwnd)
 		throw Format("Failed to create window (%d).", GetLastError());
@@ -33,17 +33,17 @@ void Window::Init(cstring title, const INT2& _size, bool _fullscreen)
 	// position window on center
 	if(!fullscreen)
 	{
-		MoveWindow((HWND)hwnd,
+		MoveWindow(hwnd,
 			(GetSystemMetrics(SM_CXSCREEN) - real_size.x) / 2,
 			(GetSystemMetrics(SM_CYSCREEN) - real_size.y) / 2,
 			real_size.x, real_size.y, false);
 	}
 
 	// show window
-	ShowWindow((HWND)hwnd, SW_SHOW);
+	ShowWindow(hwnd, SW_SHOW);
 }
 
-long Window::HandleEventStatic(Handle hwnd, uint msg, uint wParam, long lParam)
+long Window::HandleEventStatic(HWND hwnd, uint msg, uint wParam, long lParam)
 {
 	Window* wnd;
 
@@ -52,22 +52,22 @@ long Window::HandleEventStatic(Handle hwnd, uint msg, uint wParam, long lParam)
 		wnd = static_cast<Window*>(reinterpret_cast<CREATESTRUCT*>(lParam)->lpCreateParams);
 
 		SetLastError(0);
-		if(!SetWindowLongPtr((HWND)hwnd, GWL_USERDATA, reinterpret_cast<LONG_PTR>(wnd)))
+		if(!SetWindowLongPtr(hwnd, GWL_USERDATA, reinterpret_cast<LONG_PTR>(wnd)))
 		{
 			if(GetLastError() != 0)
 				return FALSE;
 		}
 	}
 	else
-		wnd = reinterpret_cast<Window*>(GetWindowLongPtr((HWND)hwnd, GWL_USERDATA));
+		wnd = reinterpret_cast<Window*>(GetWindowLongPtr(hwnd, GWL_USERDATA));
 
 	if(wnd)
 		return wnd->HandleEvent(hwnd, msg, wParam, lParam);
 	else
-		return DefWindowProc((HWND)hwnd, msg, wParam, lParam);
+		return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-long Window::HandleEvent(Handle in_hwnd, uint msg, uint wParam, long lParam)
+long Window::HandleEvent(HWND in_hwnd, uint msg, uint wParam, long lParam)
 {
 	switch(msg)
 	{
@@ -131,7 +131,7 @@ long Window::HandleEvent(Handle in_hwnd, uint msg, uint wParam, long lParam)
 		}
 	}
 
-	return DefWindowProc((HWND)in_hwnd, msg, wParam, lParam);
+	return DefWindowProc(in_hwnd, msg, wParam, lParam);
 }
 
 void Window::AdjustWindowSize()
@@ -153,14 +153,14 @@ void Window::AdjustWindowSize()
 
 void Window::Hide()
 {
-	ShowWindow((HWND)hwnd, SW_HIDE);
+	ShowWindow(hwnd, SW_HIDE);
 }
 
 void Window::ShowError(cstring msg)
 {
 	assert(msg);
 
-	ShowWindow((HWND)hwnd, SW_HIDE);
+	ShowWindow(hwnd, SW_HIDE);
 	ShowCursor(TRUE);
 	MessageBox(nullptr, msg, nullptr, MB_OK | MB_ICONERROR | MB_APPLMODAL);
 }

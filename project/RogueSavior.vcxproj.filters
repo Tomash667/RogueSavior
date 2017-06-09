@@ -88,6 +88,9 @@
     <ClInclude Include="source\engine\Key.h">
       <Filter>2. engine</Filter>
     </ClInclude>
+    <ClInclude Include="source\core\ForwardInternal.h">
+      <Filter>1. core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Pch.cpp" />

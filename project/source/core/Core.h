@@ -252,11 +252,6 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-// Pseudohandle for system objects
-struct _Handle {};
-typedef _Handle* Handle;
-
-//-----------------------------------------------------------------------------
 // More includes
 #include "Containers.h"
 #include "CoreMath.h"

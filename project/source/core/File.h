@@ -1,11 +1,13 @@
 #pragma once
 
+#include "ForwardInternal.h"
+
 //-----------------------------------------------------------------------------
 // Temporary buffer
 extern char BUF[256];
 
 //-----------------------------------------------------------------------------
-static const Handle INVALID_FILE = (Handle)-1;
+static const HANDLE INVALID_FILE = (HANDLE)-1;
 
 //-----------------------------------------------------------------------------
 // File functions
@@ -41,7 +43,7 @@ public:
 	FileReader() : file(INVALID_FILE), own_handle(false)
 	{
 	}
-	explicit FileReader(Handle file) : file(file), own_handle(false)
+	explicit FileReader(HANDLE file) : file(file), own_handle(false)
 	{
 	}
 	explicit FileReader(cstring filename) : own_handle(false)
@@ -177,7 +179,7 @@ public:
 	}
 
 private:
-	Handle file;
+	HANDLE file;
 	bool own_handle;
 };
 
@@ -189,7 +191,7 @@ public:
 	FileWriter() : file(INVALID_FILE), own_handle(false)
 	{
 	}
-	explicit FileWriter(Handle file) : file(file), own_handle(false)
+	explicit FileWriter(HANDLE file) : file(file), own_handle(false)
 	{
 	}
 	explicit FileWriter(cstring filename) : own_handle(false)
@@ -311,7 +313,7 @@ public:
 	}
 
 private:
-	Handle file;
+	HANDLE file;
 	bool own_handle;
 };
 

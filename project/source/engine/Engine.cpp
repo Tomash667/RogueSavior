@@ -3,6 +3,7 @@
 #include "Engine.h"
 #include "GameHandler.h"
 #include "Input.h"
+#include "Render.h"
 #include "Window.h"
 
 Engine::Engine() : render(nullptr), window(nullptr), closing(false)
@@ -12,6 +13,7 @@ Engine::Engine() : render(nullptr), window(nullptr), closing(false)
 
 Engine::~Engine()
 {
+	delete render;
 	delete window;
 }
 
@@ -28,6 +30,9 @@ bool Engine::Init(const EngineInitOptions& options)
 	{
 		window = new Window;
 		window->Init(options.window_title, options.window_size, options.fullscreen);
+
+		render = new Render;
+		render->Init(window->GetHandle(), options.window_size, options.hz, options.fullscreen);
 	}
 	catch(cstring err)
 	{
@@ -68,6 +73,7 @@ void Engine::StartLoop()
 		if(closing)
 			break;
 
+		render->Draw();
 		Input.Update();
 	}
 

@@ -11,6 +11,7 @@ struct EngineInitOptions
 	GameHandler* handler;
 	cstring window_title;
 	INT2 window_size;
+	int hz;
 	bool fullscreen;
 };
 
