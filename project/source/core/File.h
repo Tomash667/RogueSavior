@@ -36,6 +36,10 @@ bool LoadFileToString(cstring path, string& str, uint max_size = (uint)-1);
 void Crypt(char* inp, uint inplen, cstring key, uint keylen);
 // Read compile time from exe
 string GetCompileTime();
+// Get parent dir from path
+string GetParentDir(const string& path);
+// Get extension from filename or path
+string GetExt(const string& filename);
 
 //-----------------------------------------------------------------------------
 // Binary file reader
@@ -87,6 +91,12 @@ public:
 		return Read(&a, sizeof(a));
 	}
 
+	template<>
+	bool Read(string& s)
+	{
+		return ReadString1(s);
+	}
+
 	template<typename T, typename T2>
 	bool ReadCasted(T2& a)
 	{
@@ -97,7 +107,34 @@ public:
 		return true;
 	}
 
-	bool ReadStringBUF()
+	template<typename SIZE_TYPE>
+	bool ReadString(string& s)
+	{
+		SIZE_TYPE len;
+		if(!Read(len))
+			return false;
+		if(len)
+		{
+			s.resize(len);
+			if(!Read((char*)s.data(), len))
+				return false;
+		}
+		else
+			s.clear();
+		return true;
+	}
+
+	bool ReadString1(string& s)
+	{
+		return ReadString<byte>(s);
+	}
+
+	bool ReadString2(string& s)
+	{
+		return ReadString<word>(s);
+	}
+
+	bool ReadString1()
 	{
 		byte len = Read<byte>();
 		if(len == 0)
@@ -111,32 +148,13 @@ public:
 			return Read(BUF, len);
 		}
 	}
-
-
+	
 	template<typename T>
 	void Skip()
 	{
 		Skip(sizeof(T));
 	}
-
-	bool ReadString1(string& s)
-	{
-		byte len;
-		if(!Read(len))
-			return false;
-		s.resize(len);
-		return Read((char*)s.c_str(), len);
-	}
-
-	bool ReadString2(string& s)
-	{
-		word len;
-		if(!Read(len))
-			return false;
-		s.resize(len);
-		return Read((char*)s.c_str(), len);
-	}
-
+	
 	template<typename T>
 	bool operator >> (T& a)
 	{
@@ -179,6 +197,9 @@ public:
 		if(count)
 			Read(&v[0], sizeof(T)*count);
 	}
+
+	// Return true if there is enought data to read in file
+	bool Ensure(uint size);
 
 private:
 	HANDLE file;
@@ -233,59 +254,62 @@ public:
 		Write(&a, sizeof(a));
 	}
 
+	template<>
+	void Write(const string& s)
+	{
+		WriteString1(s);
+	}
+
 	template<typename T, typename T2>
 	void WriteCasted(const T2& a)
 	{
 		Write(&a, sizeof(T));
 	}
 
-	void WriteString1(const string& s)
+	template<typename SIZE_TYPE>
+	void WriteString(const string& s)
 	{
-		int length = s.length();
-		assert(length < 256);
-		WriteCasted<byte>(length);
-		if(length)
-			Write(s.c_str(), length);
+		assert(s.length() <= std::numeric_limits<SIZE_TYPE>::max());
+		SIZE_TYPE len = (SIZE_TYPE)s.length();
+		Write(len);
+		if(len)
+			Write(s.c_str(), len);
+	}
+	template<typename SIZE_TYPE>
+	void WriteString(cstring s)
+	{
+		assert(s && strlen(s) <= std::numeric_limits<SIZE_TYPE>::max());
+		SIZE_TYPE len = (SIZE_TYPE)strlen(s);
+		Write(len);
+		if(len)
+			Write(s, len);
 	}
 
-	void WriteString1(cstring str)
+	void WriteString1(const string& s)
 	{
-		assert(str);
-		int length = strlen(str);
-		assert(length < 256);
-		WriteCasted<byte>(length);
-		if(length)
-			Write(str, length);
+		WriteString<byte>(s);
+	}
+	void WriteString1(cstring s)
+	{
+		WriteString<byte>(s);
 	}
 
 	void WriteString2(const string& s)
 	{
-		int length = s.length();
-		assert(length < 256 * 256);
-		WriteCasted<word>(length);
-		if(length)
-			Write(s.c_str(), length);
+		WriteString<word>(s);
 	}
-
-	void WriteString2(cstring str)
+	void WriteString2(cstring s)
 	{
-		assert(str);
-		int length = strlen(str);
-		assert(length < 256 * 256);
-		Write<word>(length);
-		if(length)
-			Write(str, length);
+		WriteString<word>(s);
 	}
-
+	
 	void operator << (const string& s)
 	{
 		WriteString1(s);
 	}
-
-	void operator << (cstring str)
+	void operator << (cstring s)
 	{
-		assert(str);
-		WriteString1(str);
+		WriteString1(s);
 	}
 
 	operator bool() const

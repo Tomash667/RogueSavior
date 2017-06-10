@@ -255,12 +255,30 @@ string GetCompileTime()
 	return BUF;
 }
 
+//=================================================================================================
+string GetParentDir(const string& path)
+{
+	std::size_t pos = path.find_last_of('/');
+	string part = path.substr(0, pos);
+	return part;
+}
+
+//=================================================================================================
+string GetExt(const string& filename)
+{
+	std::size_t pos = filename.find_last_of('.');
+	if(pos == string::npos)
+		return string();
+	string ext = filename.substr(pos + 1);
+	return ext;
+}
+
 
 FileReader::~FileReader()
 {
 	if(own_handle && file != INVALID_FILE)
 	{
-		CloseHandle((HANDLE)file);
+		CloseHandle(file);
 		file = INVALID_FILE;
 	}
 }
@@ -269,7 +287,7 @@ bool FileReader::Open(cstring filename)
 {
 	assert(filename);
 	if(file != INVALID_FILE)
-		CloseHandle((HANDLE)file);
+		CloseHandle(file);
 	file = CreateFile(filename, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 	own_handle = true;
 	return (file != INVALID_FILE);
@@ -278,25 +296,32 @@ bool FileReader::Open(cstring filename)
 bool FileReader::Read(void* ptr, uint size)
 {
 	DWORD read;
-	ReadFile((HANDLE)file, ptr, size, &read, nullptr);
+	ReadFile(file, ptr, size, &read, nullptr);
 	return (size == read);
 }
 
 void FileReader::Skip(int bytes)
 {
-	SetFilePointer((HANDLE)file, bytes, nullptr, FILE_CURRENT);
+	SetFilePointer(file, bytes, nullptr, FILE_CURRENT);
 }
 
 uint FileReader::GetSize() const
 {
-	return GetFileSize((HANDLE)file, nullptr);
+	return GetFileSize(file, nullptr);
+}
+
+bool FileReader::Ensure(uint size)
+{
+	DWORD file_size = GetFileSize(file, nullptr);
+	DWORD file_pos = SetFilePointer(file, 0, nullptr, FILE_CURRENT);
+	return file_pos + size <= file_size;
 }
 
 FileWriter::~FileWriter()
 {
 	if(own_handle && file != INVALID_FILE)
 	{
-		CloseHandle((HANDLE)file);
+		CloseHandle(file);
 		file = INVALID_FILE;
 	}
 }
@@ -305,7 +330,7 @@ bool FileWriter::Open(cstring filename)
 {
 	assert(filename);
 	if(file != INVALID_FILE)
-		CloseHandle((HANDLE)file);
+		CloseHandle(file);
 	file = CreateFile(filename, GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 	return (file != INVALID_FILE);
 }
@@ -313,16 +338,16 @@ bool FileWriter::Open(cstring filename)
 void FileWriter::Write(const void* ptr, uint size)
 {
 	DWORD written;
-	WriteFile((HANDLE)file, ptr, size, &written, nullptr);
+	WriteFile(file, ptr, size, &written, nullptr);
 	assert(size == written);
 }
 
 void FileWriter::Flush()
 {
-	FlushFileBuffers((HANDLE)file);
+	FlushFileBuffers(file);
 }
 
 uint FileWriter::GetSize() const
 {
-	return GetFileSize((HANDLE)file, nullptr);
+	return GetFileSize(file, nullptr);
 }

@@ -167,6 +167,7 @@
     <ClInclude Include="source\core\Core.h" />
     <ClInclude Include="source\core\Config.h" />
     <ClInclude Include="source\core\CoreMath.h" />
+    <ClInclude Include="source\core\DirectXIncl.h" />
     <ClInclude Include="source\core\FastFunc.h" />
     <ClInclude Include="source\core\File.h" />
     <ClInclude Include="source\core\ForwardInternal.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="source\engine\SceneNode.h" />
     <ClInclude Include="source\engine\Texture.h" />
     <ClInclude Include="source\engine\Version.h" />
+    <ClInclude Include="source\engine\VertexDeclaration.h" />
     <ClInclude Include="source\engine\Window.h" />
     <ClInclude Include="source\game\Game.h" />
     <ClInclude Include="source\game\GameLoader.h" />
@@ -199,6 +201,7 @@
   <ItemGroup>
     <ClCompile Include="source\core\Config.cpp" />
     <ClCompile Include="source\core\Containers.cpp" />
+    <ClCompile Include="source\core\CoreMath.cpp" />
     <ClCompile Include="source\core\File.cpp" />
     <ClCompile Include="source\core\Logger.cpp" />
     <ClCompile Include="source\core\Text.cpp" />
@@ -206,6 +209,7 @@
     <ClCompile Include="source\core\Tokenizer.cpp" />
     <ClCompile Include="source\engine\Engine.cpp" />
     <ClCompile Include="source\engine\Input.cpp" />
+    <ClCompile Include="source\engine\Mesh.cpp" />
     <ClCompile Include="source\engine\Render.cpp" />
     <ClCompile Include="source\engine\ResourceManager.cpp" />
     <ClCompile Include="source\engine\Scene.cpp" />

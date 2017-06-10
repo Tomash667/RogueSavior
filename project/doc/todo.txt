@@ -12,11 +12,13 @@ v0:
 v1:
 + new items
 	+ granade
-	+ leather armor
+	+ hunter vest armor
 	+ axe
 	+ police baton
 	+ shotgun
 	+ shotgun shells
+	+ groceries (normal -> expired -> spoiled)
+	+ bandages
 + new units
 	+ fresh zombie
 	+ shambler
@@ -26,7 +28,15 @@ v1:
 	+ policeman
 + check version
 + lobby
-+ perks
++ perks/skills
+	+ tought (+hp)
+	+ strong (+melee dmg, throw range)
+	+ medic (+healing)
+	+ firearms (+accuracy/dmg)
+	+ hauler (+inventory)
+	+ high stamina (+stamina)
+	+ light eater (+max food, food per item)
+	+ martial arts (+unarmed combat)
 + change keybindings
 + load items from file
 + character creation (visuals/perks)
@@ -45,20 +55,52 @@ v2+:
 + translation
 + uft8
 + new items
-	+ anti sleep pills
-	+ machine gun
-	+ machine gun ammo
-	+ c4
-	+ air gun ? (rifle?)
-	+ air gun ammo
-	+ sniper rifle
-	+ uzi
+	+ armor
+		+ police jacket
+		+ police riot armor
+		+ army body armor
+	+ melee weapons
+		+ combat knife
+		+ crowbar
+		+ huge hammer
+		+ golfclub
+		+ shovel
+		+ improvised club
+		+ improvised spear
+		+ small hammer
+		+ katana
+	+ range weapons
+		+ hunting rifle
+		+ sniper rifle
+		+ uzi
+		+ combat shoutgun
+		+ combat rifle
+		+ revolver
+		+ rocket luncher
+		+ granade luncher
+		+ c4
+		+ molotov
+		+ crossbow - bolts
 	+ backpack
 	+ iron rations
-	+ molotov
-	+ flashlight
-	+ bodyarmor
-	+ kevlar
+	+ (big) flashlight
+	+ book/magazine
+	+ food
+		+ animal food
+		+ army ration
+		+ sweet bar
+		+ anti sleep pills
+		+ antiviral pills
+		+ sanity pills
+		+ stamina pills
+	+ police radio
+	+ zombie tracker
+	+ smartphone
+	+ traps
+		+ spikes
+		+ empty bootle
+		+ bear trap
+		+ barbed wire
 + new units
 	+ soldier
 	+ medic (soldier)
@@ -69,6 +111,16 @@ v2+:
 	+ trader
 	+ ghost (invisible zombie)
 	+ mother (powerful scent that other zombies fallow)
++ new perks/skills
+	+ awake (+max sleep, sleep regen)
+	+ bows  (atk, dmg)
+	+ crafting
+	+ charismatic (+trade, trust/morale)
+	+ leadership (more fallowers)
+	+ light feet (+sneak, evade trap)
+	+ necrology (+dmg against undead/examine cause of death/chance for zombification)
+	+ strong psyche (+max sanity/regen)
+	+ unsuspicious (+chance to go unnoticed by other people/zombies)
 + shadows
 + quests
 	+ escape from city
@@ -85,3 +137,28 @@ v2+:
 + fullscreen windowed mode
 + allow to pick sound output device (default/headphones/speakers)
 + set adapter in options
++ wooden plank barricade doors
++ crafting (improvised club/spear, barricade)
++ madness/morale (reading books help)
++ graffiti spray
++ sprint
++ the city
+	+ subway
+	+ sewers
+	+ districts
+		+ generic
+		+ residential
+		+ shopping
+		+ green
+	+ buildings
+		+ hospital
+		+ shop
+			+ grocery
+			+ general store
+			+ construction
+			+ gunshop
+			+ pharmacy
+			+ sportswear
+		+ police station
+		+ prison
++ (heavy) rain

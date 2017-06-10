@@ -10,6 +10,7 @@ public:
 
 	void Init(HWND hwnd, const INT2& window_size, int hz, bool fullscreen);
 	void Draw();
+	IDirect3DDevice9* GetDevice() { return device; }
 
 private:
 	void CheckCompability();

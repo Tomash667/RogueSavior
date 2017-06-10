@@ -1,8 +1,7 @@
 #include "Pch.h"
 #include "Core.h"
 #include "Render.h"
-#define D3D_DEBUG_INFO
-#include <d3dx9.h>
+#include "DirectXIncl.h"
 
 #define DISPLAY_FORMAT D3DFMT_X8R8G8B8
 #define BACKBUFFER_FORMAT D3DFMT_A8R8G8B8

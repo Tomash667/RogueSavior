@@ -1,14 +1,21 @@
 #pragma once
 
-class Resource
+struct Resource
 {
-public:
 	enum State
 	{
 		NOT_LOADED,
 		LOADED
 	};
 
-private:
+	enum Type
+	{
+		MESH,
+		TEXTURE
+	};
+
 	State state;
+	Type type;
+
+	virtual ~Resource() {}
 };

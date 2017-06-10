@@ -109,6 +109,12 @@
     <ClInclude Include="source\engine\Texture.h">
       <Filter>2. engine</Filter>
     </ClInclude>
+    <ClInclude Include="source\engine\VertexDeclaration.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\DirectXIncl.h">
+      <Filter>1. core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Pch.cpp" />
@@ -163,6 +169,12 @@
     </ClCompile>
     <ClCompile Include="source\engine\ResourceManager.cpp">
       <Filter>2. engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\Mesh.cpp">
+      <Filter>2. engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\core\CoreMath.cpp">
+      <Filter>1. core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -39,6 +39,7 @@ bool Engine::Init(const EngineInitOptions& options)
 		render->Init(window->GetHandle(), options.window_size, options.hz, options.fullscreen);
 
 		resource_manager = new ResourceManager;
+		resource_manager->Init(render->GetDevice());
 
 		scene = new Scene;
 	}

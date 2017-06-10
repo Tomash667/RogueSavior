@@ -1,8 +1,9 @@
 #pragma once
 
+#include "ForwardInternal.h"
 #include "Resource.h"
 
-class Texture : public Resource
+struct Texture : public Resource
 {
-public:
+	IDirect3DTexture9* tex;
 };

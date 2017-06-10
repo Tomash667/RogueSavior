@@ -1273,6 +1273,40 @@ struct BOX
 };
 
 //-----------------------------------------------------------------------------
+// 4x4 float matrix
+//-----------------------------------------------------------------------------
+struct MATRIX
+{
+	union
+	{
+		struct
+		{
+			float _11, _12, _13, _14;
+			float _21, _22, _23, _24;
+			float _31, _32, _33, _34;
+			float _41, _42, _43, _44;
+
+		};
+		float m[4][4];
+	};
+
+	// Set to identity matrix
+	void Identity();
+	// Inverse matrix into result
+	bool Inverse(MATRIX& result) const;
+	// Multiply two matrices and store result in this matrix
+	void Multiply(MATRIX& mat1, MATRIX& mat2);
+};
+
+//-----------------------------------------------------------------------------
+// Quaternion
+//-----------------------------------------------------------------------------
+struct QUAT
+{
+	float x, y, z, w;
+};
+
+//-----------------------------------------------------------------------------
 // Definitions for forwarded types
 //-----------------------------------------------------------------------------
 inline INT2::INT2(const VEC2& v) : x(int(v.x)), y(int(v.y)) {}

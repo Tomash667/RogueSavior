@@ -97,6 +97,8 @@ bool Game::InitGame()
 
 	try
 	{
+		engine->GetResourceManager().AddDir("data");
+
 		SetItemPointers();
 
 		if(GameLoader.HaveErrors())
@@ -110,7 +112,7 @@ bool Game::InitGame()
 		}
 		
 		SceneNode* node = new SceneNode;
-		node->mesh = engine->GetResourceManager().LoadMesh("data/human.mesh");
+		node->mesh = engine->GetResourceManager().LoadMesh("data/human.qmsh");
 		node->pos = VEC3(0, 0, 0);
 		engine->GetScene().Add(node);
 

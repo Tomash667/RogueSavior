@@ -9,8 +9,8 @@ std::map<string, Item*> g_items = {
 	{ "baseball_bat", new MeleeWeapon("baseball_bat", "Baseball bat", 10.f) },
 	{ "handgun", new RangedWeapon("handgun", "Handgun", 25.f, "handgun_ammo", 10) },
 	{ "handgun_ammo", new Ammo("handgun_ammo", "Handgun bullets", 30) },
-	{ "food_can", new Useable("food_can", "Food can", 5, Useable::Effect::Food, 50.f) },
-	{ "first_aid", new Useable("first_aid", "First aid kit", 1, Useable::Effect::Heal, 25.f) }
+	{ "canned_food", new Useable("canned_food", "Canned food", 5, Useable::Effect::Food, 50.f) },
+	{ "medikit", new Useable("medikit", "Medikit", 1, Useable::Effect::Heal, 25.f) }
 };
 
 Item* FindItem(const string& id)
