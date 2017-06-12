@@ -42,6 +42,7 @@ bool Engine::Init(const EngineInitOptions& options)
 		resource_manager->Init(render->GetDevice());
 
 		scene = new Scene;
+		scene->Init(render);
 	}
 	catch(cstring err)
 	{
@@ -66,25 +67,32 @@ void Engine::ShowError(cstring msg)
 
 void Engine::StartLoop()
 {
-	timer.Start();
-	frames = 0;
-	frame_time = 0.f;
-	fps = 0.f;
-	inside_loop = true;
-
-	while(window->HandleMessages())
+	try
 	{
-		const float dt = timer.Tick();
+		timer.Start();
+		frames = 0;
+		frame_time = 0.f;
+		fps = 0.f;
+		inside_loop = true;
 
-		CalculateFps(dt);
-		Input.UpdateShortcuts();
+		while(window->HandleMessages())
+		{
+			const float dt = timer.Tick();
 
-		handler->OnTick(dt);
-		if(closing)
-			break;
+			CalculateFps(dt);
+			Input.UpdateShortcuts();
 
-		render->Draw();
-		Input.Update();
+			handler->OnTick(dt);
+			if(closing)
+				break;
+
+			render->Draw();
+			Input.Update();
+		}
+	}
+	catch(cstring err)
+	{
+		ShowError(err);
 	}
 
 	Cleanup();

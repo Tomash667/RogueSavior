@@ -1,4 +1,7 @@
 v0:
++ draw unit
++ moving unit
+- d3d leaks (test with R - reset)
 + units
 	+ zombie
 	+ rat
@@ -47,6 +50,7 @@ v1:
 + minimap/big map M
 + inventory shortcuts
 + vsync option
++ render - divide world to regions
 
 v2+:
 + sleeping

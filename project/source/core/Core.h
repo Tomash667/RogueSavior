@@ -86,6 +86,19 @@ inline To union_cast(const From& f)
 }
 
 //-----------------------------------------------------------------------------
+// Absolute cast
+template <typename destT, typename srcT>
+destT& absolute_cast(srcT& v)
+{
+	return reinterpret_cast<destT&>(v);
+}
+template <typename destT, typename srcT>
+const destT& absolute_cast(const srcT& v)
+{
+	return reinterpret_cast<const destT&>(v);
+}
+
+//-----------------------------------------------------------------------------
 // Return true if any element matches condition
 template<typename T, typename Arg>
 inline bool Any(const T& item, const Arg& arg)

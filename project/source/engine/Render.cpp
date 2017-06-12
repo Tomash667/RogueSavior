@@ -1,26 +1,22 @@
 #include "Pch.h"
 #include "Core.h"
 #include "Render.h"
+#include "Scene.h"
 #include "DirectXIncl.h"
 
 #define DISPLAY_FORMAT D3DFMT_X8R8G8B8
 #define BACKBUFFER_FORMAT D3DFMT_A8R8G8B8
 #define ZBUFFER_FORMAT D3DFMT_D24S8
 
-template<typename T>
-inline void SafeRelease(T item)
-{
-	if(item)
-		item->Release();
-}
-
-Render::Render() : d3d(nullptr), device(nullptr)
+Render::Render() : d3d(nullptr), device(nullptr), scene(nullptr), lost_device(false), resources_released(false), effect_pool(nullptr), e_mesh(nullptr), e_animated(nullptr),
+e_gui(nullptr)
 {
 
 }
 
 Render::~Render()
 {
+	SafeRelease(effect_pool);
 	SafeRelease(device);
 	SafeRelease(d3d);
 }
@@ -42,6 +38,8 @@ void Render::Init(HWND _hwnd, const INT2& _window_size, int _hz, bool _fullscree
 	CheckCompability();
 
 	CreateDevice();
+
+	LoadShaders();
 }
 
 void Render::CheckCompability()
@@ -61,6 +59,16 @@ void Render::CheckCompability()
 			"Your card supports:\nVertex shader: %d.%d\nPixel shader: %d.%d",
 			D3DSHADER_VERSION_MAJOR(caps.VertexShaderVersion), D3DSHADER_VERSION_MINOR(caps.VertexShaderVersion),
 			D3DSHADER_VERSION_MAJOR(caps.PixelShaderVersion), D3DSHADER_VERSION_MINOR(caps.PixelShaderVersion));
+	}
+	if(caps.VertexShaderVersion >= D3DVS_VERSION(2, 0) && caps.PixelShaderVersion >= D3DPS_VERSION(2, 0))
+	{
+		shader_version = 3;
+		Info("Using 3.0 shaders.");
+	}
+	else
+	{
+		shader_version = 2;
+		Info("Using 2.0 shaders.");
 	}
 
 	// check texture types
@@ -131,39 +139,225 @@ void Render::GatherParams(D3DPRESENT_PARAMETERS& d3dpp)
 
 void Render::Draw()
 {
-	/*HRESULT hr = device->TestCooperativeLevel();
+	assert(scene);
+
+	HRESULT hr = device->TestCooperativeLevel();
 	if(hr != D3D_OK)
 	{
-		lost_device = true;
+		if(!lost_device)
+		{
+			lost_device = true;
+			Info("Lost directx device.");
+		}
 		if(hr == D3DERR_DEVICELOST)
 		{
-			// urz¹dzenie utracone, nie mo¿na jeszcze resetowaæ
-			Sleep(1);
+			// device is lost, can't reset
+			Sleep(10);
 			return;
 		}
 		else if(hr == D3DERR_DEVICENOTRESET)
 		{
-			// mo¿na resetowaæ
-			if(!Reset(false))
+			// try reset device
+			if(!Reset())
 			{
-				Sleep(1);
+				Sleep(10);
 				return;
 			}
 		}
 		else
-			throw Format("Lost directx device (%d)!", hr);
-	}*/
+			throw Format("Lost directx device (%d).", hr);
+	}
 
-	device->Clear(0, nullptr, D3DCLEAR_ZBUFFER | D3DCLEAR_TARGET | D3DCLEAR_STENCIL, 0xFF0000FF, 1.f, 0);
+	V(device->Clear(0, nullptr, D3DCLEAR_ZBUFFER | D3DCLEAR_TARGET | D3DCLEAR_STENCIL, scene->GetClearColor(), 1.f, 0));
 
-	//	hr = 
-	device->Present(nullptr, nullptr, hwnd, nullptr);
-	/*	if(FAILED(hr))
+	scene->Draw();
+
+	hr = device->Present(nullptr, nullptr, hwnd, nullptr);
+	if(FAILED(hr))
+	{
+		if(hr == D3DERR_DEVICELOST)
 		{
-			if(hr == D3DERR_DEVICELOST)
-				lost_device = true;
-			else
-				throw Format("Engine: Failed to present screen (%d)!", hr);
+			lost_device = true;
+			Info("Lost directx device.");
 		}
-	}*/
+		else
+			throw Format("Failed to present screen (%d).", hr);
+	}
+}
+
+void Render::LoadShaders()
+{
+	V(D3DXCreateEffectPool(&effect_pool));
+
+	e_mesh = LoadShader("data/shaders/mesh.fx", effect_pool);
+	e_animated = LoadShader("data/shaders/mesh.fx", effect_pool, "ANIMATED");
+}
+
+ID3DXEffect* Render::LoadShader(cstring name, ID3DXEffectPool* pool, cstring param)
+{
+	assert(name);
+
+	// load shader code
+	string code;
+	if(!LoadFileToString(name, code))
+		throw Format("Missing shader '%s'.", name);
+
+	// set macros
+	D3DXMACRO macros[4] = {
+		"VS_VERSION", shader_version == 3 ? "vs_3_0" : "vs_2_0",
+		"PS_VERSION", shader_version == 3 ? "ps_3_0" : "ps_2_0",
+		nullptr, nullptr,
+		nullptr, nullptr
+	};
+	if(param)
+	{
+		macros[2].Name = param;
+		macros[2].Definition = "1";
+	}
+
+	// create shader compiler
+	const DWORD flags =
+#ifdef _DEBUG
+		D3DXSHADER_DEBUG | D3DXSHADER_OPTIMIZATION_LEVEL1;
+#else
+		D3DXSHADER_OPTIMIZATION_LEVEL3;
+#endif
+	ID3DXBuffer* errors = nullptr;
+	ID3DXEffectCompiler* compiler = nullptr;
+	HRESULT hr = hr = D3DXCreateEffectCompiler(code.c_str(), code.length(), macros, nullptr, flags, &compiler, &errors);
+	if(FAILED(hr))
+	{
+		cstring str;
+		if(errors)
+			str = (cstring)errors->GetBufferPointer();
+		else
+		{
+			switch(hr)
+			{
+			case D3DXERR_INVALIDDATA:
+				str = "Invalid data.";
+				break;
+			case D3DERR_INVALIDCALL:
+				str = "Invalid call.";
+				break;
+			case E_OUTOFMEMORY:
+				str = "Out of memory.";
+				break;
+			case ERROR_MOD_NOT_FOUND:
+			case 0x8007007e:
+				str = "Can't find module (missing d3dcompiler_43.dll?).";
+				break;
+			default:
+				str = "Unknown error.";
+				break;
+			}
+		}
+
+		cstring msg = Format("Failed to compile shader '%s' (%d).\n%s", name, hr, str);
+
+		SafeRelease(errors);
+
+		throw msg;
+	}
+	SafeRelease(errors);
+
+	// compile shader
+	ID3DXBuffer* effect_buffer = nullptr;
+	hr = compiler->CompileEffect(flags, &effect_buffer, &errors);
+	if(FAILED(hr))
+	{
+		cstring msg = Format("Failed to compile effect '%s' (%d).\n%s", name, hr,
+			errors ? (cstring)errors->GetBufferPointer() : "No errors information.");
+
+		SafeRelease(errors);
+		SafeRelease(effect_buffer);
+		SafeRelease(compiler);
+
+		throw msg;
+	}
+	SafeRelease(errors);
+	
+	// create effect from effect buffer
+	ID3DXEffect* effect = nullptr;
+	hr = D3DXCreateEffect(device, effect_buffer->GetBufferPointer(), effect_buffer->GetBufferSize(),
+		macros, nullptr, flags, pool, &effect, &errors);
+	if(FAILED(hr))
+	{
+		cstring msg = Format("Failed to create effect '%s' (%d).\n%s", name, hr,
+			errors ? (cstring)errors->GetBufferPointer() : "No errors information.");
+
+		SafeRelease(errors);
+		SafeRelease(effect_buffer);
+		SafeRelease(compiler);
+
+		throw msg;
+	}
+
+	// free directx stuff
+	SafeRelease(errors);
+	SafeRelease(effect_buffer);
+	SafeRelease(compiler);
+
+	return effect;
+}
+
+void Render::OnLostDevice()
+{
+	if(resources_released)
+		return;
+
+	if(e_mesh)
+		V(e_mesh->OnLostDevice());
+	if(e_animated)
+		V(e_animated->OnLostDevice());
+	if(e_gui)
+		V(e_gui->OnLostDevice());
+
+	resources_released = true;
+}
+
+void Render::OnResetDevice()
+{
+	if(e_mesh)
+		V(e_mesh->OnResetDevice());
+	if(e_animated)
+		V(e_animated->OnResetDevice());
+	if(e_gui)
+		V(e_gui->OnResetDevice());
+
+	resources_released = false;
+}
+
+bool Render::Reset()
+{
+	Info("Reseting device.");
+	OnLostDevice();
+
+	// gather present params
+	D3DPRESENT_PARAMETERS d3dpp = { 0 };
+	GatherParams(d3dpp);
+
+	// try to reset
+	HRESULT hr = device->Reset(&d3dpp);
+	if(FAILED(hr))
+	{
+		if(hr != D3DERR_DEVICELOST)
+			throw Format("Engine: Failed to reset directx device (%d)!", hr);
+		else
+		{
+			if(!lost_device)
+			{
+				lost_device = true;
+				Info("Lost directx device.");
+			}
+			Warn("Failed to reset device.");
+			return false;
+		}
+	}
+
+	Info("Device reseted.");
+	lost_device = false;
+	OnResetDevice();
+
+	return true;
 }

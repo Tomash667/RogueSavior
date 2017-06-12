@@ -8,3 +8,10 @@
 #else
 #	define V(x) x
 #endif
+
+template<typename T>
+inline void SafeRelease(T item)
+{
+	if(item)
+		item->Release();
+}

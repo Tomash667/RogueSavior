@@ -115,6 +115,15 @@
     <ClInclude Include="source\core\DirectXIncl.h">
       <Filter>1. core</Filter>
     </ClInclude>
+    <ClInclude Include="source\engine\Color.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\MeshInstance.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\Camera.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Pch.cpp" />
@@ -175,6 +184,9 @@
     </ClCompile>
     <ClCompile Include="source\core\CoreMath.cpp">
       <Filter>1. core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\Camera.cpp">
+      <Filter>2. engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

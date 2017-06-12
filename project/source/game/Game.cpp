@@ -47,7 +47,10 @@ bool Game::Start()
 	engine_options.window_size = options.window_size;
 	engine_options.window_title = GetWindowTitle();
 	if(!engine->Init(engine_options))
+	{
+		engine->Shutdown();
 		return false;
+	}
 
 	if(!InitGame())
 	{
@@ -113,6 +116,7 @@ bool Game::InitGame()
 		
 		SceneNode* node = new SceneNode;
 		node->mesh = engine->GetResourceManager().LoadMesh("data/human.qmsh");
+		node->mesh_inst = nullptr;
 		node->pos = VEC3(0, 0, 0);
 		engine->GetScene().Add(node);
 

@@ -5,6 +5,9 @@ struct INT2;
 struct VEC2;
 struct VEC3;
 struct VEC4;
+struct MATRIX;
+struct QUAT;
+struct PLANE;
 
 //-----------------------------------------------------------------------------
 // Random numbers
@@ -834,30 +837,30 @@ struct VEC3
 			::Clamp(v.y, 0.f, 1.f),
 			::Clamp(v.z, 0.f, 1.f));
 	}
-
 	// Return 2d dot product
 	float Dot2d() const
 	{
 		return (x*x + z*z);
 	}
-
 	// Compare two points using epsilon
 	bool Equal(const VEC3& v) const
 	{
 		return ::Equal(x, v.x) && ::Equal(y, v.y) && ::Equal(z, v.z);
 	}
-
 	// Return true if all values are positive
 	inline bool IsPositive() const
 	{
 		return x >= 0.f && y >= 0.f && z >= 0.f;
 	}
-
+	// Normalize vector
+	VEC3& Normalize();
 	// Construct random point in range <a,b>
 	static VEC3 Random(float a, float b)
 	{
 		return VEC3(::Random(a, b), ::Random(a, b), ::Random(a, b));
 	}
+	// Transform vector by matrix
+	VEC3 TransformCoord(const MATRIX& m) const;
 };
 
 inline VEC3 operator * (float f, const VEC3& v)
@@ -1290,12 +1293,23 @@ struct MATRIX
 		float m[4][4];
 	};
 
+	MATRIX operator * (const MATRIX& m) const
+	{
+		MATRIX result;
+		result.Multiply(*this, m);
+		return result;
+	}
+
 	// Set to identity matrix
 	void Identity();
 	// Inverse matrix into result
 	bool Inverse(MATRIX& result) const;
+	// Build look at matrix
+	void LookAt(const VEC3& from, const VEC3& to, const VEC3& up = VEC3(0, 1, 0));
 	// Multiply two matrices and store result in this matrix
-	void Multiply(MATRIX& mat1, MATRIX& mat2);
+	void Multiply(const MATRIX& mat1, const MATRIX& mat2);
+	// Build perspective matrix
+	void Perspective(float fov, float aspect, const VEC2& draw_range);
 };
 
 //-----------------------------------------------------------------------------
@@ -1304,6 +1318,50 @@ struct MATRIX
 struct QUAT
 {
 	float x, y, z, w;
+};
+
+//-----------------------------------------------------------------------------
+// Plane
+//-----------------------------------------------------------------------------
+struct PLANE
+{
+	float a, b, c, d;
+
+	// Return dot product for plane and point
+	float DotCoord(const VEC3& v) const;
+	// Normalize plane
+	void Normalize();
+};
+
+// Find intersection of 3 planes
+bool Intersect3Planes(const PLANE& p1, const PLANE& p2, const PLANE& p3, VEC3& result);
+
+//-----------------------------------------------------------------------------
+// Frustrum planes to check objects visible from camera
+//-----------------------------------------------------------------------------
+struct FrustumPlanes
+{
+	PLANE planes[6];
+
+	FrustumPlanes() {}
+	explicit FrustumPlanes(const MATRIX& worldViewProj) { Set(worldViewProj); }
+	void Set(const MATRIX& worldViewProj);
+
+	// Return points on edge of frustum
+	void GetPoints(VEC3* points) const;
+	static void GetPoints(const MATRIX& worldViewProj, VEC3* points);
+	// Checks if point is inside frustum
+	bool PointInFrustum(const VEC3 &p) const;
+	// Checks if box collide with frustum
+	// In rare cases can return true even if it's outside!
+	bool BoxToFrustum(const BOX& box) const;
+	// Checks if box is fully inside frustum
+	bool BoxInFrustum(const BOX& box) const;
+	// Checks if sphere collide with frustum
+	// In rare cases can return true even if it's outside!
+	bool SphereToFrustum(const VEC3& sphere_center, float sphere_radius) const;
+	// Checks if sphere is fully inside frustum
+	bool SphereInFrustum(const VEC3& sphere_center, float sphere_radius) const;
 };
 
 //-----------------------------------------------------------------------------
