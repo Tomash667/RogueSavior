@@ -46,6 +46,11 @@ void MATRIX::Perspective(float fov, float aspect, const VEC2& draw_range)
 	D3DXMatrixPerspectiveFovLH((D3DXMATRIX*)this, fov, aspect, draw_range.x, draw_range.y);
 }
 
+void MATRIX::Translation(const VEC3& pos)
+{
+	D3DXMatrixTranslation((D3DXMATRIX*)this, pos.x, pos.y, pos.z);
+}
+
 float PLANE::DotCoord(const VEC3& v) const
 {
 	return D3DXPlaneDotCoord((const D3DXPLANE*)this, (const D3DXVECTOR3*)&v);

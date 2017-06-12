@@ -1310,6 +1310,8 @@ struct MATRIX
 	void Multiply(const MATRIX& mat1, const MATRIX& mat2);
 	// Build perspective matrix
 	void Perspective(float fov, float aspect, const VEC2& draw_range);
+	// Build translation matrix
+	void Translation(const VEC3& pos);
 };
 
 //-----------------------------------------------------------------------------

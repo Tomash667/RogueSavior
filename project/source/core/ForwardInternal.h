@@ -12,6 +12,7 @@ struct IDirect3DDevice9;
 struct IDirect3DTexture9;
 struct IDirect3DVertexBuffer9;
 struct IDirect3DIndexBuffer9;
+struct IDirect3DVertexDeclaration9;
 struct ID3DXEffect;
 struct ID3DXEffectPool;
 typedef struct _D3DPRESENT_PARAMETERS_ D3DPRESENT_PARAMETERS;

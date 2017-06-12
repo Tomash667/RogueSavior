@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ForwardInternal.h"
+#include "VertexDeclaration.h"
 
 class Scene;
 
@@ -21,11 +22,13 @@ public:
 	IDirect3DDevice9* GetDevice() { return device; }
 	Scene* GetScene() { return scene; }
 	ID3DXEffect* GetShader(Shader shader);
+	IDirect3DVertexDeclaration9* GetVertexDeclaration(VertexDeclarationId declaration_id) { return vertex_decl[declaration_id]; }
 	void SetScene(Scene* _scene) { scene = _scene; }
 
 private:
 	void CheckCompability();
 	void CreateDevice();
+	void CreateVertexDeclarations();
 	void GatherParams(D3DPRESENT_PARAMETERS& d3dpp);
 	void LoadShaders();
 	ID3DXEffect* LoadShader(cstring name, ID3DXEffectPool* pool, cstring param = nullptr);
@@ -37,6 +40,7 @@ private:
 	IDirect3DDevice9* device;
 	ID3DXEffectPool* effect_pool;
 	ID3DXEffect* e_mesh, *e_animated, *e_gui;
+	IDirect3DVertexDeclaration9* vertex_decl[VDI_MAX];
 	Scene* scene;
 	HWND hwnd;
 	INT2 window_size;

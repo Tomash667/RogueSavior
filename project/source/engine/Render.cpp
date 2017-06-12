@@ -16,6 +16,8 @@ e_gui(nullptr)
 
 Render::~Render()
 {
+	SafeRelease(e_mesh);
+	SafeRelease(e_animated);
 	SafeRelease(effect_pool);
 	SafeRelease(device);
 	SafeRelease(d3d);
@@ -39,6 +41,7 @@ void Render::Init(HWND _hwnd, const INT2& _window_size, int _hz, bool _fullscree
 
 	CreateDevice();
 
+	CreateVertexDeclarations();
 	LoadShaders();
 }
 
@@ -119,6 +122,55 @@ void Render::CreateDevice()
 		throw Format("Failed to create direct3d device (%d).", hr);
 }
 
+void Render::CreateVertexDeclarations()
+{
+	const D3DVERTEXELEMENT9 Default[] = {
+		{ 0, 0,  D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_POSITION,		0 },
+		{ 0, 12,	D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_NORMAL,		0 },
+		{ 0, 24, D3DDECLTYPE_FLOAT2,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_TEXCOORD,		0 },
+		D3DDECL_END()
+	};
+	V(device->CreateVertexDeclaration(Default, &vertex_decl[VDI_DEFAULT]));
+
+	const D3DVERTEXELEMENT9 Animated[] = {
+		{ 0,	0,	D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_POSITION,		0 },
+		{ 0,	12,	D3DDECLTYPE_FLOAT1,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDWEIGHT,	0 },
+		{ 0,	16,	D3DDECLTYPE_UBYTE4,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDINDICES,	0 },
+		{ 0,	20,	D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_NORMAL,		0 },
+		{ 0,	32,	D3DDECLTYPE_FLOAT2,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_TEXCOORD,		0 },
+		D3DDECL_END()
+	};
+	V(device->CreateVertexDeclaration(Animated, &vertex_decl[VDI_ANIMATED]));
+
+	const D3DVERTEXELEMENT9 Tangents[] = {
+		{ 0, 0,  D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_POSITION,		0 },
+		{ 0, 12,	D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_NORMAL,		0 },
+		{ 0, 24, D3DDECLTYPE_FLOAT2,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_TEXCOORD,		0 },
+		{ 0,	32,	D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_TANGENT,		0 },
+		{ 0,	44,	D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BINORMAL,		0 },
+		D3DDECL_END()
+	};
+	V(device->CreateVertexDeclaration(Tangents, &vertex_decl[VDI_TANGENT]));
+
+	const D3DVERTEXELEMENT9 AnimatedTangents[] = {
+		{ 0,	0,	D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_POSITION,		0 },
+		{ 0,	12,	D3DDECLTYPE_FLOAT1,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDWEIGHT,	0 },
+		{ 0,	16,	D3DDECLTYPE_UBYTE4,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDINDICES,	0 },
+		{ 0,	20,	D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_NORMAL,		0 },
+		{ 0,	32,	D3DDECLTYPE_FLOAT2,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_TEXCOORD,		0 },
+		{ 0,	40,	D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_TANGENT,		0 },
+		{ 0,	52,	D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BINORMAL,		0 },
+		D3DDECL_END()
+	};
+	V(device->CreateVertexDeclaration(AnimatedTangents, &vertex_decl[VDI_ANIMATED_TANGENT]));
+
+	const D3DVERTEXELEMENT9 Pos[] = {
+		{ 0,	0,	D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_POSITION,		0 },
+		D3DDECL_END()
+	};
+	V(device->CreateVertexDeclaration(Pos, &vertex_decl[VDI_POS]));
+}
+
 void Render::GatherParams(D3DPRESENT_PARAMETERS& d3dpp)
 {
 	d3dpp.Windowed = !fullscreen;
@@ -169,9 +221,11 @@ void Render::Draw()
 	}
 
 	V(device->Clear(0, nullptr, D3DCLEAR_ZBUFFER | D3DCLEAR_TARGET | D3DCLEAR_STENCIL, scene->GetClearColor(), 1.f, 0));
+	V(device->BeginScene());
 
 	scene->Draw();
 
+	V(device->EndScene());
 	hr = device->Present(nullptr, nullptr, hwnd, nullptr);
 	if(FAILED(hr))
 	{
@@ -182,6 +236,19 @@ void Render::Draw()
 		}
 		else
 			throw Format("Failed to present screen (%d).", hr);
+	}
+}
+
+ID3DXEffect* Render::GetShader(Shader shader)
+{
+	switch(shader)
+	{
+	case Shader::Mesh:
+		return e_mesh;
+	case Shader::Animated:
+		return e_animated;
+	default:
+		return nullptr;
 	}
 }
 

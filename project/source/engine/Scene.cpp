@@ -5,10 +5,11 @@
 #include "Render.h"
 #include "Scene.h"
 #include "SceneNode.h"
+#include "Texture.h"
 #include "DirectXIncl.h"
 
-Scene::Scene() : render(nullptr), clear_color(Color::Black), fog_color(0, 0, 0), fog_params(20.f, 40.f, 20.f), light_color(0, 0, 0), light_dir(VEC3(-1, 2, -1).Normalize()),
-ambient_color(0.5f, 0.5f, 0.5f)
+Scene::Scene() : render(nullptr), clear_color(Color::White), fog_color(0, 0, 0), fog_params(20.f, 40.f, 20.f), light_color(0, 0, 0),
+light_dir(VEC3(-1, 2, -1).Normalize()), ambient_color(0.5f, 0.5f, 0.5f)
 {
 }
 
@@ -27,8 +28,9 @@ void Scene::Draw()
 {
 	ListDrawObjects();
 
+	auto device = render->GetDevice();
 	auto& mat_viewproj = camera.GetViewProjectionMatrix();
-	MATRIX mat_world;
+	MATRIX mat_world, mat_combined;
 
 	// setup shader
 	auto e = render->GetShader(Shader::Mesh);
@@ -47,7 +49,26 @@ void Scene::Draw()
 	for(auto node : to_draw.normal)
 	{
 		auto& mesh = *node->mesh;
-		//mat_world.Transform(node->pos);
+		mat_world.Translation(node->pos);
+		mat_combined.Multiply(mat_world, mat_viewproj);
+
+		V(device->SetVertexDeclaration(render->GetVertexDeclaration(mesh.vertex_decl)));
+		V(device->SetStreamSource(0, mesh.vb, 0, mesh.vertex_size));
+		V(device->SetIndices(mesh.ib));
+		V(e->SetMatrix(h_mat_world, (D3DXMATRIX*)&mat_world));
+		V(e->SetMatrix(h_mat_combined, (D3DXMATRIX*)&mat_combined));
+
+		for(int i = 0; i < mesh.head.n_subs; ++i)
+		{
+			auto& sub = mesh.subs[i];
+			V(e->SetTexture(h_tex_diffuse, sub.tex->tex));
+			V(e->SetVector(h_specular_color, (D3DXVECTOR4*)&sub.specular_color));
+			V(e->SetFloat(h_specular_intensity, sub.specular_intensity));
+			V(e->SetFloat(h_specular_hardness, (float)sub.specular_hardness));
+			V(e->CommitChanges());
+
+			V(device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, sub.min_ind, sub.n_ind, sub.first * 3, sub.tris));
+		}
 	}
 	V(e->EndPass());
 	V(e->End());
