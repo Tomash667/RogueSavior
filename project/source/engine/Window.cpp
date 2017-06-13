@@ -4,7 +4,7 @@
 #include "Window.h"
 #include "WindowsIncl.h"
 
-Window::Window() : closed(false)
+Window::Window() : closed(false), active(false), mouse_move(0,0)
 {
 }
 
@@ -75,14 +75,6 @@ long Window::HandleEvent(HWND in_hwnd, uint msg, uint wParam, long lParam)
 	case WM_CLOSE:
 	case WM_DESTROY:
 		closed = true;
-		return 0;
-
-	case WM_ACTIVATE:
-		{
-			bool active = (wParam != WA_INACTIVE);
-			if(!active)
-				Input.ReleaseKeys();
-		}
 		return 0;
 
 	case WM_SYSKEYDOWN:
@@ -162,14 +154,14 @@ void Window::ShowError(cstring msg)
 	assert(msg);
 
 	ShowWindow(hwnd, SW_HIDE);
-	ShowCursor(TRUE);
+	UpdateActivity(false);
 	MessageBox(nullptr, msg, nullptr, MB_OK | MB_ICONERROR | MB_APPLMODAL);
 }
 
-bool Window::HandleMessages()
+bool Window::Update()
 {
+	// handle messages
 	MSG msg = { 0 };
-	
 	while(PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 	{
 		TranslateMessage(&msg);
@@ -177,6 +169,23 @@ bool Window::HandleMessages()
 
 		if(msg.message == WM_QUIT)
 			return false;
+	}
+
+	// update activity state
+	HWND foreground = GetForegroundWindow();
+	bool is_active = (foreground == hwnd);
+	UpdateActivity(is_active);
+	
+	// handle cursor movment
+	if(active)
+	{
+		POINT pt;
+		GetCursorPos(&pt);
+		INT2 dif = INT2(pt.x, pt.y) - size / 2;
+		Input.UpdateMouse(dif);
+		POINT center = { size.x / 2, size.y / 2 };
+		ClientToScreen(hwnd, &center);
+		SetCursorPos(center.x, center.y);
 	}
 
 	return !closed;
@@ -212,5 +221,23 @@ void Window::MsgToKey(uint msg, uint wParam, byte& key, int& result)
 		key = (GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? VK_XBUTTON1 : VK_XBUTTON2);
 		result = TRUE;
 		break;
+	}
+}
+
+void Window::UpdateActivity(bool is_active)
+{
+	if(is_active == active)
+		return;
+	active = is_active;
+	if(active)
+	{
+		ShowCursor(FALSE);
+		POINT center = { size.x / 2, size.y / 2 };
+		ClientToScreen(hwnd, &center);
+		SetCursorPos(center.x, center.y);
+	}
+	else
+	{
+		ShowCursor(TRUE);
 	}
 }

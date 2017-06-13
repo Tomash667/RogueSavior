@@ -31,7 +31,7 @@ void Scene::Draw()
 	auto device = render->GetDevice();
 	auto& mat_viewproj = camera.GetViewProjectionMatrix();
 	MATRIX mat_world, mat_combined;
-
+	
 	// setup shader
 	auto e = render->GetShader(Shader::Mesh);
 	V(e->SetVector(h_ambient_color, (D3DXVECTOR4*)&ambient_color));
@@ -72,11 +72,9 @@ void Scene::Draw()
 	}
 	V(e->EndPass());
 	V(e->End());
-
+	
 	// draw animated meshes
-
-	//	D3DXHANDLE h_mat_combined, h_mat_world, h_mat_bones, h_tint, h_specular_color,
-	//	h_specular_intensity, h_specular_hardness, h_tex_diffuse;
+	//	h_mat_bones
 }
 
 void Scene::Init(Render* _render)

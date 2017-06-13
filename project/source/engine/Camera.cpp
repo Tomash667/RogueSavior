@@ -2,7 +2,8 @@
 #include "Core.h"
 #include "Camera.h"
 
-Camera::Camera() : from(0,-5,5), to(0,1,0), up(0,1,0), draw_range(0.01f, 50.f), fov(PI/4), aspect(800.f/600.f), update_view(true), update_proj(false), update_frustum(true)
+Camera::Camera() : from(0,5,5), to(0,1,0), up(0,1,0), draw_range(0.01f, 50.f), fov(PI/4), aspect(800.f/600.f), update_view(true), update_proj(true),
+update_frustum(true)
 {
 }
 

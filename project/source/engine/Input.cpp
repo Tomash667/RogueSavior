@@ -19,6 +19,7 @@ void InputState::Update()
 		doubleclk[i] = false;
 	if(printscreen == IS_PRESSED)
 		keystate[K_PRINTSCREEN] = IS_RELEASED;
+	mouse_move = INT2(0, 0);
 }
 
 // Update shortcuts state

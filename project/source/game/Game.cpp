@@ -12,6 +12,9 @@
 #include "UnitData.h"
 #include "Version.h"
 
+#include "Window.h"
+#include "Color.h"
+
 Game::Game() : config(nullptr), engine(new Engine)
 {
 	compile_time = GetCompileTime();
@@ -100,7 +103,9 @@ bool Game::InitGame()
 
 	try
 	{
-		engine->GetResourceManager().AddDir("data");
+		ResourceManager& res_mgr = engine->GetResourceManager();
+
+		res_mgr.AddDir("data");
 
 		SetItemPointers();
 
@@ -114,11 +119,11 @@ bool Game::InitGame()
 			return false;
 		}
 		
-		SceneNode* node = new SceneNode;
-		node->mesh = engine->GetResourceManager().LoadMesh("data/human.qmsh");
-		node->mesh_inst = nullptr;
-		node->pos = VEC3(0, 0, 0);
-		engine->GetScene().Add(node);
+		Scene& scene = engine->GetScene();
+		player = new SceneNode(res_mgr.LoadMesh("data/human.qmsh"));
+		scene.Add(player);
+		auto floor = new SceneNode(res_mgr.LoadMesh("data/floor.qmsh"));
+		scene.Add(floor);
 
 		return true;
 	}
@@ -137,6 +142,62 @@ void Game::OnTick(float dt)
 	{
 		engine->Shutdown();
 		return;
+	}
+
+	bool active = engine->GetWindow().IsActive();
+	auto& scene = engine->GetScene();
+	scene.SetClearColor(active ? Color::White : Color::Red);
+
+	int movex = 0, movey = 0;
+	if(Input.Down('W'))
+		movey = 1;
+	if(Input.Down('S'))
+		movey -= 1;
+	if(Input.Down('A'))
+		movex = -1;
+	if(Input.Down('D'))
+		movex += 1;
+
+	if(movex != 0 || movey != 0)
+	{
+		float speed, dir;
+		if(movey == 1)
+		{
+			if(movex == 0)
+			{
+				dir = ToRadians(180.f);
+				speed = 1.f;
+			}
+			else
+			{
+				speed = 0.75f;
+				if(movex == -1)
+					dir = ToRadians(145.f);
+				else
+					dir = ToRadians(215.f);
+			}
+		}
+		else if(movey == -1)
+		{
+			speed = 0.25f;
+			if(movex == 0)
+				dir = ToRadians(0.f);
+			else if(movex == -1)
+				dir = ToRadians(35.f);
+			else
+				dir = ToRadians(325.f);
+		}
+		else
+		{
+			speed = 0.5f;
+			if(movex == -1)
+				dir = ToRadians(90.f);
+			else
+				dir = ToRadians(270.f);
+		}
+
+		VEC3 move = VEC3(sin(dir), 0, cos(dir)) * 20.f * speed * dt;
+		player->pos += move;
 	}
 }
 

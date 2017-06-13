@@ -75,7 +75,7 @@ void Engine::StartLoop()
 		fps = 0.f;
 		inside_loop = true;
 
-		while(window->HandleMessages())
+		while(window->Update())
 		{
 			const float dt = timer.Tick();
 

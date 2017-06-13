@@ -1,7 +1,6 @@
 v0:
 + draw unit
 + moving unit
-- d3d leaks (test with R - reset)
 + units
 	+ zombie
 	+ rat
@@ -29,6 +28,7 @@ v1:
 	+ ghoul
 	+ bandits
 	+ policeman
+	+ more variety
 + check version
 + lobby
 + perks/skills
@@ -48,9 +48,13 @@ v1:
 + multisampling
 + online hiscores
 + minimap/big map M
+	+ mp points on map where are other players
 + inventory shortcuts
 + vsync option
 + render - divide world to regions
++ npc teams that help each other
++ crash handler
++ headshot
 
 v2+:
 + sleeping
@@ -115,6 +119,8 @@ v2+:
 	+ trader
 	+ ghost (invisible zombie)
 	+ mother (powerful scent that other zombies fallow)
+	+ creep (stay just outside of line of sight, fallow humans in large groups, wait until they try to sleep)
+	+ necro (digs in graves and rise zombies)
 + new perks/skills
 	+ awake (+max sleep, sleep regen)
 	+ bows  (atk, dmg)
@@ -133,7 +139,7 @@ v2+:
 	+ save people
 + create party, recruit npcs
 + sneaking
-+ grab/shove
++ grab/shove/bulls charge
 + trade, price inflation, money deflation
 + bike, car, tank, heli
 + scent, zombies fallow humans scent - spray (scent killer)
@@ -145,7 +151,7 @@ v2+:
 + crafting (improvised club/spear, barricade)
 + madness/morale (reading books help)
 + graffiti spray
-+ sprint
++ sprint/walking
 + the city
 	+ subway
 	+ sewers

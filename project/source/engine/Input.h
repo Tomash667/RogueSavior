@@ -68,9 +68,17 @@ public:
 		assert(key >= K_LBUTTON && key <= K_XBUTTON2);
 		return doubleclk[key];
 	}
+	const INT2& GetMouseMove()
+	{
+		return mouse_move;
+	}
 
 	void Update();
 	void UpdateShortcuts();
+	void UpdateMouse(const INT2& move)
+	{
+		mouse_move = move;
+	}
 	void Process(byte key, bool down);
 	void ProcessDoubleClick(byte key);
 	void ReleaseKeys();
@@ -80,6 +88,7 @@ private:
 	bool keyrepeat[256];
 	bool doubleclk[6];
 	int shortcut_state;
+	INT2 mouse_move;
 };
 
 extern InputState Input;

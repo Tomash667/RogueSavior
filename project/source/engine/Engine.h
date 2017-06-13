@@ -25,6 +25,7 @@ public:
 
 	ResourceManager& GetResourceManager() { return *resource_manager; }
 	Scene& GetScene() { return *scene; }
+	Window& GetWindow() { return *window; }
 	bool Init(const EngineInitOptions& options);
 	void ShowError(cstring msg);
 	void StartLoop();

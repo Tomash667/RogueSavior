@@ -4,6 +4,7 @@
 
 class Config;
 class Engine;
+struct SceneNode;
 
 class Game : public GameHandler
 {
@@ -42,4 +43,5 @@ private:
 	Engine* engine;
 	Config* config;
 	string title, compile_time;
+	SceneNode* player;
 };
