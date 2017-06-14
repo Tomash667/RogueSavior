@@ -1,8 +1,13 @@
 ﻿/bin/
+/external/Bullet/build/vs2015/Output/
+/external/lib/
+/external/RakNet/Output/
+/external/zlib/contrib/vstudio/Output/
 /other/
-/project/.vs/
 /project/ipch/
 /project/output/
+
+.vs/
 
 *.db
 *.opendb

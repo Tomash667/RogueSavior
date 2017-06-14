@@ -3,4 +3,8 @@
 class Server
 {
 public:
+
+private:
+	void Save();
+	void Load();
 };

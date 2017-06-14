@@ -196,6 +196,7 @@
     <ClInclude Include="source\game\Game.h" />
     <ClInclude Include="source\game\GameLoader.h" />
     <ClInclude Include="source\game\Item.h" />
+    <ClInclude Include="source\game\NetMessages.h" />
     <ClInclude Include="source\game\Server.h" />
     <ClInclude Include="source\game\Unit.h" />
     <ClInclude Include="source\game\UnitData.h" />
@@ -231,7 +232,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="doc\dependency.txt" />
     <Text Include="doc\layout.txt" />
     <Text Include="doc\todo.txt" />
   </ItemGroup>

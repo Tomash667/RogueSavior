@@ -124,6 +124,9 @@
     <ClInclude Include="source\engine\Camera.h">
       <Filter>2. engine</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\NetMessages.h">
+      <Filter>3. game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Pch.cpp" />
@@ -194,9 +197,6 @@
       <Filter>0. doc</Filter>
     </Text>
     <Text Include="doc\layout.txt">
-      <Filter>0. doc</Filter>
-    </Text>
-    <Text Include="doc\dependency.txt">
       <Filter>0. doc</Filter>
     </Text>
   </ItemGroup>

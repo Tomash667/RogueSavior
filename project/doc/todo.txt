@@ -55,6 +55,24 @@ v1:
 + npc teams that help each other
 + crash handler
 + headshot
++ net/save compression
++ whisper, different chat
++ server password
++ canned food - more meshes
++ new objects
+	+ fridge
+	+ owen
+	+ sink
+	+ wardrobe
+	+ tv
+	+ toilet
+	+ tree
+	+ bush
+	+ wooden fence
+	+ metal fence
++ new buildings/locations
+	+ parking
+	+ park
 
 v2+:
 + sleeping
@@ -171,4 +189,8 @@ v2+:
 			+ sportswear
 		+ police station
 		+ prison
+		+ bank
 + (heavy) rain
++ vfs
++ kick/ban
++ dynamic physics
