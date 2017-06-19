@@ -20,6 +20,7 @@ void InputState::Update()
 	if(printscreen == IS_PRESSED)
 		keystate[K_PRINTSCREEN] = IS_RELEASED;
 	mouse_move = INT2(0, 0);
+	mouse_wheel = 0;
 }
 
 // Update shortcuts state

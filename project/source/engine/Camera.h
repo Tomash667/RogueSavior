@@ -1,19 +1,28 @@
 #pragma once
 
+struct SceneNode;
+
 class Camera
 {
 public:
+	enum Mode
+	{
+		Static,
+		ThirdPerson,
+		ThirdPersonSide
+	};
+
 	Camera();
 	float GetAspect() { return aspect; }
 	const VEC2& GetDrawRange() { return draw_range; }
 	float GetFov() { return fov; }
 	const VEC3& GetFrom() { return from; }
 	const FrustumPlanes& GetFrustum();
-	const MATRIX& GetViewProjectionMatrix();
 	const MATRIX& GetProjectionMatrix();
 	const VEC3& GetTo() { return to; }
 	const VEC3& GetUp() { return up; }
 	const MATRIX& GetViewMatrix();
+	const MATRIX& GetViewProjectionMatrix();
 	void SetAspect(float aspect);
 	void SetDrawRange(const VEC2& draw_range);
 	void SetFov(float fov);
@@ -22,6 +31,13 @@ public:
 	void SetTo(const VEC3& to);
 	void SetUp(const VEC3& up);
 	void SetView(const VEC3& from, const VEC3& to, const VEC3& up = VEC3(0, 1, 0));
+	void Update(float dt);
+
+	Mode mode;
+	SceneNode* target;
+	VEC2 rot;
+	VEC2 shift; // in ThirdPersonSide, x - move camera left/right, y - far point in front of target
+	float height, distance;
 
 private:
 	void UpdateFrustum();

@@ -44,4 +44,5 @@ private:
 	Config* config;
 	string title, compile_time;
 	SceneNode* player;
+	SceneNode* marker[3];
 };

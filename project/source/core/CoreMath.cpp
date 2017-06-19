@@ -17,12 +17,19 @@ VEC3 VEC3::TransformCoord(const MATRIX& m) const
 	return result;
 }
 
-void MATRIX::Identity()
+VEC3& VEC3::TransformCoordSelf(const MATRIX& m)
+{
+	D3DXVec3TransformCoord((D3DXVECTOR3*)this, (D3DXVECTOR3*)this, (const D3DXMATRIX*)&m);
+	return *this;
+}
+
+MATRIX& MATRIX::Identity()
 {
 	_11 = 1.f; _12 = 0.f; _13 = 0.f; _14 = 0.f;
 	_21 = 0.f; _22 = 1.f; _23 = 0.f; _24 = 0.f;
 	_31 = 0.f; _32 = 0.f; _33 = 1.f; _34 = 0.f;
 	_41 = 0.f; _42 = 0.f; _43 = 0.f; _44 = 1.f;
+	return *this;
 }
 
 bool MATRIX::Inverse(MATRIX& result) const
@@ -31,24 +38,40 @@ bool MATRIX::Inverse(MATRIX& result) const
 	return result_ptr != nullptr;
 }
 
-void MATRIX::LookAt(const VEC3& from, const VEC3& to, const VEC3& up)
+MATRIX& MATRIX::LookAt(const VEC3& from, const VEC3& to, const VEC3& up)
 {
 	D3DXMatrixLookAtLH((D3DXMATRIX*)this, (const D3DXVECTOR3*)&from, (const D3DXVECTOR3*)&to, (const D3DXVECTOR3*)&up);
+	return *this;
 }
 
-void MATRIX::Multiply(const MATRIX& mat1, const MATRIX& mat2)
+MATRIX& MATRIX::Multiply(const MATRIX& mat)
+{
+	D3DXMatrixMultiply((D3DXMATRIX*)this, (D3DXMATRIX*)this, (D3DXMATRIX*)&mat);
+	return *this;
+}
+
+MATRIX& MATRIX::Multiply(const MATRIX& mat1, const MATRIX& mat2)
 {
 	D3DXMatrixMultiply((D3DXMATRIX*)this, (D3DXMATRIX*)&mat1, (D3DXMATRIX*)&mat2);
+	return *this;
 }
 
-void MATRIX::Perspective(float fov, float aspect, const VEC2& draw_range)
+MATRIX& MATRIX::Perspective(float fov, float aspect, const VEC2& draw_range)
 {
 	D3DXMatrixPerspectiveFovLH((D3DXMATRIX*)this, fov, aspect, draw_range.x, draw_range.y);
+	return *this;
 }
 
-void MATRIX::Translation(const VEC3& pos)
+MATRIX& MATRIX::Rotation(float yaw, float pitch, float roll)
+{
+	D3DXMatrixRotationYawPitchRoll((D3DXMATRIX*)this, yaw, pitch, roll);
+	return *this;
+}
+
+MATRIX& MATRIX::Translation(const VEC3& pos)
 {
 	D3DXMatrixTranslation((D3DXMATRIX*)this, pos.x, pos.y, pos.z);
+	return *this;
 }
 
 float PLANE::DotCoord(const VEC3& v) const

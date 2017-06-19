@@ -107,6 +107,7 @@ v2+:
 		+ c4
 		+ molotov
 		+ crossbow - bolts
+		+ flamethower
 	+ backpack
 	+ iron rations
 	+ (big) flashlight
@@ -139,6 +140,7 @@ v2+:
 	+ mother (powerful scent that other zombies fallow)
 	+ creep (stay just outside of line of sight, fallow humans in large groups, wait until they try to sleep)
 	+ necro (digs in graves and rise zombies)
+	+ zombie tree
 + new perks/skills
 	+ awake (+max sleep, sleep regen)
 	+ bows  (atk, dmg)

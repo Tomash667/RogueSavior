@@ -124,6 +124,15 @@ bool Game::InitGame()
 		scene.Add(player);
 		auto floor = new SceneNode(res_mgr.LoadMesh("data/floor.qmsh"));
 		scene.Add(floor);
+		auto& camera = scene.GetCamera();
+		camera.mode = Camera::ThirdPersonSide;
+		camera.target = player;
+		camera.height = 1.7f;
+		for(int i = 0; i < 3; ++i)
+		{
+			marker[i] = new SceneNode(res_mgr.LoadMesh("data/marker.qmsh"));
+			scene.Add(marker[i]);
+		}
 
 		return true;
 	}
@@ -144,10 +153,37 @@ void Game::OnTick(float dt)
 		return;
 	}
 
-	bool active = engine->GetWindow().IsActive();
-	auto& scene = engine->GetScene();
-	scene.SetClearColor(active ? Color::White : Color::Red);
+	const float c_cam_angle_min = PI + 0.1f;
+	const float c_cam_angle_max = PI*1.8f - 0.1f;
 
+	auto& scene = engine->GetScene();
+	auto& camera = scene.GetCamera();
+	int div = 400;
+	camera.rot.y += -float(Input.GetMouseMove().y) / div;
+	if(camera.rot.y > c_cam_angle_max)
+		camera.rot.y = c_cam_angle_max;
+	if(camera.rot.y < c_cam_angle_min)
+		camera.rot.y = c_cam_angle_min;
+	camera.rot.x = Clip(camera.rot.x + float(Input.GetMouseMove().x) / div);
+
+	extern VEC3 g_from, g_to, g_from2;
+
+	marker[0]->pos = g_to;
+	marker[0]->tint = VEC3(1, 0, 0);
+	marker[1]->pos = g_from;
+	marker[1]->tint = VEC3(0, 1, 0);
+	marker[2]->pos = g_from2;
+	marker[2]->tint = VEC3(0, 0, 1);
+
+	// scroll distance
+	camera.distance = Clamp(camera.distance - float(Input.GetMouseWheel()), 0.5f, 6.f);
+
+
+	// rotate player to face camera
+	float dif = abs(camera.rot.x - player->rot.y);
+	if(dif >= 0.1f)
+		player->rot.y = camera.rot.x;
+	
 	int movex = 0, movey = 0;
 	if(Input.Down('W'))
 		movey = 1;
@@ -195,6 +231,8 @@ void Game::OnTick(float dt)
 			else
 				dir = ToRadians(270.f);
 		}
+
+		dir = Clip(dir + camera.rot.x);
 
 		VEC3 move = VEC3(sin(dir), 0, cos(dir)) * 20.f * speed * dt;
 		player->pos += move;

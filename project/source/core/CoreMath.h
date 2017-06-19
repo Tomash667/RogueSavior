@@ -861,6 +861,8 @@ struct VEC3
 	}
 	// Transform vector by matrix
 	VEC3 TransformCoord(const MATRIX& m) const;
+	// Transform this vector by matrix
+	VEC3& TransformCoordSelf(const MATRIX& m);
 };
 
 inline VEC3 operator * (float f, const VEC3& v)
@@ -1301,17 +1303,25 @@ struct MATRIX
 	}
 
 	// Set to identity matrix
-	void Identity();
+	MATRIX& Identity();
 	// Inverse matrix into result
 	bool Inverse(MATRIX& result) const;
 	// Build look at matrix
-	void LookAt(const VEC3& from, const VEC3& to, const VEC3& up = VEC3(0, 1, 0));
+	MATRIX& LookAt(const VEC3& from, const VEC3& to, const VEC3& up = VEC3(0, 1, 0));
+	// Multiply this matrix with other and store result in this
+	MATRIX& Multiply(const MATRIX& mat);
 	// Multiply two matrices and store result in this matrix
-	void Multiply(const MATRIX& mat1, const MATRIX& mat2);
+	MATRIX& Multiply(const MATRIX& mat1, const MATRIX& mat2);
 	// Build perspective matrix
-	void Perspective(float fov, float aspect, const VEC2& draw_range);
+	MATRIX& Perspective(float fov, float aspect, const VEC2& draw_range);
+	// Rotate yaw pitch roll
+	MATRIX& Rotation(float yaw, float pitch, float roll);
+	MATRIX& Rotation(const VEC3& rot)
+	{
+		return Rotation(rot.y, rot.x, rot.z);
+	}
 	// Build translation matrix
-	void Translation(const VEC3& pos);
+	MATRIX& Translation(const VEC3& pos);
 };
 
 //-----------------------------------------------------------------------------

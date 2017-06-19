@@ -30,7 +30,7 @@ void Scene::Draw()
 
 	auto device = render->GetDevice();
 	auto& mat_viewproj = camera.GetViewProjectionMatrix();
-	MATRIX mat_world, mat_combined;
+	MATRIX mat_world, mat_combined, m;
 	
 	// setup shader
 	auto e = render->GetShader(Shader::Mesh);
@@ -39,7 +39,6 @@ void Scene::Draw()
 	V(e->SetVector(h_fog_params, (D3DXVECTOR4*)&fog_params));
 	V(e->SetVector(h_light_color, (D3DXVECTOR4*)&light_color));
 	V(e->SetVector(h_light_dir, (D3DXVECTOR4*)&light_dir));
-	V(e->SetVector(h_tint, (D3DXVECTOR4*)&VEC3(1, 1, 1)));
 	V(e->SetVector(h_camera_pos, (D3DXVECTOR4*)&camera.GetFrom()));
 
 	// draw not-animated meshes
@@ -49,7 +48,7 @@ void Scene::Draw()
 	for(auto node : to_draw.normal)
 	{
 		auto& mesh = *node->mesh;
-		mat_world.Translation(node->pos);
+		mat_world.Rotation(node->rot).Multiply(m.Translation(node->pos));
 		mat_combined.Multiply(mat_world, mat_viewproj);
 
 		V(device->SetVertexDeclaration(render->GetVertexDeclaration(mesh.vertex_decl)));
@@ -57,6 +56,7 @@ void Scene::Draw()
 		V(device->SetIndices(mesh.ib));
 		V(e->SetMatrix(h_mat_world, (D3DXMATRIX*)&mat_world));
 		V(e->SetMatrix(h_mat_combined, (D3DXMATRIX*)&mat_combined));
+		V(e->SetVector(h_tint, (D3DXVECTOR4*)&node->tint));
 
 		for(int i = 0; i < mesh.head.n_subs; ++i)
 		{
@@ -114,4 +114,9 @@ void Scene::ListDrawObjects()
 				to_draw.normal.push_back(node);
 		}
 	}
+}
+
+void Scene::Update(float dt)
+{
+	camera.Update(dt);
 }

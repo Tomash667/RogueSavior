@@ -86,6 +86,7 @@ void Engine::StartLoop()
 			if(closing)
 				break;
 
+			scene->Update(dt);
 			render->Draw();
 			Input.Update();
 		}

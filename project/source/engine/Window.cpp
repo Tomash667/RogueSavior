@@ -122,6 +122,10 @@ long Window::HandleEvent(HWND in_hwnd, uint msg, uint wParam, long lParam)
 			Input.ProcessDoubleClick(key);
 			return ret;
 		}
+
+	case WM_MOUSEWHEEL:
+		Input.UpdateMouseWheel(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
+		return 0;
 	}
 
 	return DefWindowProc(in_hwnd, msg, wParam, lParam);
@@ -174,15 +178,20 @@ bool Window::Update()
 	// update activity state
 	HWND foreground = GetForegroundWindow();
 	bool is_active = (foreground == hwnd);
+	bool was_active = active;
 	UpdateActivity(is_active);
 	
 	// handle cursor movment
 	if(active)
 	{
-		POINT pt;
-		GetCursorPos(&pt);
-		INT2 dif = INT2(pt.x, pt.y) - size / 2;
-		Input.UpdateMouse(dif);
+		if(was_active)
+		{
+			POINT pt;
+			GetCursorPos(&pt);
+			ScreenToClient(hwnd, &pt);
+			INT2 dif = INT2(pt.x, pt.y) - size / 2;
+			Input.UpdateMouse(dif);
+		}
 		POINT center = { size.x / 2, size.y / 2 };
 		ClientToScreen(hwnd, &center);
 		SetCursorPos(center.x, center.y);

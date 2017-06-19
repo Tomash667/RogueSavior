@@ -1,9 +1,10 @@
 #include "Pch.h"
 #include "Core.h"
 #include "Camera.h"
+#include "SceneNode.h"
 
 Camera::Camera() : from(0,5,5), to(0,1,0), up(0,1,0), draw_range(0.01f, 50.f), fov(PI/4), aspect(800.f/600.f), update_view(true), update_proj(true),
-update_frustum(true)
+update_frustum(true), target(nullptr), height(1.f), distance(3.5f), rot(0,PI*3/2), shift(-1.f,1.f)
 {
 }
 
@@ -135,4 +136,41 @@ void Camera::UpdateView()
 	mat_view.LookAt(from, to, up);
 	update_view = false;
 	update_frustum = true;
+}
+
+VEC3 g_to, g_from, g_from2;
+
+void Camera::Update(float dt)
+{
+	if(!target)
+		return;
+	if(mode == ThirdPerson)
+	{
+		VEC3 to = target->pos;
+		to.y += height;
+		g_to = to;
+		VEC3 dist(0, -distance, 0);
+		MATRIX m;
+		m.Rotation(rot.x, rot.y, 0);
+		dist.TransformCoordSelf(m);
+		VEC3 from = to + dist;
+		g_from = from;
+		g_from2 = VEC3(0, 0, 0);
+		SetView(from, to);
+	}
+	else if(mode == ThirdPersonSide)
+	{
+		VEC3 to = target->pos;
+		to += VEC3(sin(rot.x + PI) * shift.y, height, cos(rot.x + PI) * shift.y);
+		g_to = to;
+		VEC3 dist(0, -distance, 0);
+		MATRIX m;
+		m.Rotation(rot.x, rot.y, 0);
+		dist.TransformCoordSelf(m);
+		VEC3 from = to + dist;
+		g_from = from;
+		from += VEC3(sin(rot.x + PI / 2) * shift.x, 0, cos(rot.x + PI / 2) * shift.x);
+		g_from2 = from;
+		SetView(from, to);
+	}
 }

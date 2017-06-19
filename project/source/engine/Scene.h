@@ -28,6 +28,7 @@ public:
 	void SetFogParams(float start, float end) { fog_params = VEC3(start, end, end - start); }
 	void SetLightColor(const VEC3& _light_color) { light_color = _light_color; }
 	void SetLightDir(const VEC3& _light_dir) { light_dir = _light_dir; }
+	void Update(float dt);
 
 private:
 	struct DrawBatch

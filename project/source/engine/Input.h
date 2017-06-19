@@ -72,12 +72,20 @@ public:
 	{
 		return mouse_move;
 	}
+	int GetMouseWheel()
+	{
+		return mouse_wheel;
+	}
 
 	void Update();
 	void UpdateShortcuts();
 	void UpdateMouse(const INT2& move)
 	{
 		mouse_move = move;
+	}
+	void UpdateMouseWheel(int move)
+	{
+		mouse_wheel += move;
 	}
 	void Process(byte key, bool down);
 	void ProcessDoubleClick(byte key);
@@ -87,7 +95,7 @@ private:
 	byte keystate[256];
 	bool keyrepeat[256];
 	bool doubleclk[6];
-	int shortcut_state;
+	int shortcut_state, mouse_wheel;
 	INT2 mouse_move;
 };
 
