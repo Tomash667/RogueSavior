@@ -82,6 +82,12 @@ void Game::InitConfig()
 	config->Add("engine.fullscreen", options.fullscreen);
 	config->Add("log_file", options.log_file);
 	config->Add("log_console", options.log_console);
+
+	static int tmp;
+	config->Add("test.root.left.left1", tmp);
+	config->Add("test.root.left.left2", tmp);
+	config->Add("test.root.right.right1", tmp);
+	config->Add("test.root.right.right2", tmp);
 }
 
 cstring Game::GetWindowTitle()
@@ -288,4 +294,101 @@ void Game::ConfigureLogger()
 	
 	prelogger->Apply(g_logger);
 	delete prelogger;
+}
+
+cstring HISCORES_FILENAME = "hiscores.dat";
+
+void Game::LoadHiscores()
+{
+	FileReader f(HISCORES_FILENAME);
+	if(!f)
+	{
+		Info("File '%s' missing.", HISCORES_FILENAME);
+		return;
+	}
+
+	char sign[4];
+	if(!f.Read(sign) || memcmp(sign, "RSHI", 4) != 0)
+	{
+		Error("Invalid hiscores signature.");
+		return;
+	}
+
+	uint count;
+	if(!f.Read(count) || !f.Ensure(count * Hiscore::MIN_SIZE))
+	{
+		Error("Broken hiscores.");
+		return;
+	}
+
+	hiscores.reserve(count);
+	for(uint i = 0; i < count; ++i)
+	{
+		Hiscore* hi = new Hiscore;
+		if(!(f >> *hi))
+		{
+			Error("Broken hiscores at index %u.", i);
+			delete hi;
+			return;
+		}
+		uint crc = hi->CalculateCrc();
+		if(crc != hi->crc)
+		{
+			Error("Invalid hiscore at index %u.", i);
+			delete hi;
+		}
+		else
+			hiscores.push_back(hi);
+	}
+
+	Info("Loaded hiscores.");
+}
+
+void Game::SaveHiscores()
+{
+	FileWriter f(HISCORES_FILENAME);
+	if(!f)
+	{
+		Error("Failed to open file '%s'.", HISCORES_FILENAME);
+		return;
+	}
+
+	f.Write("RSHI", 4);
+	f << hiscores.size();
+	for(auto hi : hiscores)
+		f << *hi;
+
+	Info("Saved hiscores.");
+}
+
+bool Game::AddHiscore(Hiscore* hi)
+{
+	assert(hi);
+
+	auto it = std::upper_bound(hiscores.begin(), hiscores.end(), hi, [](const Hiscore* hi1, const Hiscore* hi2)
+	{
+		return hi1->score > hi2->score;
+	});
+	if(it == hiscores.end())
+	{
+		if(hiscores.size() < 100u)
+		{
+			hiscores.push_back(hi);
+			SaveHiscores();
+			return true;
+		}
+		else
+			return false;
+	}
+	else
+	{
+		hiscores.insert(it, hi);
+		if(hiscores.size() > 100u)
+		{
+			delete hiscores.back();
+			hiscores.pop_back();
+		}
+		SaveHiscores();
+		return true;
+	}
 }

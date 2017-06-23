@@ -1,6 +1,8 @@
 #pragma once
 
-struct ConfigItem
+#include "Algorithm.h"
+
+struct ConfigItem : TreeItem<ConfigItem>
 {
 	enum Type
 	{
@@ -26,8 +28,6 @@ struct ConfigItem
 #undef  Map
 
 	string id;
-	ConfigItem* parent;
-	vector<ConfigItem*> childs;
 	Type type;
 	int value;
 	bool backing_field;

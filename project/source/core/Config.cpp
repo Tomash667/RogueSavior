@@ -69,6 +69,7 @@ Config::Config(cstring _path)
 {
 	assert(_path);
 	path = _path;
+	type = Container;
 }
 
 ConfigItem* Config::Add(cstring id)
@@ -81,13 +82,19 @@ ConfigItem* Config::Add(cstring id)
 	ConfigItem* top = this;
 	for(uint i = 0; i < splitted.size() - 1; ++i)
 	{
-		auto item = new ConfigItem;
-		item->backing_field = false;
-		item->id = splitted[i];
-		item->parent = top;
-		item->type = ConfigItem::Container;
-		item->value = 0;
-		top->childs.push_back(item);
+		auto& part_id = splitted[i];
+		auto item = top->FindItem(part_id);
+		if(!item)
+		{
+			item = new ConfigItem;
+			item->backing_field = false;
+			item->id = splitted[i];
+			item->parent = top;
+			item->index = (int)top->childs.size();
+			item->type = ConfigItem::Container;
+			item->value = 0;
+			top->childs.push_back(item);
+		}
 		top = item;
 	}
 
@@ -95,6 +102,7 @@ ConfigItem* Config::Add(cstring id)
 	item->backing_field = false;
 	item->id = splitted.back();
 	item->parent = top;
+	item->index = (int)top->childs.size();
 	item->type = ConfigItem::Unknown;
 	item->value = 0;
 	top->childs.push_back(item);
@@ -197,7 +205,7 @@ bool Config::Load()
 				break;
 			case ConfigItem::Int2:
 				{
-					auto i2 = item->Get<INT2>();
+					auto& i2 = item->Get<INT2>();
 					t.Next();
 					i2.x = t.MustGetInt();
 					t.Next();
@@ -224,12 +232,63 @@ bool Config::Save()
 	if(!f)
 		return false;
 
-	int tabs = 1;
 	f << "{\n";
+	ConfigItem::Type prev_type;
+	
+	for(auto it = begin(true), it_end = end(); it != it_end; ++it)
+	{
+		auto current = it.GetCurrent();
+		if(current == this)
+			continue;
 
-	ConfigItem* parent = this;
+		int depth = it.GetDepth();
+		if(it.IsUp())
+		{
+			if(prev_type == ConfigItem::Container)
+			{
+				f << '\n';
+				for(int i = 0; i < depth - 1; ++i)
+					f << '\t';
+				f << "}\n";
+			}
+			else
+				f << '\n';
+			prev_type = ConfigItem::Container;
+			continue;
+		}
 
-	f << "}\n";
+		for(int i = 0; i < depth; ++i)
+			f << '\t';
+
+		f << Format("\"%s\": ", current->id.c_str());
+		prev_type = current->type;
+		switch(current->type)
+		{
+		case ConfigItem::Container:
+			f << "{\n";
+			break;
+		case ConfigItem::Bool:
+			f << (current->Get<bool>() ? "true" : "false");
+			break;
+		case ConfigItem::Int:
+			f << Format("%d", current->Get<int>());
+			break;
+		case ConfigItem::Float:
+			f << Format("%g", current->Get<float>());
+			break;
+		case ConfigItem::String:
+			f << Format("\"%s\"", Escape(current->Get<string>().c_str()));
+			break;
+		case ConfigItem::Int2:
+			{
+				auto& i2 = current->Get<INT2>();
+				f << Format("{ %d %d }", i2.x, i2.y);
+			}
+			break;
+		}
+	}
+
+	f << "\n}\n";
 
 	return true;
 }

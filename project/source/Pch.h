@@ -20,6 +20,7 @@
 #include <fstream>
 #include <cstdarg>
 #include <cassert>
+#include <thread>
 
 #include "FastFunc.h"
 

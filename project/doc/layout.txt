@@ -8,15 +8,15 @@ player_uuid in config - random player guid
 2 Main menu
 	Logo, background, buttons, copyright, version
 	2.1 New game
-		enter name
+		enter name, max 255
 		-> game
 	2.2 Multiplayer
 		enter name at top
 		servers list
 		buttons at bottom
 		2.2.1 host
-			server name
-			password
+			server name, max 255
+			password, max 255 (not in v0)
 			max players
 			checkbox - allow players to join any time (defaults to true) or only in lobby
 			Start lobby/start game/cancel

@@ -294,7 +294,8 @@ inline int CountBits(int i)
 }
 
 // Return true if value is power of 2
-inline bool IsPow2(int x)
+template <class T>
+inline bool IsPow2(T x)
 {
 	return ((x > 0) && ((x & (x - 1)) == 0));
 }

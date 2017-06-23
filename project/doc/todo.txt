@@ -132,6 +132,7 @@ v2+:
 	+ soldier
 	+ medic (soldier)
 	+ doctor/nurse
+	+ alpha zombie/ghoul etc
 	+ boss zombies
 	+ zombie soldier
 	+ zombies carrying melee weapons
@@ -141,6 +142,7 @@ v2+:
 	+ creep (stay just outside of line of sight, fallow humans in large groups, wait until they try to sleep)
 	+ necro (digs in graves and rise zombies)
 	+ zombie tree
+	+ psi zombie (items/units illusion, illusion enemies)
 + new perks/skills
 	+ awake (+max sleep, sleep regen)
 	+ bows  (atk, dmg)

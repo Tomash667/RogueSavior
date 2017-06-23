@@ -18,6 +18,34 @@ public:
 	void Log(Level level, cstring msg);
 	void LogStart();
 
+	void Info(cstring msg)
+	{
+		Log(L_INFO, msg);
+	}
+	template<typename... Args>
+	void Info(cstring msg, const Args&... args)
+	{
+		Log(L_INFO, Format(msg, args...));
+	}
+	void Warn(cstring msg)
+	{
+		Log(L_WARN, msg);
+	}
+	template<typename... Args>
+	void Warn(cstring msg, const Args&... args)
+	{
+		Log(L_WARN, Format(msg, args...));
+	}
+	void Error(cstring msg)
+	{
+		Log(L_ERROR, msg);
+	}
+	template<typename... Args>
+	void Error(cstring msg, const Args&... args)
+	{
+		Log(L_ERROR, Format(msg, args...));
+	}
+
 protected:
 	static const cstring level_names[3];
 };

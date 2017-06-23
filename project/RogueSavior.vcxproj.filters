@@ -127,6 +127,12 @@
     <ClInclude Include="source\game\NetMessages.h">
       <Filter>3. game</Filter>
     </ClInclude>
+    <ClInclude Include="source\core\Crc.h">
+      <Filter>1. core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\Algorithm.h">
+      <Filter>1. core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Pch.cpp" />
@@ -190,6 +196,12 @@
     </ClCompile>
     <ClCompile Include="source\engine\Camera.cpp">
       <Filter>2. engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\Server.cpp">
+      <Filter>3. game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\core\Crc.cpp">
+      <Filter>1. core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

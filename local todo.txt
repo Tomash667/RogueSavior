@@ -70,3 +70,52 @@ fullscreen
 hiscores
 load screen
 death screen
+
+particles
+blood
+decals
+
+================================================================================================
+client         |    server
+connect ->          dodaj gracza (status Connecting, czekaj na hello x sekund, na serwerze widać jakiś znaczek że dołącza gracz)
+	ok
+	lub nie
+
+connected
+wyślij ID_HELLO
+int - version
+string - nick
+int - secret
+	
+                    ID_CONNECTED
+					int - my_slot
+					int - players
+					string[] - nicks
+					bool - is_admin
+					
+ID_LOBBY_SAY
+string - text
+					ID_LOBBY_SAY
+					string - Player: text
+
+					ID_PLAYER_JOINING
+					int - slot_id
+					
+					ID_PLAYER_JOINED
+					int - slot_id
+					string - nick
+					
+					ID_PLAYER_LEFT
+					int - slot_id
+					
+ID_LOBBY_QUIT
+(DISCONNECTED)
+
+START
+STOP
+
+					"Starting in 3..."
+					
+-> loadscreen
+Waiting for server
+					send text "Generating world"
