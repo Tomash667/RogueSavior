@@ -70,6 +70,9 @@ Config::Config(cstring _path)
 	assert(_path);
 	path = _path;
 	type = Container;
+
+	t.AddKeyword("false", 0);
+	t.AddKeyword("true", 1);
 }
 
 ConfigItem* Config::Add(cstring id)
@@ -129,6 +132,7 @@ bool Config::Load()
 				parent = parent->parent;
 				if(!parent)
 					break;
+				t.Next();
 				continue;
 			}
 
@@ -156,7 +160,7 @@ bool Config::Load()
 			ConfigItem::Type type;
 			switch(token)
 			{
-			case tokenizer::T_BOOL:
+			case tokenizer::T_KEYWORD:
 				type = ConfigItem::Bool;
 				break;
 			case tokenizer::T_INT:
@@ -182,8 +186,9 @@ bool Config::Load()
 			// verify type
 			if(item->type == ConfigItem::Unknown)
 				item->type = type;
-			else if(item->type < ConfigItem::ContainerTypes && type != ConfigItem::Container)
-				t.Throw("Config item '%s' has invalid type %s (expecting %s).", item->GetPath().c_str(), config_item_infos[type].name, config_item_infos[item->type].name);
+			else if(item->type != type && item->type < ConfigItem::ContainerTypes && type != ConfigItem::Container)
+				t.Throw("Config item '%s' has invalid type %s (expecting %s).", item->GetPath().c_str(), config_item_infos[type].name,
+					config_item_infos[item->type].name);
 
 			// set value
 			switch(item->type)
@@ -192,7 +197,7 @@ bool Config::Load()
 				parent = item;
 				break;
 			case ConfigItem::Bool:
-				item->Get<bool>() = t.GetBool();
+				item->Get<bool>() = (t.GetKeywordId() == 1);
 				break;
 			case ConfigItem::Int:
 				item->Get<int>() = t.GetInt();
@@ -220,8 +225,9 @@ bool Config::Load()
 
 		return true;
 	}
-	catch(Tokenizer::Exception&)
+	catch(Tokenizer::Exception& e)
 	{
+		Error("Failed to load config: %s", e.ToString());
 		return false;
 	}
 }
