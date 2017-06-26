@@ -244,16 +244,9 @@ bool Config::Save()
 		int depth = it.GetDepth();
 		if(it.IsUp())
 		{
-			if(prev_type == ConfigItem::Container)
-			{
-				f << '\n';
-				for(int i = 0; i < depth - 1; ++i)
+				for(int i = 0; i < depth; ++i)
 					f << '\t';
 				f << "}\n";
-			}
-			else
-				f << '\n';
-			prev_type = ConfigItem::Container;
 			continue;
 		}
 
@@ -265,7 +258,7 @@ bool Config::Save()
 		switch(current->type)
 		{
 		case ConfigItem::Container:
-			f << "{\n";
+			f << "{";
 			break;
 		case ConfigItem::Bool:
 			f << (current->Get<bool>() ? "true" : "false");
@@ -286,9 +279,10 @@ bool Config::Save()
 			}
 			break;
 		}
+		f << '\n';
 	}
 
-	f << "\n}\n";
+	f << "}\n";
 
 	return true;
 }

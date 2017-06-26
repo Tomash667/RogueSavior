@@ -82,12 +82,6 @@ void Game::InitConfig()
 	config->Add("engine.fullscreen", options.fullscreen);
 	config->Add("log_file", options.log_file);
 	config->Add("log_console", options.log_console);
-
-	static int tmp;
-	config->Add("test.root.left.left1", tmp);
-	config->Add("test.root.left.left2", tmp);
-	config->Add("test.root.right.right1", tmp);
-	config->Add("test.root.right.right2", tmp);
 }
 
 cstring Game::GetWindowTitle()

@@ -29,8 +29,6 @@ struct TreeItem
 						index = current->index;
 						current = current->parent;
 						--depth;
-						if(up)
-							break;
 					}
 					else
 					{
@@ -42,13 +40,25 @@ struct TreeItem
 				}
 				else
 				{
-					if(index + 1 == current->childs.size())
+					if(index == current->childs.size())
 					{
 						index = current->index;
 						current = current->parent;
 						--depth;
+					}
+					else if(index + 1 == current->childs.size())
+					{
 						if(up)
+						{
+							++index;
 							break;
+						}
+						else
+						{
+							index = current->index;
+							current = current->parent;
+							--depth;
+						}
 					}
 					else
 					{
