@@ -3,8 +3,9 @@
 struct UnitData
 {
 	string id, name;
+	float hp, dmg;
 
-	UnitData(cstring id, cstring name) : id(id), name(name)
+	UnitData(cstring id, cstring name, float hp, float dmg) : id(id), name(name), hp(hp), dmg(dmg)
 	{
 
 	}

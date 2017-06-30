@@ -44,3 +44,12 @@ void CleanupItems()
 	for(auto& i : g_items)
 		delete i.second;
 }
+
+Item* GetItem(cstring id)
+{
+	assert(id);
+	auto item = FindItem(id);
+	if(!item)
+		throw Format("Missing item '%s'.", id);
+	return item;
+}

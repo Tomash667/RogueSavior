@@ -75,3 +75,4 @@ struct Useable : Item
 
 void SetItemPointers();
 void CleanupItems();
+Item* GetItem(cstring id);

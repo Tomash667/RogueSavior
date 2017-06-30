@@ -195,13 +195,18 @@
     <ClInclude Include="source\engine\Version.h" />
     <ClInclude Include="source\engine\VertexDeclaration.h" />
     <ClInclude Include="source\engine\Window.h" />
+    <ClInclude Include="source\game\Ai.h" />
     <ClInclude Include="source\game\Game.h" />
     <ClInclude Include="source\game\GameLoader.h" />
+    <ClInclude Include="source\game\GroundItem.h" />
     <ClInclude Include="source\game\Item.h" />
     <ClInclude Include="source\game\NetMessages.h" />
+    <ClInclude Include="source\game\NpcAi.h" />
+    <ClInclude Include="source\game\Player.h" />
     <ClInclude Include="source\game\Server.h" />
     <ClInclude Include="source\game\Unit.h" />
     <ClInclude Include="source\game\UnitData.h" />
+    <ClInclude Include="source\game\ZombieAi.h" />
     <ClInclude Include="source\Pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -225,7 +230,9 @@
     <ClCompile Include="source\game\Game.cpp" />
     <ClCompile Include="source\game\GameLoader.cpp" />
     <ClCompile Include="source\game\Item.cpp" />
+    <ClCompile Include="source\game\Player.cpp" />
     <ClCompile Include="source\game\Server.cpp" />
+    <ClCompile Include="source\game\Unit.cpp" />
     <ClCompile Include="source\game\UnitData.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="source\Pch.cpp">
@@ -237,7 +244,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="doc\layout.txt" />
-    <Text Include="doc\todo.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

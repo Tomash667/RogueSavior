@@ -133,6 +133,21 @@
     <ClInclude Include="source\core\Algorithm.h">
       <Filter>1. core</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\Ai.h">
+      <Filter>3. game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\NpcAi.h">
+      <Filter>3. game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\ZombieAi.h">
+      <Filter>3. game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\Player.h">
+      <Filter>3. game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\GroundItem.h">
+      <Filter>3. game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Pch.cpp" />
@@ -203,11 +218,14 @@
     <ClCompile Include="source\core\Crc.cpp">
       <Filter>1. core</Filter>
     </ClCompile>
+    <ClCompile Include="source\game\Player.cpp">
+      <Filter>3. game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\Unit.cpp">
+      <Filter>3. game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="doc\todo.txt">
-      <Filter>0. doc</Filter>
-    </Text>
     <Text Include="doc\layout.txt">
       <Filter>0. doc</Filter>
     </Text>

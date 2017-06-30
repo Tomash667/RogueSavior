@@ -2,9 +2,12 @@
 
 #include "Crc.h"
 #include "GameHandler.h"
+#include "GroundItem.h"
 
+class Camera;
 class Config;
 class Engine;
+class Player;
 struct SceneNode;
 
 struct Hiscore
@@ -53,6 +56,10 @@ public:
 	~Game();
 	bool Start();
 
+	static Game& Get() { return *_game; }
+
+	Camera& GetCamera();
+
 private:
 	void OnCleanup() override;
 	void OnTick(float dt) override;
@@ -69,10 +76,14 @@ private:
 	void SaveHiscores();
 	bool AddHiscore(Hiscore* hi);
 
+	void SaveGame(FileWriter& f);
+	void LoadGame(FileReader& f);
+
 	cstring GetWindowTitle();
 
 	void ConfigureLogger();
 
+	static Game* _game;
 	struct Options
 	{
 		INT2 window_size;
@@ -84,8 +95,11 @@ private:
 	Engine* engine;
 	Config* config;
 	string title, compile_time;
-	SceneNode* player;
+	Player* player;
 	SceneNode* marker[3];
 
 	vector<Hiscore*> hiscores;
+
+	// LEVEL
+	vector<GroundItem*> items;
 };

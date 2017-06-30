@@ -6,17 +6,18 @@
 #include "GameLoader.h"
 #include "Input.h"
 #include "Item.h"
+#include "Player.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "SceneNode.h"
 #include "UnitData.h"
 #include "Version.h"
 
-#include "Window.h"
-#include "Color.h"
+Game* Game::_game;
 
 Game::Game() : config(nullptr), engine(new Engine)
 {
+	_game = this;
 	compile_time = GetCompileTime();
 	g_logger = new PreLogger;
 	g_logger->LogStart();
@@ -120,19 +121,36 @@ bool Game::InitGame()
 		}
 		
 		Scene& scene = engine->GetScene();
-		player = new SceneNode(res_mgr.LoadMesh("data/human.qmsh"));
-		scene.Add(player);
+
+		// player
+		player = new Player;
+		player->unit = new Unit;
+		player->unit->node = new SceneNode(res_mgr.LoadMesh("data/human.qmsh"));
+		scene.Add(player->unit->node);
+
+		// floor
 		auto floor = new SceneNode(res_mgr.LoadMesh("data/floor.qmsh"));
 		scene.Add(floor);
+
+		// camera
 		auto& camera = scene.GetCamera();
 		camera.mode = Camera::ThirdPersonSide;
-		camera.target = player;
+		camera.target = player->unit->node;
 		camera.height = 1.7f;
 		for(int i = 0; i < 3; ++i)
 		{
 			marker[i] = new SceneNode(res_mgr.LoadMesh("data/marker.qmsh"));
 			scene.Add(marker[i]);
 		}
+
+		// test ground item
+		GroundItem* item = new GroundItem;
+		item->item = GetItem("handgun");
+		item->ammo_count = 8;
+		item->node = new SceneNode(res_mgr.LoadMesh("data/bag.qmsh"));
+		item->node->pos = VEC3(3, 0, 0);
+		scene.Add(item->node);
+		items.push_back(item);
 
 		return true;
 	}
@@ -153,18 +171,7 @@ void Game::OnTick(float dt)
 		return;
 	}
 
-	const float c_cam_angle_min = PI + 0.1f;
-	const float c_cam_angle_max = PI*1.8f - 0.1f;
-
-	auto& scene = engine->GetScene();
-	auto& camera = scene.GetCamera();
-	int div = 400;
-	camera.rot.y += -float(Input.GetMouseMove().y) / div;
-	if(camera.rot.y > c_cam_angle_max)
-		camera.rot.y = c_cam_angle_max;
-	if(camera.rot.y < c_cam_angle_min)
-		camera.rot.y = c_cam_angle_min;
-	camera.rot.x = Clip(camera.rot.x + float(Input.GetMouseMove().x) / div);
+	player->Update(dt);
 
 	extern VEC3 g_from, g_to, g_from2;
 
@@ -174,69 +181,6 @@ void Game::OnTick(float dt)
 	marker[1]->tint = VEC3(0, 1, 0);
 	marker[2]->pos = g_from2;
 	marker[2]->tint = VEC3(0, 0, 1);
-
-	// scroll distance
-	camera.distance = Clamp(camera.distance - float(Input.GetMouseWheel()), 0.5f, 6.f);
-
-
-	// rotate player to face camera
-	float dif = abs(camera.rot.x - player->rot.y);
-	if(dif >= 0.1f)
-		player->rot.y = camera.rot.x;
-	
-	int movex = 0, movey = 0;
-	if(Input.Down('W'))
-		movey = 1;
-	if(Input.Down('S'))
-		movey -= 1;
-	if(Input.Down('A'))
-		movex = -1;
-	if(Input.Down('D'))
-		movex += 1;
-
-	if(movex != 0 || movey != 0)
-	{
-		float speed, dir;
-		if(movey == 1)
-		{
-			if(movex == 0)
-			{
-				dir = ToRadians(180.f);
-				speed = 1.f;
-			}
-			else
-			{
-				speed = 0.75f;
-				if(movex == -1)
-					dir = ToRadians(145.f);
-				else
-					dir = ToRadians(215.f);
-			}
-		}
-		else if(movey == -1)
-		{
-			speed = 0.25f;
-			if(movex == 0)
-				dir = ToRadians(0.f);
-			else if(movex == -1)
-				dir = ToRadians(35.f);
-			else
-				dir = ToRadians(325.f);
-		}
-		else
-		{
-			speed = 0.5f;
-			if(movex == -1)
-				dir = ToRadians(90.f);
-			else
-				dir = ToRadians(270.f);
-		}
-
-		dir = Clip(dir + camera.rot.x);
-
-		VEC3 move = VEC3(sin(dir), 0, cos(dir)) * 20.f * speed * dt;
-		player->pos += move;
-	}
 }
 
 void Game::OnCleanup()
@@ -385,4 +329,42 @@ bool Game::AddHiscore(Hiscore* hi)
 		SaveHiscores();
 		return true;
 	}
+}
+
+Camera& Game::GetCamera()
+{
+	return engine->GetScene().GetCamera();
+}
+
+void Game::SaveGame(FileWriter& f)
+{
+	f.Write("RSSV", 4);
+	f.WriteCasted<byte>(0); // version
+
+	f << items.size();
+	for(auto item : items)
+	{
+		f << item->node->pos;
+		f << item->item->id;
+		f << item->ammo_count;
+	}
+}
+
+bool Game::LoadGame(FileReader& f)
+{
+	char sign[4];
+	if(!f.Read(sign, 4) || memcmp(sign, "RSSV", 4) != 0)
+	{
+		Error("Invalid file signature.");
+		return false;
+	}
+
+	byte version;
+	if(!(f >> version) || version != 0)
+	{
+		Error("Invalid version %u (supported 0).", version);
+		return false;
+	}
+
+	return true;
 }
