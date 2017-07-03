@@ -98,6 +98,8 @@ void Scene::Init(Render* _render)
 	h_specular_intensity = e->GetParameterByName(nullptr, "specularIntensity");
 	h_specular_hardness = e->GetParameterByName(nullptr, "specularHardness");
 	h_tex_diffuse = e->GetParameterByName(nullptr, "texDiffuse");
+	assert(h_mat_combined && h_mat_world && h_mat_bones && h_tint && h_ambient_color && h_fog_color && h_fog_params && h_light_dir && h_light_color
+		&& h_camera_pos && h_specular_color && h_specular_intensity && h_specular_hardness && h_tex_diffuse);
 }
 
 void Scene::ListDrawObjects()

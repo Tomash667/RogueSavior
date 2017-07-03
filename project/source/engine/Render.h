@@ -9,7 +9,8 @@ class Scene;
 enum class Shader
 {
 	Mesh,
-	Animated
+	Animated,
+	Gui
 };
 
 class Render
@@ -25,6 +26,7 @@ public:
 	Scene* GetScene() { return scene; }
 	ID3DXEffect* GetShader(Shader shader);
 	IDirect3DVertexDeclaration9* GetVertexDeclaration(VertexDeclarationId declaration_id) { return vertex_decl[declaration_id]; }
+	const INT2& GetWindowSize() const { return window_size; }
 	void SetGui(Gui* _gui) { gui = _gui; }
 	void SetScene(Scene* _scene) { scene = _scene; }
 

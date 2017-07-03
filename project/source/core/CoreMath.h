@@ -549,6 +549,7 @@ struct VEC2
 	VEC2() {}
 	VEC2(float x, float y) : x(x), y(y) {}
 	VEC2(const VEC2& v) : x(v.x), y(v.y) {}
+	VEC2(const INT2& i) : x(float(i.x)), y(float(i.y)) {}
 
 	VEC2& operator += (const VEC2& v)
 	{

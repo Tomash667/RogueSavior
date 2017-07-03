@@ -13,6 +13,9 @@
     <Filter Include="3. game">
       <UniqueIdentifier>{9ecac170-171d-45db-a554-80c9cda366ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2. engine\gui">
+      <UniqueIdentifier>{18e99144-a74b-4817-9d42-7fc6eb9a2e95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Pch.h" />
@@ -148,14 +151,17 @@
     <ClInclude Include="source\game\GroundItem.h">
       <Filter>3. game</Filter>
     </ClInclude>
-    <ClInclude Include="source\engine\Gui.h">
-      <Filter>2. engine</Filter>
-    </ClInclude>
     <ClInclude Include="source\engine\Control.h">
-      <Filter>2. engine</Filter>
+      <Filter>2. engine\gui</Filter>
     </ClInclude>
     <ClInclude Include="source\engine\Sprite.h">
-      <Filter>2. engine</Filter>
+      <Filter>2. engine\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\Gui.h">
+      <Filter>2. engine\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\Container.h">
+      <Filter>2. engine\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -234,7 +240,13 @@
       <Filter>3. game</Filter>
     </ClCompile>
     <ClCompile Include="source\engine\Gui.cpp">
-      <Filter>2. engine</Filter>
+      <Filter>2. engine\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\Sprite.cpp">
+      <Filter>2. engine\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\Container.cpp">
+      <Filter>2. engine\gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

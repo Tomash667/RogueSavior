@@ -9,8 +9,8 @@
 #define BACKBUFFER_FORMAT D3DFMT_A8R8G8B8
 #define ZBUFFER_FORMAT D3DFMT_D24S8
 
-Render::Render() : d3d(nullptr), device(nullptr), scene(nullptr), lost_device(false), resources_released(false), effect_pool(nullptr), e_mesh(nullptr), e_animated(nullptr),
-e_gui(nullptr)
+Render::Render() : d3d(nullptr), device(nullptr), scene(nullptr), lost_device(false), resources_released(false), effect_pool(nullptr), e_mesh(nullptr),
+e_animated(nullptr), e_gui(nullptr)
 {
 
 }
@@ -19,6 +19,7 @@ Render::~Render()
 {
 	SafeRelease(e_mesh);
 	SafeRelease(e_animated);
+	SafeRelease(e_gui);
 	SafeRelease(effect_pool);
 	SafeRelease(device);
 	SafeRelease(d3d);
@@ -250,6 +251,8 @@ ID3DXEffect* Render::GetShader(Shader shader)
 		return e_mesh;
 	case Shader::Animated:
 		return e_animated;
+	case Shader::Gui:
+		return e_gui;
 	default:
 		return nullptr;
 	}
@@ -261,6 +264,7 @@ void Render::LoadShaders()
 
 	e_mesh = LoadShader("data/shaders/mesh.fx", effect_pool);
 	e_animated = LoadShader("data/shaders/mesh.fx", effect_pool, "ANIMATED");
+	e_gui = LoadShader("data/shaders/gui.fx", nullptr);
 }
 
 ID3DXEffect* Render::LoadShader(cstring name, ID3DXEffectPool* pool, cstring param)
