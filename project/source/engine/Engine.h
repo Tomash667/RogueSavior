@@ -3,6 +3,7 @@
 #include "Timer.h"
 
 class GameHandler;
+class Gui;
 class Render;
 class ResourceManager;
 class Scene;
@@ -23,6 +24,7 @@ public:
 	Engine();
 	~Engine();
 
+	Gui& GetGui() { return *gui; }
 	ResourceManager& GetResourceManager() { return *resource_manager; }
 	Scene& GetScene() { return *scene; }
 	Window& GetWindow() { return *window; }
@@ -40,6 +42,7 @@ private:
 	Window* window;
 	ResourceManager* resource_manager;
 	Scene* scene;
+	Gui* gui;
 	Timer timer;
 	float frame_time, fps;
 	uint frames;

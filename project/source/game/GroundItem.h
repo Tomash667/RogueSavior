@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Item.h"
+
+struct SceneNode;
+
 struct GroundItem
 {
 	SceneNode* node;

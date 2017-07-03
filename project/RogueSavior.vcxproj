@@ -180,8 +180,10 @@
     <ClInclude Include="source\core\WindowsIncl.h" />
     <ClInclude Include="source\engine\Camera.h" />
     <ClInclude Include="source\engine\Color.h" />
+    <ClInclude Include="source\engine\Control.h" />
     <ClInclude Include="source\engine\Engine.h" />
     <ClInclude Include="source\engine\GameHandler.h" />
+    <ClInclude Include="source\engine\Gui.h" />
     <ClInclude Include="source\engine\Input.h" />
     <ClInclude Include="source\engine\Key.h" />
     <ClInclude Include="source\engine\Mesh.h" />
@@ -191,6 +193,7 @@
     <ClInclude Include="source\engine\ResourceManager.h" />
     <ClInclude Include="source\engine\Scene.h" />
     <ClInclude Include="source\engine\SceneNode.h" />
+    <ClInclude Include="source\engine\Sprite.h" />
     <ClInclude Include="source\engine\Texture.h" />
     <ClInclude Include="source\engine\Version.h" />
     <ClInclude Include="source\engine\VertexDeclaration.h" />
@@ -221,6 +224,7 @@
     <ClCompile Include="source\core\Tokenizer.cpp" />
     <ClCompile Include="source\engine\Camera.cpp" />
     <ClCompile Include="source\engine\Engine.cpp" />
+    <ClCompile Include="source\engine\Gui.cpp" />
     <ClCompile Include="source\engine\Input.cpp" />
     <ClCompile Include="source\engine\Mesh.cpp" />
     <ClCompile Include="source\engine\Render.cpp" />

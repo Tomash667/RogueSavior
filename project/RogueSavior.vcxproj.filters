@@ -148,6 +148,15 @@
     <ClInclude Include="source\game\GroundItem.h">
       <Filter>3. game</Filter>
     </ClInclude>
+    <ClInclude Include="source\engine\Gui.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\Control.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\Sprite.h">
+      <Filter>2. engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Pch.cpp" />
@@ -223,6 +232,9 @@
     </ClCompile>
     <ClCompile Include="source\game\Unit.cpp">
       <Filter>3. game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\Gui.cpp">
+      <Filter>2. engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -77,7 +77,7 @@ private:
 	bool AddHiscore(Hiscore* hi);
 
 	void SaveGame(FileWriter& f);
-	void LoadGame(FileReader& f);
+	bool LoadGame(FileReader& f);
 
 	cstring GetWindowTitle();
 
@@ -96,7 +96,6 @@ private:
 	Config* config;
 	string title, compile_time;
 	Player* player;
-	SceneNode* marker[3];
 
 	vector<Hiscore*> hiscores;
 

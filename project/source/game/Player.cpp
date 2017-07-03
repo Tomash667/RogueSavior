@@ -20,10 +20,12 @@ void Player::Update(float dt)
 		camera.rot.y = c_cam_angle_min;
 	camera.rot.x = Clip(camera.rot.x + float(Input.GetMouseMove().x) / div);
 
+	if(Input.PressedRelease(K_MBUTTON))
+		camera.shift.x = -camera.shift.x;
 	
 
 	// scroll distance
-	camera.distance = Clamp(camera.distance - float(Input.GetMouseWheel()), 0.5f, 6.f);
+	camera.distance = Clamp(camera.distance - float(Input.GetMouseWheel()), 1.5f, 3.f);
 
 
 	// rotate player to face camera

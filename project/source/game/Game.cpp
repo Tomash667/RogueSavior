@@ -4,12 +4,14 @@
 #include "Engine.h"
 #include "Game.h"
 #include "GameLoader.h"
+#include "Gui.h"
 #include "Input.h"
 #include "Item.h"
 #include "Player.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "SceneNode.h"
+#include "Sprite.h"
 #include "UnitData.h"
 #include "Version.h"
 
@@ -27,6 +29,10 @@ Game::Game() : config(nullptr), engine(new Engine)
 
 Game::~Game()
 {
+	DeleteElements(items);
+	delete player->unit;
+	delete player;
+
 	delete engine;
 	delete config;
 
@@ -134,14 +140,10 @@ bool Game::InitGame()
 
 		// camera
 		auto& camera = scene.GetCamera();
-		camera.mode = Camera::ThirdPersonSide;
+		camera.mode = Camera::ThirdPerson;
 		camera.target = player->unit->node;
 		camera.height = 1.7f;
-		for(int i = 0; i < 3; ++i)
-		{
-			marker[i] = new SceneNode(res_mgr.LoadMesh("data/marker.qmsh"));
-			scene.Add(marker[i]);
-		}
+		camera.shift = VEC2(0.5f, 0.f);
 
 		// test ground item
 		GroundItem* item = new GroundItem;
@@ -151,6 +153,12 @@ bool Game::InitGame()
 		item->node->pos = VEC3(3, 0, 0);
 		scene.Add(item->node);
 		items.push_back(item);
+
+		// gui
+		auto sprite = new Sprite(res_mgr.LoadTexture("data/dot.png"));
+		sprite->SetPos(VEC2(0.5f - 0.01f, 0.5f - 0.01f));
+		sprite->SetSize(VEC2(0.2f, 0.2f));
+		engine->GetGui().Add(sprite);
 
 		return true;
 	}
@@ -172,15 +180,6 @@ void Game::OnTick(float dt)
 	}
 
 	player->Update(dt);
-
-	extern VEC3 g_from, g_to, g_from2;
-
-	marker[0]->pos = g_to;
-	marker[0]->tint = VEC3(1, 0, 0);
-	marker[1]->pos = g_from;
-	marker[1]->tint = VEC3(0, 1, 0);
-	marker[2]->pos = g_from2;
-	marker[2]->tint = VEC3(0, 0, 1);
 }
 
 void Game::OnCleanup()

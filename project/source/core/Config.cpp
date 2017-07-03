@@ -145,6 +145,7 @@ bool Config::Load()
 				item->id = id;
 				item->type = ConfigItem::Unknown;
 				item->parent = parent;
+				item->index = (int)parent->childs.size();
 				item->value = 0;
 				item->backing_field = false;
 				parent->childs.push_back(item);

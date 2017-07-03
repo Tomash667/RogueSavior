@@ -2,19 +2,21 @@
 #include "Core.h"
 #include "Engine.h"
 #include "GameHandler.h"
+#include "Gui.h"
 #include "Input.h"
 #include "Render.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "Window.h"
 
-Engine::Engine() : render(nullptr), resource_manager(nullptr), scene(nullptr), window(nullptr), closing(false), inside_loop(false)
+Engine::Engine() : render(nullptr), resource_manager(nullptr), scene(nullptr), gui(nullptr), window(nullptr), closing(false), inside_loop(false)
 {
 
 }
 
 Engine::~Engine()
 {
+	delete gui;
 	delete scene;
 	delete resource_manager;
 	delete render;
@@ -43,6 +45,9 @@ bool Engine::Init(const EngineInitOptions& options)
 
 		scene = new Scene;
 		scene->Init(render);
+
+		gui = new Gui;
+		gui->Init(render);
 	}
 	catch(cstring err)
 	{

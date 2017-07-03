@@ -1,5 +1,6 @@
 #include "Pch.h"
 #include "Core.h"
+#include "Gui.h"
 #include "Render.h"
 #include "Scene.h"
 #include "DirectXIncl.h"
@@ -224,6 +225,8 @@ void Render::Draw()
 	V(device->BeginScene());
 
 	scene->Draw();
+	if(gui)
+		gui->Draw();
 
 	V(device->EndScene());
 	hr = device->Present(nullptr, nullptr, hwnd, nullptr);

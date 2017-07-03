@@ -14,9 +14,49 @@ bool Unit::CanReload()
 	return HaveItem(wep.ammo);
 }
 
-bool Unit::HaveItem(Item* item) const
+Ammo* Unit::GetAmmo() const
+{
+	if(weapon && weapon->type == ItemType::RangedWeapon)
+		return ((RangedWeapon*)weapon)->ammo;
+	else
+		return nullptr;
+}
+
+uint Unit::CountItem(Item* item, bool equipped) const
+{
+	uint count = 0u;
+	if(equipped)
+	{
+		if(weapon == item)
+			++count;
+	}
+	if(item->stack_size == 1u)
+	{
+		for(auto& slot : items)
+		{
+			if(slot.item == item)
+				++count;
+		}
+	}
+	else
+	{
+		for(auto& slot : items)
+		{
+			if(slot.item == item)
+				count += slot.count;
+		}
+	}
+	return count;
+}
+
+bool Unit::HaveItem(Item* item, bool equipped) const
 {
 	assert(item);
+	if(equipped)
+	{
+		if(item == weapon)
+			return true;
+	}
 	for(auto& slot : items)
 	{
 		if(slot.item == item)
@@ -31,7 +71,7 @@ void Unit::Reload()
 	// start animation
 }
 
-uint Unit::RemoveItem(Item* item, uint count)
+uint Unit::RemoveItem(Item* item, uint count, bool equipped)
 {
 	assert(item && count > 0u);
 	uint removed = 0u;
@@ -50,18 +90,30 @@ uint Unit::RemoveItem(Item* item, uint count)
 	}
 	else
 	{
-		// TODO
-		/*for(auto& slot : items)
+		for(auto& slot : items)
 		{
 			if(slot.item == item)
 			{
-				slot.count -= ma
-				slot.item = nullptr;
-				++removed;
+				uint to_remove = max(slot.count, count - removed);
+				slot.count -= to_remove;
+				if(slot.count == 0u)
+					slot.item = nullptr;
+				removed += to_remove;
 				if(removed == count)
 					return removed;
 			}
-		}*/
+		}
+	}
+	if(equipped)
+	{
+		if(weapon == item)
+		{
+			++removed;
+			weapon = nullptr;
+			ammo = 0u;
+			if(removed == count)
+				return removed;
+		}
 	}
 	return removed;
 }
