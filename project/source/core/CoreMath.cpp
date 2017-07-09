@@ -4,92 +4,45 @@
 
 #define FLOAT_ALMOST_ZERO(F) ((absolute_cast<unsigned>(F) & 0x7f800000L) == 0)
 
-VEC3& VEC3::Normalize()
-{
-	D3DXVec3Normalize((D3DXVECTOR3*)this, (D3DXVECTOR3*)this);
-	return *this;
-}
+const VEC2 VEC2::Zero = { 0.f, 0.f };
+const VEC2 VEC2::One = { 1.f, 1.f };
+const VEC2 VEC2::UnitX = { 1.f, 0.f };
+const VEC2 VEC2::UnitY = { 0.f, 1.f };
 
-VEC3 VEC3::TransformCoord(const MATRIX& m) const
-{
-	VEC3 result;
-	D3DXVec3TransformCoord((D3DXVECTOR3*)&result, (const D3DXVECTOR3*)this, (const D3DXMATRIX*)&m);
-	return result;
-}
+const VEC3 VEC3::Zero = { 0.f, 0.f, 0.f };
+const VEC3 VEC3::One = { 1.f, 1.f, 1.f };
+const VEC3 VEC3::UnitX = { 1.f, 0.f, 0.f };
+const VEC3 VEC3::UnitY = { 0.f, 1.f, 0.f };
+const VEC3 VEC3::UnitZ = { 0.f, 0.f, 1.f };
+const VEC3 VEC3::Up = { 0.f, 1.f, 0.f };
+const VEC3 VEC3::Down = { 0.f, -1.f, 0.f };
+const VEC3 VEC3::Right = { 1.f, 0.f, 0.f };
+const VEC3 VEC3::Left = { -1.f, 0.f, 0.f };
+const VEC3 VEC3::Forward = { 0.f, 0.f, -1.f };
+const VEC3 VEC3::Backward = { 0.f, 0.f, 1.f };
 
-VEC3& VEC3::TransformCoordSelf(const MATRIX& m)
-{
-	D3DXVec3TransformCoord((D3DXVECTOR3*)this, (D3DXVECTOR3*)this, (const D3DXMATRIX*)&m);
-	return *this;
-}
+const VEC4 VEC4::Zero = { 0.f, 0.f, 0.f, 0.f };
+const VEC4 VEC4::One = { 1.f, 1.f, 1.f, 1.f };
+const VEC4 VEC4::UnitX = { 1.f, 0.f, 0.f, 0.f };
+const VEC4 VEC4::UnitY = { 0.f, 1.f, 0.f, 0.f };
+const VEC4 VEC4::UnitZ = { 0.f, 0.f, 1.f, 0.f };
+const VEC4 VEC4::UnitW = { 0.f, 0.f, 0.f, 1.f };
 
-MATRIX& MATRIX::Identity()
-{
-	_11 = 1.f; _12 = 0.f; _13 = 0.f; _14 = 0.f;
-	_21 = 0.f; _22 = 1.f; _23 = 0.f; _24 = 0.f;
-	_31 = 0.f; _32 = 0.f; _33 = 1.f; _34 = 0.f;
-	_41 = 0.f; _42 = 0.f; _43 = 0.f; _44 = 1.f;
-	return *this;
-}
+const MATRIX MATRIX::IdentityMatrix = {
+	1.f, 0.f, 0.f, 0.f,
+	0.f, 1.f, 0.f, 0.f,
+	0.f, 0.f, 1.f, 0.f,
+	0.f, 0.f, 0.f, 1.f
+};
 
-bool MATRIX::Inverse(MATRIX& result) const
-{
-	D3DXMATRIX* result_ptr = D3DXMatrixInverse((D3DXMATRIX*)&result, nullptr, (D3DXMATRIX*)this);
-	return result_ptr != nullptr;
-}
-
-MATRIX& MATRIX::LookAt(const VEC3& from, const VEC3& to, const VEC3& up)
-{
-	D3DXMatrixLookAtLH((D3DXMATRIX*)this, (const D3DXVECTOR3*)&from, (const D3DXVECTOR3*)&to, (const D3DXVECTOR3*)&up);
-	return *this;
-}
-
-MATRIX& MATRIX::Multiply(const MATRIX& mat)
-{
-	D3DXMatrixMultiply((D3DXMATRIX*)this, (D3DXMATRIX*)this, (D3DXMATRIX*)&mat);
-	return *this;
-}
-
-MATRIX& MATRIX::Multiply(const MATRIX& mat1, const MATRIX& mat2)
-{
-	D3DXMatrixMultiply((D3DXMATRIX*)this, (D3DXMATRIX*)&mat1, (D3DXMATRIX*)&mat2);
-	return *this;
-}
-
-MATRIX& MATRIX::Perspective(float fov, float aspect, const VEC2& draw_range)
-{
-	D3DXMatrixPerspectiveFovLH((D3DXMATRIX*)this, fov, aspect, draw_range.x, draw_range.y);
-	return *this;
-}
-
-MATRIX& MATRIX::Rotation(float yaw, float pitch, float roll)
-{
-	D3DXMatrixRotationYawPitchRoll((D3DXMATRIX*)this, yaw, pitch, roll);
-	return *this;
-}
-
-MATRIX& MATRIX::Translation(const VEC3& pos)
-{
-	D3DXMatrixTranslation((D3DXMATRIX*)this, pos.x, pos.y, pos.z);
-	return *this;
-}
-
-float PLANE::DotCoord(const VEC3& v) const
-{
-	return D3DXPlaneDotCoord((const D3DXPLANE*)this, (const D3DXVECTOR3*)&v);
-}
-
-void PLANE::Normalize()
-{
-	D3DXPlaneNormalize((D3DXPLANE*)this, (D3DXPLANE*)this);
-}
+const QUAT QUAT::Identity = { 0.f, 0.f, 0.f, 1.f };
 
 bool Intersect3Planes(const PLANE& P1, const PLANE& P2, const PLANE& P3, VEC3& OutP)
 {
 	float fDet;
-	float MN[9] = { P1.a, P1.b, P1.c, P2.a, P2.b, P2.c, P3.a, P3.b, P3.c };
+	float MN[9] = { P1.x, P1.y, P1.z, P2.x, P2.y, P2.z, P3.x, P3.y, P3.z };
 	float IMN[9] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
-	float MD[3] = { -P1.d, -P2.d , -P3.d };
+	float MD[3] = { -P1.w, -P2.w , -P3.w };
 
 	IMN[0] = MN[4] * MN[8] - MN[5] * MN[7];
 	IMN[3] = -(MN[3] * MN[8] - MN[5] * MN[6]);
@@ -129,45 +82,45 @@ bool Intersect3Planes(const PLANE& P1, const PLANE& P2, const PLANE& P3, VEC3& O
 void FrustumPlanes::Set(const MATRIX& worldViewProj)
 {
 	// Left clipping plane
-	planes[0].a = worldViewProj._14 + worldViewProj._11;
-	planes[0].b = worldViewProj._24 + worldViewProj._21;
-	planes[0].c = worldViewProj._34 + worldViewProj._31;
-	planes[0].d = worldViewProj._44 + worldViewProj._41;
+	planes[0].x = worldViewProj._14 + worldViewProj._11;
+	planes[0].y = worldViewProj._24 + worldViewProj._21;
+	planes[0].z = worldViewProj._34 + worldViewProj._31;
+	planes[0].w = worldViewProj._44 + worldViewProj._41;
 	planes[0].Normalize();
 
 	// Right clipping plane
-	planes[1].a = worldViewProj._14 - worldViewProj._11;
-	planes[1].b = worldViewProj._24 - worldViewProj._21;
-	planes[1].c = worldViewProj._34 - worldViewProj._31;
-	planes[1].d = worldViewProj._44 - worldViewProj._41;
+	planes[1].x = worldViewProj._14 - worldViewProj._11;
+	planes[1].y = worldViewProj._24 - worldViewProj._21;
+	planes[1].z = worldViewProj._34 - worldViewProj._31;
+	planes[1].w = worldViewProj._44 - worldViewProj._41;
 	planes[1].Normalize();
 
 	// Top clipping plane
-	planes[2].a = worldViewProj._14 - worldViewProj._12;
-	planes[2].b = worldViewProj._24 - worldViewProj._22;
-	planes[2].c = worldViewProj._34 - worldViewProj._32;
-	planes[2].d = worldViewProj._44 - worldViewProj._42;
+	planes[2].x = worldViewProj._14 - worldViewProj._12;
+	planes[2].y = worldViewProj._24 - worldViewProj._22;
+	planes[2].z = worldViewProj._34 - worldViewProj._32;
+	planes[2].w = worldViewProj._44 - worldViewProj._42;
 	planes[2].Normalize();
 
 	// Bottom clipping plane
-	planes[3].a = worldViewProj._14 + worldViewProj._12;
-	planes[3].b = worldViewProj._24 + worldViewProj._22;
-	planes[3].c = worldViewProj._34 + worldViewProj._32;
-	planes[3].d = worldViewProj._44 + worldViewProj._42;
+	planes[3].x = worldViewProj._14 + worldViewProj._12;
+	planes[3].y = worldViewProj._24 + worldViewProj._22;
+	planes[3].z = worldViewProj._34 + worldViewProj._32;
+	planes[3].w = worldViewProj._44 + worldViewProj._42;
 	planes[3].Normalize();
 
 	// Near clipping plane
-	planes[4].a = worldViewProj._13;
-	planes[4].b = worldViewProj._23;
-	planes[4].c = worldViewProj._33;
-	planes[4].d = worldViewProj._43;
+	planes[4].x = worldViewProj._13;
+	planes[4].y = worldViewProj._23;
+	planes[4].z = worldViewProj._33;
+	planes[4].w = worldViewProj._43;
 	planes[4].Normalize();
 
 	// Far clipping plane
-	planes[5].a = worldViewProj._14 - worldViewProj._13;
-	planes[5].b = worldViewProj._24 - worldViewProj._23;
-	planes[5].c = worldViewProj._34 - worldViewProj._33;
-	planes[5].d = worldViewProj._44 - worldViewProj._43;
+	planes[5].x = worldViewProj._14 - worldViewProj._13;
+	planes[5].y = worldViewProj._24 - worldViewProj._23;
+	planes[5].z = worldViewProj._34 - worldViewProj._33;
+	planes[5].w = worldViewProj._44 - worldViewProj._43;
 	planes[5].Normalize();
 }
 
@@ -199,14 +152,14 @@ void FrustumPlanes::GetPoints(const MATRIX& worldViewProj, VEC3* points)
 		VEC3(-1.f, +1.f, 1.f), VEC3(+1.f, +1.f, 1.f) };
 
 	for(int i = 0; i < 8; ++i)
-		points[i] = P[i].TransformCoord(worldViewProjInv);
+		points[i] = VEC3::Transform(P[i], worldViewProjInv);
 }
 
 bool FrustumPlanes::PointInFrustum(const VEC3 &p) const
 {
 	for(int i = 0; i < 6; ++i)
 	{
-		if(planes[i].DotCoord(p) <= 0.f)
+		if(planes[i].DotCoordinate(p) <= 0.f)
 			return false;
 	}
 
@@ -219,22 +172,22 @@ bool FrustumPlanes::BoxToFrustum(const BOX& box) const
 
 	for(int i = 0; i < 6; i++)
 	{
-		if(planes[i].a <= 0.0f)
+		if(planes[i].x <= 0.0f)
 			vmin.x = box.v1.x;
 		else
 			vmin.x = box.v2.x;
 
-		if(planes[i].b <= 0.0f)
+		if(planes[i].y <= 0.0f)
 			vmin.y = box.v1.y;
 		else
 			vmin.y = box.v2.y;
 
-		if(planes[i].c <= 0.0f)
+		if(planes[i].z <= 0.0f)
 			vmin.z = box.v1.z;
 		else
 			vmin.z = box.v2.z;
 
-		if(planes[i].DotCoord(vmin) < 0.0f)
+		if(planes[i].DotCoordinate(vmin) < 0.0f)
 			return false;
 	}
 
@@ -261,7 +214,7 @@ bool FrustumPlanes::SphereToFrustum(const VEC3& sphere_center, float sphere_radi
 
 	for(int i = 0; i < 6; ++i)
 	{
-		if(planes[i].DotCoord(sphere_center) <= sphere_radius)
+		if(planes[i].DotCoordinate(sphere_center) <= sphere_radius)
 			return false;
 	}
 
@@ -272,7 +225,7 @@ bool FrustumPlanes::SphereInFrustum(const VEC3& sphere_center, float sphere_radi
 {
 	for(int i = 0; i < 6; ++i)
 	{
-		if(planes[i].DotCoord(sphere_center) < sphere_radius)
+		if(planes[i].DotCoordinate(sphere_center) < sphere_radius)
 			return false;
 	}
 

@@ -21,6 +21,7 @@
 #include <cstdarg>
 #include <cassert>
 #include <thread>
+#include <DirectXMath.h>
 
 #include "FastFunc.h"
 

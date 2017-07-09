@@ -310,6 +310,6 @@ void Mesh::SetupBoneMatrices()
 		bone.mat.Inverse(model_to_bone[i]);
 
 		if(bone.parent > 0)
-			model_to_bone[i].Multiply(model_to_bone[bone.parent], model_to_bone[i]);
+			model_to_bone[i] = model_to_bone[bone.parent] * model_to_bone[i];
 	}
 }

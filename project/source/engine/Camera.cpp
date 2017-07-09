@@ -118,7 +118,7 @@ void Camera::UpdateFrustum()
 		UpdateProjection();
 	if(update_frustum)
 	{
-		mat_viewproj.Multiply(mat_view, mat_proj);
+		mat_viewproj = mat_view * mat_proj;
 		frustum.Set(mat_viewproj);
 		update_frustum = false;
 	}
@@ -126,14 +126,14 @@ void Camera::UpdateFrustum()
 
 void Camera::UpdateProjection()
 {
-	mat_proj.Perspective(fov, aspect, draw_range);
+	mat_proj = MATRIX::CreatePerspectiveFieldOfView(fov, aspect, draw_range.x, draw_range.y);
 	update_proj = false;
 	update_frustum = true;
 }
 
 void Camera::UpdateView()
 {
-	mat_view.LookAt(from, to, up);
+	mat_view = MATRIX::CreateLookAt(from, to, up);
 	update_view = false;
 	update_frustum = true;
 }
@@ -151,9 +151,8 @@ void Camera::Update(float dt)
 	VEC3 to = target->pos;
 	to += VEC3(sin(rot.x + PI / 2) * shift.x, height, cos(rot.x + PI / 2) * shift.x);
 	VEC3 dist(0, -distance, 0);
-	MATRIX m;
-	m.Rotation(rot.x, rot.y, 0);
-	dist.TransformCoordSelf(m);
+	MATRIX m = MATRIX::Rotation(rot.x, rot.y, 0);
+	VEC3::TransformNormal(dist, m, dist);
 	VEC3 from = to + dist;
 
 	if(reset)

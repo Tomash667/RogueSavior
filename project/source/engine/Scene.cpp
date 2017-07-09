@@ -48,8 +48,8 @@ void Scene::Draw()
 	for(auto node : to_draw.normal)
 	{
 		auto& mesh = *node->mesh;
-		mat_world.Rotation(node->rot).Multiply(m.Translation(node->pos));
-		mat_combined.Multiply(mat_world, mat_viewproj);
+		mat_world = MATRIX::Rotation(node->rot) * MATRIX::Translation(node->pos);
+		mat_combined = mat_world * mat_viewproj;
 
 		V(device->SetVertexDeclaration(render->GetVertexDeclaration(mesh.vertex_decl)));
 		V(device->SetStreamSource(0, mesh.vb, 0, mesh.vertex_size));
