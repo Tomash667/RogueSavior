@@ -347,7 +347,7 @@ struct INT2
 	INT2(const INT2& i);
 	explicit INT2(int xy);
 	explicit INT2(const VEC2& v);
-	
+
 	// Comparison operators
 	bool operator == (const INT2& i) const;
 	bool operator != (const INT2& i) const;
@@ -372,56 +372,17 @@ struct INT2
 	friend INT2 operator * (int a, const INT2& i);
 
 	// Methods
+	int Clamp(int d) const;
 	int Lerp(float t) const;
 	int Random() const;
+
+	// Static functions
+	static int Distance(const INT2& i1, const INT2& i2);
+	static INT2 Lerp(const INT2& i1, const INT2& i2, float t);
+	static INT2 Max(const INT2& i1, const INT2& i2);
+	static INT2 Min(const INT2& i1, const INT2& i2);
+	static INT2 Random(const INT2& i1, const INT2& i2);
 };
-
-// Return random value in range <x,y>
-inline int Random(const INT2& a)
-{
-	return Random(a.x, a.y);
-}
-
-// Return random point
-inline INT2 Random(const INT2& a, const INT2& b)
-{
-	return INT2(Random(a.x, b.x), Random(a.y, b.y));
-}
-
-// Clamp value to range <x,y>
-inline int Clamp(int f, const INT2& i)
-{
-	if(f > i.y)
-		return i.y;
-	else if(f < i.x)
-		return i.x;
-	else
-		return f;
-}
-
-// Linear interpolation between two points
-inline INT2 Lerp(const INT2& i1, const INT2& i2, float t)
-{
-	return INT2((int)Lerp(float(i1.x), float(i2.x), t), (int)Lerp(float(i1.y), float(i2.y), t));
-}
-
-// Return min x,y from two points
-inline INT2 Min(const INT2& i1, const INT2& i2)
-{
-	return INT2(min(i1.x, i2.x), min(i1.y, i2.y));
-}
-
-// Return max x,y from two points
-inline INT2 Max(const INT2& i1, const INT2& i2)
-{
-	return INT2(max(i1.x, i2.x), max(i1.y, i2.y));
-}
-
-// Return square distance between two points
-inline int Distance(const INT2& pt1, const INT2& pt2)
-{
-	return abs(pt1.x - pt2.x) + abs(pt1.y - pt2.y);
-}
 
 //-----------------------------------------------------------------------------
 // Rectangle using int
@@ -704,7 +665,7 @@ struct VEC4 : XMFLOAT4
 	VEC4(const VEC3& v, float w);
 	VEC4(FXMVECTOR v);
 	explicit VEC4(const XMVECTORF32& v);
-	
+
 	operator XMVECTOR() const;
 
 	// Comparison operators
@@ -792,28 +753,19 @@ struct BOX2D
 {
 	VEC2 v1, v2;
 
-	BOX2D() {}
-	BOX2D(float minx, float miny, float maxx, float maxy) : v1(minx, miny), v2(maxx, maxy)
-	{
-	}
-	BOX2D(const VEC2& v1, const VEC2& v2) : v1(v1), v2(v2)
-	{
-	}
-	BOX2D(const BOX2D& box) : v1(box.v1), v2(box.v2)
-	{
-	}
-	BOX2D(float x, float y) : v1(x, y), v2(x, y)
-	{
-	}
-	explicit BOX2D(const VEC2& v) : v1(v), v2(v)
-	{
-	}
-	BOX2D(const BOX2D& box, float margin) : v1(box.v1.x - margin, box.v1.y - margin), v2(box.v2.x + margin, box.v2.y + margin)
-	{
-	}
-	explicit BOX2D(const Rect& r) : v1(r.p1), v2(r.p2)
-	{
-	}
+	BOX2D();
+	BOX2D(float minx, float miny, float maxx, float maxy);
+	BOX2D(const VEC2& v1, const VEC2& v2);
+	BOX2D(const BOX2D& box);
+	BOX2D(float x, float y);
+	BOX2D(const BOX2D& box, float margin);
+	explicit BOX2D(const VEC2& v);
+
+	// Comparison operators
+	bool operator == (const BOX2D& b) const;
+	bool operator != (const BOX2D& b) const;
+
+	BOX2D& operator = (const BOX2D& b);
 
 	static BOX2D Create(const INT2& pos, const INT2& size)
 	{
@@ -941,7 +893,7 @@ struct BOX2D
 		w = (v2.x - v1.x) / 2;
 		h = (v2.y - v1.y) / 2;
 	}
-	
+
 	float& Left() { return v1.x; }
 	float& Right() { return v2.x; }
 	float& Top() { return v1.y; }
@@ -960,23 +912,13 @@ struct BOX
 {
 	VEC3 v1, v2;
 
-	BOX() {}
-	BOX(float minx, float miny, float minz, float maxx, float maxy, float maxz) : v1(minx, miny, minz), v2(maxx, maxy, maxz)
-	{
-	}
-	BOX(const VEC3& v1, const VEC3& v2) : v1(v1), v2(v2)
-	{
-	}
-	BOX(const BOX& box) : v1(box.v1), v2(box.v2)
-	{
-	}
-	BOX(float x, float y, float z) : v1(x, y, z), v2(x, y, z)
-	{
-	}
-	explicit BOX(const VEC3& v) : v1(v), v2(v)
-	{
-	}
-	
+	BOX();
+	BOX(float minx, float miny, float minz, float maxx, float maxy, float maxz);
+	BOX(const VEC3& v1, const VEC3& v2);
+	BOX(const BOX& box);
+	BOX(float x, float y, float z);
+	explicit BOX(const VEC3& v);
+
 	VEC3 Midpoint() const
 	{
 		return v1 + (v2 - v1) / 2;
@@ -1046,7 +988,7 @@ struct MATRIX : XMFLOAT4X4
 	MATRIX operator/ (float S) const;
 	MATRIX operator/ (const MATRIX& m) const;
 	friend MATRIX operator * (float s, const MATRIX& m);
-	
+
 	// Methods
 	bool Decompose(VEC3& scale, QUAT& rotation, VEC3& translation);
 	float Determinant() const;
@@ -1177,7 +1119,7 @@ struct PLANE : public XMFLOAT4
 
 	// Assignment operators
 	PLANE& operator = (const PLANE& p);
-	
+
 	// Methods
 	float Dot(const VEC4& v) const;
 	float DotCoordinate(const VEC3& position) const;

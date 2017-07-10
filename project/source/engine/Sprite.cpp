@@ -9,5 +9,5 @@ Sprite::Sprite(Texture* tex) : tex(tex)
 
 void Sprite::Draw()
 {
-	gui->DrawSprite(tex, )
+	//gui->DrawSprite(tex, )
 }

@@ -115,6 +115,16 @@ inline INT2 operator * (int a, const INT2& i)
 // Methods
 //------------------------------------------------------------------------------
 
+int INT2::Clamp(int d) const
+{
+	if(d > y)
+		return y;
+	else if(d < x)
+		return x;
+	else
+		return d;
+}
+
 int INT2::Lerp(float t) const
 {
 	return int(t*(y - x)) + x;
@@ -123,6 +133,35 @@ int INT2::Lerp(float t) const
 int INT2::Random() const
 {
 	return ::Random(x, y);
+}
+
+//------------------------------------------------------------------------------
+// Static functions
+//------------------------------------------------------------------------------
+
+inline int INT2::Distance(const INT2& i1, const INT2& i2)
+{
+	return abs(i1.x - i2.x) + abs(i1.y - i2.y);
+}
+
+inline INT2 INT2::Lerp(const INT2& i1, const INT2& i2, float t)
+{
+	return INT2((int)::Lerp(float(i1.x), float(i2.x), t), (int)::Lerp(float(i1.y), float(i2.y), t));
+}
+
+inline INT2 INT2::Max(const INT2& i1, const INT2& i2)
+{
+	return INT2(max(i1.x, i2.x), max(i1.y, i2.y));
+}
+
+inline INT2 INT2::Min(const INT2& i1, const INT2& i2)
+{
+	return INT2(min(i1.x, i2.x), min(i1.y, i2.y));
+}
+
+inline INT2 INT2::Random(const INT2& i1, const INT2& i2)
+{
+	return INT2(::Random(i1.x, i2.x), ::Random(i1.y, i2.y));
 }
 
 //*************************************************************************************************
@@ -1893,6 +1932,98 @@ inline void VEC4::Transform(const VEC4* varray, size_t count, const MATRIX& m, V
 {
 	XMMATRIX M = XMLoadFloat4x4(&m);
 	XMVector4TransformStream(resultArray, sizeof(XMFLOAT4), varray, sizeof(XMFLOAT4), count, M);
+}
+
+//*************************************************************************************************
+//
+// 2d box using floats
+//
+//*************************************************************************************************
+BOX2D::BOX2D()
+{
+
+}
+
+BOX2D::BOX2D(float minx, float miny, float maxx, float maxy) : v1(minx, miny), v2(maxx, maxy)
+{
+
+}
+
+BOX2D::BOX2D(const VEC2& v1, const VEC2& v2) : v1(v1), v2(v2)
+{
+
+}
+
+BOX2D::BOX2D(const BOX2D& box) : v1(box.v1), v2(box.v2)
+{
+
+}
+
+BOX2D::BOX2D(float x, float y) : v1(x, y), v2(x, y)
+{
+
+}
+
+BOX2D::BOX2D(const BOX2D& box, float margin) : v1(box.v1.x - margin, box.v1.y - margin), v2(box.v2.x + margin, box.v2.y + margin)
+{
+
+}
+
+BOX2D::BOX2D(const VEC2& v) : v1(v), v2(v)
+{
+
+}
+
+bool BOX2D::operator == (const BOX2D& b) const
+{
+	return v1 == b.v1 && v2 == b.v2;
+}
+
+bool BOX2D::operator != (const BOX2D& b) const
+{
+	return v1 != b.v1 || v2 != b.v2;
+}
+
+BOX2D& BOX2D::operator = (const BOX2D& b)
+{
+	v1 = b.v1;
+	v2 = b.v2;
+	return *this;
+}
+
+//*************************************************************************************************
+//
+// 3d box using floats
+//
+//*************************************************************************************************
+BOX::BOX()
+{
+
+}
+
+BOX::BOX(float minx, float miny, float minz, float maxx, float maxy, float maxz) : v1(minx, miny, minz), v2(maxx, maxy, maxz)
+{
+
+}
+
+BOX::BOX(const VEC3& v1, const VEC3& v2) : v1(v1), v2(v2)
+{
+
+}
+
+BOX::BOX(const BOX& box) : v1(box.v1), v2(box.v2)
+{
+
+}
+
+BOX::BOX(float x, float y, float z) : v1(x, y, z), v2(x, y, z)
+{
+
+}
+
+BOX::BOX(const VEC3& v) : v1(v), v2(v)
+{
+
 }
 
 //*************************************************************************************************
