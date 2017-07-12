@@ -785,17 +785,20 @@ struct BOX2D
 		return BOX2D(v1.x / v.x, v1.y / v.y, v2.x / v.x, v2.y / v.y);
 	}
 
+	// Methods
+	VEC2 GetRandomPoint() const;
+	bool IsValid() const;
+	VEC2 Midpoint() const;
+	VEC2 Size() const;
+	float SizeX() const;
+	float SizeY() const;
+
 	void Set(const INT2& pos, const INT2& size)
 	{
 		v1.x = (float)pos.x;
 		v1.y = (float)pos.y;
 		v2.x = v1.x + (float)size.x;
 		v2.y = v1.y + (float)size.y;
-	}
-
-	VEC2 Midpoint() const
-	{
-		return v1 + (v2 - v1) / 2;
 	}
 
 	void Move(const VEC2& pos)
@@ -817,19 +820,7 @@ struct BOX2D
 		return x >= v1.x && x <= v2.x && y >= v1.y && y <= v2.y;
 	}
 
-	float SizeX() const { return abs(v2.x - v1.x); }
-	float SizeY() const { return abs(v2.y - v1.y); }
-	VEC2 Size() const { return VEC2(SizeX(), SizeY()); }
 
-	bool IsValid() const
-	{
-		return v1.x <= v2.x && v1.y <= v2.y;
-	}
-
-	VEC2 GetRandomPos() const
-	{
-		return VEC2(::Random(v1.x, v2.x), ::Random(v1.y, v2.y));
-	}
 	VEC3 GetRandomPos3(float y = 0.f) const
 	{
 		return VEC3(::Random(v1.x, v2.x), y, ::Random(v1.y, v2.y));
@@ -919,31 +910,16 @@ struct BOX
 	BOX(float x, float y, float z);
 	explicit BOX(const VEC3& v);
 
-	VEC3 Midpoint() const
-	{
-		return v1 + (v2 - v1) / 2;
-	}
-
-	float SizeX() const { return abs(v2.x - v1.x); }
-	float SizeY() const { return abs(v2.y - v1.y); }
-	float SizeZ() const { return abs(v2.z - v1.z); }
-	VEC3 Size() const { return VEC3(SizeX(), SizeY(), SizeZ()); }
-	VEC2 SizeXZ() const { return VEC2(SizeX(), SizeZ()); }
-
-	bool IsValid() const
-	{
-		return v1.x <= v2.x && v1.y <= v2.y && v1.z <= v2.z;
-	}
-
-	bool IsInside(const VEC3& v) const
-	{
-		return v.x >= v1.x && v.x <= v2.x && v.y >= v1.y && v.y <= v2.y && v.z >= v1.z && v.z <= v2.z;
-	}
-
-	VEC3 GetRandomPos() const
-	{
-		return VEC3(::Random(v1.x, v2.x), ::Random(v1.y, v2.y), ::Random(v1.z, v2.z));
-	}
+	// Methods
+	VEC3 GetRandomPoint() const;
+	bool IsInside(const VEC3& v) const;
+	bool IsValid() const;
+	VEC3 Midpoint() const;
+	VEC3 Size() const;
+	float SizeX() const;
+	VEC2 SizeXZ() const;
+	float SizeY() const;
+	float SizeZ() const;
 };
 
 //-----------------------------------------------------------------------------
@@ -1128,14 +1104,12 @@ struct PLANE : public XMFLOAT4
 	void Normalize(PLANE& result) const;
 
 	// Static functions
+	static bool Intersect3Planes(const PLANE& p1, const PLANE& p2, const PLANE& p3, VEC3& result);
 	static void Transform(const PLANE& plane, const MATRIX& M, PLANE& result);
 	static PLANE Transform(const PLANE& plane, const MATRIX& M);
 	static void Transform(const PLANE& plane, const QUAT& rotation, PLANE& result);
 	static PLANE Transform(const PLANE& plane, const QUAT& rotation);
 };
-
-// Find intersection of 3 planes
-bool Intersect3Planes(const PLANE& p1, const PLANE& p2, const PLANE& p3, VEC3& result);
 
 //-----------------------------------------------------------------------------
 // Frustrum planes to check objects visible from camera

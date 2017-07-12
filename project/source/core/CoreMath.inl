@@ -5,103 +5,103 @@
 // 2D int point
 //
 //*************************************************************************************************
-INT2::INT2()
+inline INT2::INT2()
 {
 
 }
 
-INT2::INT2(int x, int y) : x(x), y(y)
+inline INT2::INT2(int x, int y) : x(x), y(y)
 {
 
 }
 
-INT2::INT2(const INT2& i) : x(i.x), y(i.y)
+inline INT2::INT2(const INT2& i) : x(i.x), y(i.y)
 {
 
 }
 
-INT2::INT2(int xy) : x(xy), y(xy)
+inline INT2::INT2(int xy) : x(xy), y(xy)
 {
 
 }
 
-INT2::INT2(const VEC2& v) : x(int(v.x)), y(int(v.y))
+inline INT2::INT2(const VEC2& v) : x(int(v.x)), y(int(v.y))
 {
 
 }
 
-bool INT2::operator == (const INT2& i) const
+inline bool INT2::operator == (const INT2& i) const
 {
 	return (x == i.x && y == i.y);
 }
 
-bool INT2::operator != (const INT2& i) const
+inline bool INT2::operator != (const INT2& i) const
 {
 	return (x != i.x || y != i.y);
 }
 
-INT2& INT2::operator = (const INT2& i)
+inline INT2& INT2::operator = (const INT2& i)
 {
 	x = i.x;
 	y = i.y;
 	return *this;
 }
 
-void INT2::operator += (const INT2& i)
+inline void INT2::operator += (const INT2& i)
 {
 	x += i.x;
 	y += i.y;
 }
 
-void INT2::operator -= (const INT2& i)
+inline void INT2::operator -= (const INT2& i)
 {
 	x -= i.x;
 	y -= i.y;
 }
 
-void INT2::operator *= (int a)
+inline void INT2::operator *= (int a)
 {
 	x *= a;
 	y *= a;
 }
 
-void INT2::operator /= (int a)
+inline void INT2::operator /= (int a)
 {
 	x /= a;
 	y /= a;
 }
 
-INT2 INT2::operator + () const
+inline INT2 INT2::operator + () const
 {
 	return *this;
 }
 
-INT2 INT2::operator - () const
+inline INT2 INT2::operator - () const
 {
 	return INT2(-x, -y);
 }
 
-INT2 INT2::operator + (const INT2& xy) const
+inline INT2 INT2::operator + (const INT2& xy) const
 {
 	return INT2(x + xy.x, y + xy.y);
 }
 
-INT2 INT2::operator - (const INT2& xy) const
+inline INT2 INT2::operator - (const INT2& xy) const
 {
 	return INT2(x - xy.x, y - xy.y);
 }
 
-INT2 INT2::operator * (int a) const
+inline INT2 INT2::operator * (int a) const
 {
 	return INT2(x*a, y*a);
 }
 
-INT2 INT2::operator * (float a) const
+inline INT2 INT2::operator * (float a) const
 {
 	return INT2(int(a*x), int(a*y));
 }
 
-INT2 INT2::operator / (int a) const
+inline INT2 INT2::operator / (int a) const
 {
 	return INT2(x / a, y / a);
 }
@@ -115,7 +115,7 @@ inline INT2 operator * (int a, const INT2& i)
 // Methods
 //------------------------------------------------------------------------------
 
-int INT2::Clamp(int d) const
+inline int INT2::Clamp(int d) const
 {
 	if(d > y)
 		return y;
@@ -125,12 +125,12 @@ int INT2::Clamp(int d) const
 		return d;
 }
 
-int INT2::Lerp(float t) const
+inline int INT2::Lerp(float t) const
 {
 	return int(t*(y - x)) + x;
 }
 
-int INT2::Random() const
+inline int INT2::Random() const
 {
 	return ::Random(x, y);
 }
@@ -169,75 +169,75 @@ inline INT2 INT2::Random(const INT2& i1, const INT2& i2)
 // 2D float point
 //
 //*************************************************************************************************
-VEC2::VEC2()
+inline VEC2::VEC2()
 {
 
 }
 
-VEC2::VEC2(float x, float y) : XMFLOAT2(x, y)
+inline VEC2::VEC2(float x, float y) : XMFLOAT2(x, y)
 {
 
 }
 
-VEC2::VEC2(const VEC2& v) : XMFLOAT2(v.x, v.y)
+inline VEC2::VEC2(const VEC2& v) : XMFLOAT2(v.x, v.y)
 {
 
 }
 
-VEC2::VEC2(FXMVECTOR v)
+inline VEC2::VEC2(FXMVECTOR v)
 {
 	XMStoreFloat2(this, v);
 }
 
-VEC2::VEC2(float xy) : XMFLOAT2(xy, xy)
+inline VEC2::VEC2(float xy) : XMFLOAT2(xy, xy)
 {
 
 }
 
-VEC2::VEC2(const INT2& i) : XMFLOAT2(float(i.x), float(i.y))
+inline VEC2::VEC2(const INT2& i) : XMFLOAT2(float(i.x), float(i.y))
 {
 
 }
 
-VEC2::VEC2(const XMVECTORF32& v) : XMFLOAT2(v.f[0], v.f[1])
+inline VEC2::VEC2(const XMVECTORF32& v) : XMFLOAT2(v.f[0], v.f[1])
 {
 
 }
 
-VEC2::operator XMVECTOR() const
+inline VEC2::operator XMVECTOR() const
 {
 	return XMLoadFloat2(this);
 }
 
-bool VEC2::operator == (const VEC2& v) const
+inline bool VEC2::operator == (const VEC2& v) const
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR v2 = XMLoadFloat2(&v);
 	return XMVector2Equal(v1, v2);
 }
 
-bool VEC2::operator != (const VEC2& v) const
+inline bool VEC2::operator != (const VEC2& v) const
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR v2 = XMLoadFloat2(&v);
 	return XMVector2NotEqual(v1, v2);
 }
 
-VEC2& VEC2::operator = (const VEC2& v)
+inline VEC2& VEC2::operator = (const VEC2& v)
 {
 	x = v.x;
 	y = v.y;
 	return *this;
 }
 
-VEC2& VEC2::operator = (const XMVECTORF32& v)
+inline VEC2& VEC2::operator = (const XMVECTORF32& v)
 {
 	x = v.f[0];
 	y = v.f[1];
 	return *this;
 }
 
-VEC2& VEC2::operator += (const VEC2& v)
+inline VEC2& VEC2::operator += (const VEC2& v)
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR v2 = XMLoadFloat2(&v);
@@ -246,7 +246,7 @@ VEC2& VEC2::operator += (const VEC2& v)
 	return *this;
 }
 
-VEC2& VEC2::operator -= (const VEC2& v)
+inline VEC2& VEC2::operator -= (const VEC2& v)
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR v2 = XMLoadFloat2(&v);
@@ -255,7 +255,7 @@ VEC2& VEC2::operator -= (const VEC2& v)
 	return *this;
 }
 
-VEC2& VEC2::operator *= (float s)
+inline VEC2& VEC2::operator *= (float s)
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR r = XMVectorScale(v1, s);
@@ -263,7 +263,7 @@ VEC2& VEC2::operator *= (float s)
 	return *this;
 }
 
-VEC2& VEC2::operator /= (float s)
+inline VEC2& VEC2::operator /= (float s)
 {
 	assert(s != 0.f);
 	XMVECTOR v1 = XMLoadFloat2(this);
@@ -272,17 +272,17 @@ VEC2& VEC2::operator /= (float s)
 	return *this;
 }
 
-VEC2 VEC2::operator + () const
+inline VEC2 VEC2::operator + () const
 {
 	return *this;
 }
 
-VEC2 VEC2::operator - () const
+inline VEC2 VEC2::operator - () const
 {
 	return VEC2(-x, -y);
 }
 
-VEC2 VEC2::operator + (const VEC2& v) const
+inline VEC2 VEC2::operator + (const VEC2& v) const
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR v2 = XMLoadFloat2(&v);
@@ -292,7 +292,7 @@ VEC2 VEC2::operator + (const VEC2& v) const
 	return result;
 }
 
-VEC2 VEC2::operator - (const VEC2& v) const
+inline VEC2 VEC2::operator - (const VEC2& v) const
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR v2 = XMLoadFloat2(&v);
@@ -302,7 +302,7 @@ VEC2 VEC2::operator - (const VEC2& v) const
 	return result;
 }
 
-VEC2 VEC2::operator * (float s) const
+inline VEC2 VEC2::operator * (float s) const
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR r = XMVectorScale(v1, s);
@@ -311,7 +311,7 @@ VEC2 VEC2::operator * (float s) const
 	return result;
 }
 
-VEC2 VEC2::operator / (float s) const
+inline VEC2 VEC2::operator / (float s) const
 {
 	assert(s != 0.f);
 	XMVECTOR v1 = XMLoadFloat2(this);
@@ -334,7 +334,7 @@ inline VEC2 operator * (float s, const VEC2& v)
 // Methods
 //------------------------------------------------------------------------------
 
-float VEC2::Clamp(float f) const
+inline float VEC2::Clamp(float f) const
 {
 	if(f > y)
 		return y;
@@ -344,7 +344,7 @@ float VEC2::Clamp(float f) const
 		return f;
 }
 
-void VEC2::Clamp(const VEC2& min, const VEC2& max)
+inline void VEC2::Clamp(const VEC2& min, const VEC2& max)
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR v2 = XMLoadFloat2(&min);
@@ -353,7 +353,7 @@ void VEC2::Clamp(const VEC2& min, const VEC2& max)
 	XMStoreFloat2(this, r);
 }
 
-void VEC2::Clamp(const VEC2& min, const VEC2& max, VEC2& result) const
+inline void VEC2::Clamp(const VEC2& min, const VEC2& max, VEC2& result) const
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR v2 = XMLoadFloat2(&min);
@@ -362,19 +362,19 @@ void VEC2::Clamp(const VEC2& min, const VEC2& max, VEC2& result) const
 	XMStoreFloat2(&result, r);
 }
 
-VEC2 VEC2::Clamped(const VEC2& min, const VEC2& max) const
+inline VEC2 VEC2::Clamped(const VEC2& min, const VEC2& max) const
 {
 	VEC2 result;
 	Clamp(min, max, result);
 	return result;
 }
 
-VEC2 VEC2::Clip() const
+inline VEC2 VEC2::Clip() const
 {
 	return VEC2(::Clip(x), ::Clip(y));
 }
 
-void VEC2::Cross(const VEC2& v, VEC2& result) const
+inline void VEC2::Cross(const VEC2& v, VEC2& result) const
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR v2 = XMLoadFloat2(&v);
@@ -382,14 +382,14 @@ void VEC2::Cross(const VEC2& v, VEC2& result) const
 	XMStoreFloat2(&result, r);
 }
 
-VEC2 VEC2::Cross(const VEC2& v) const
+inline VEC2 VEC2::Cross(const VEC2& v) const
 {
 	VEC2 result;
 	Cross(v, result);
 	return result;
 }
 
-float VEC2::Dot(const VEC2& v) const
+inline float VEC2::Dot(const VEC2& v) const
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR v2 = XMLoadFloat2(&v);
@@ -397,33 +397,33 @@ float VEC2::Dot(const VEC2& v) const
 	return XMVectorGetX(r);
 }
 
-bool VEC2::Equal(const VEC2& v) const
+inline bool VEC2::Equal(const VEC2& v) const
 {
 	return ::Equal(x, v.x) && ::Equal(y, v.y);
 }
 
-bool VEC2::InBounds(const VEC2& bounds) const
+inline bool VEC2::InBounds(const VEC2& bounds) const
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR v2 = XMLoadFloat2(&bounds);
 	return XMVector2InBounds(v1, v2);
 }
 
-float VEC2::Length() const
+inline float VEC2::Length() const
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR r = XMVector2Length(v1);
 	return XMVectorGetX(r);
 }
 
-float VEC2::LengthSquared() const
+inline float VEC2::LengthSquared() const
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR r = XMVector2LengthSq(v1);
 	return XMVectorGetX(r);
 }
 
-VEC2& VEC2::Normalize()
+inline VEC2& VEC2::Normalize()
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR r = XMVector2Normalize(v1);
@@ -431,21 +431,21 @@ VEC2& VEC2::Normalize()
 	return *this;
 }
 
-void VEC2::Normalize(VEC2& v) const
+inline void VEC2::Normalize(VEC2& v) const
 {
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR r = XMVector2Normalize(v1);
 	XMStoreFloat2(&v, r);
 }
 
-VEC2 VEC2::Normalized() const
+inline VEC2 VEC2::Normalized() const
 {
 	VEC2 result;
 	Normalize(result);
 	return result;
 }
 
-float VEC2::Random() const
+inline float VEC2::Random() const
 {
 	return ::Random(x, y);
 }
@@ -784,51 +784,51 @@ inline void VEC2::TransformNormal(const VEC2* varray, size_t count, const MATRIX
 // 3D float point
 //
 //*************************************************************************************************
-VEC3::VEC3()
+inline VEC3::VEC3()
 {
 
 }
 
-VEC3::VEC3(float x, float y, float z) : XMFLOAT3(x, y, z)
+inline VEC3::VEC3(float x, float y, float z) : XMFLOAT3(x, y, z)
 {
 
 }
 
-VEC3::VEC3(const VEC3& v) : XMFLOAT3(v.x, v.y, v.z)
+inline VEC3::VEC3(const VEC3& v) : XMFLOAT3(v.x, v.y, v.z)
 {
 
 }
 
-VEC3::VEC3(FXMVECTOR v)
+inline VEC3::VEC3(FXMVECTOR v)
 {
 	XMStoreFloat3(this, v);
 }
 
-VEC3::VEC3(const XMVECTORF32& v) : XMFLOAT3(v.f[0], v.f[1], v.f[2])
+inline VEC3::VEC3(const XMVECTORF32& v) : XMFLOAT3(v.f[0], v.f[1], v.f[2])
 {
 
 }
 
-VEC3::operator XMVECTOR() const
+inline VEC3::operator XMVECTOR() const
 {
 	return XMLoadFloat3(this);
 }
 
-bool VEC3::operator == (const VEC3& v) const
+inline bool VEC3::operator == (const VEC3& v) const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR v2 = XMLoadFloat3(&v);
 	return XMVector3Equal(v1, v2);
 }
 
-bool VEC3::operator != (const VEC3& v) const
+inline bool VEC3::operator != (const VEC3& v) const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR v2 = XMLoadFloat3(&v);
 	return XMVector3NotEqual(v1, v2);
 }
 
-VEC3& VEC3::operator = (const VEC3& v)
+inline VEC3& VEC3::operator = (const VEC3& v)
 {
 	x = v.x;
 	y = v.y;
@@ -836,7 +836,7 @@ VEC3& VEC3::operator = (const VEC3& v)
 	return *this;
 }
 
-VEC3& VEC3::operator = (const XMVECTORF32& v)
+inline VEC3& VEC3::operator = (const XMVECTORF32& v)
 {
 	x = v.f[0];
 	y = v.f[1];
@@ -844,7 +844,7 @@ VEC3& VEC3::operator = (const XMVECTORF32& v)
 	return *this;
 }
 
-VEC3& VEC3::operator += (const VEC3& v)
+inline VEC3& VEC3::operator += (const VEC3& v)
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR v2 = XMLoadFloat3(&v);
@@ -853,7 +853,7 @@ VEC3& VEC3::operator += (const VEC3& v)
 	return *this;
 }
 
-VEC3& VEC3::operator -= (const VEC3& v)
+inline VEC3& VEC3::operator -= (const VEC3& v)
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR v2 = XMLoadFloat3(&v);
@@ -862,7 +862,7 @@ VEC3& VEC3::operator -= (const VEC3& v)
 	return *this;
 }
 
-VEC3& VEC3::operator *= (float s)
+inline VEC3& VEC3::operator *= (float s)
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR r = XMVectorScale(v1, s);
@@ -870,7 +870,7 @@ VEC3& VEC3::operator *= (float s)
 	return *this;
 }
 
-VEC3& VEC3::operator /= (float s)
+inline VEC3& VEC3::operator /= (float s)
 {
 	assert(s != 0.f);
 	XMVECTOR v1 = XMLoadFloat3(this);
@@ -879,12 +879,12 @@ VEC3& VEC3::operator /= (float s)
 	return *this;
 }
 
-VEC3 VEC3::operator + () const
+inline VEC3 VEC3::operator + () const
 {
 	return *this;
 }
 
-VEC3 VEC3::operator - () const
+inline VEC3 VEC3::operator - () const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR r = XMVectorNegate(v1);
@@ -893,7 +893,7 @@ VEC3 VEC3::operator - () const
 	return result;
 }
 
-VEC3 VEC3::operator + (const VEC3& v) const
+inline VEC3 VEC3::operator + (const VEC3& v) const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR v2 = XMLoadFloat3(&v);
@@ -903,7 +903,7 @@ VEC3 VEC3::operator + (const VEC3& v) const
 	return result;
 }
 
-VEC3 VEC3::operator - (const VEC3& v) const
+inline VEC3 VEC3::operator - (const VEC3& v) const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR v2 = XMLoadFloat3(&v);
@@ -913,7 +913,7 @@ VEC3 VEC3::operator - (const VEC3& v) const
 	return result;
 }
 
-VEC3 VEC3::operator * (float s) const
+inline VEC3 VEC3::operator * (float s) const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR r = XMVectorScale(v1, s);
@@ -922,7 +922,7 @@ VEC3 VEC3::operator * (float s) const
 	return result;
 }
 
-VEC3 VEC3::operator / (float s) const
+inline VEC3 VEC3::operator / (float s) const
 {
 	assert(s != 0.f);
 	XMVECTOR v1 = XMLoadFloat3(this);
@@ -941,7 +941,7 @@ inline VEC3 operator * (float s, const VEC3& v)
 // Methods
 //------------------------------------------------------------------------------
 
-void VEC3::Clamp(const VEC3& vmin, const VEC3& vmax)
+inline void VEC3::Clamp(const VEC3& vmin, const VEC3& vmax)
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR v2 = XMLoadFloat3(&vmin);
@@ -950,7 +950,7 @@ void VEC3::Clamp(const VEC3& vmin, const VEC3& vmax)
 	XMStoreFloat3(this, X);
 }
 
-void VEC3::Clamp(const VEC3& vmin, const VEC3& vmax, VEC3& result) const
+inline void VEC3::Clamp(const VEC3& vmin, const VEC3& vmax, VEC3& result) const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR v2 = XMLoadFloat3(&vmin);
@@ -959,14 +959,14 @@ void VEC3::Clamp(const VEC3& vmin, const VEC3& vmax, VEC3& result) const
 	XMStoreFloat3(&result, X);
 }
 
-VEC3 VEC3::Clamped(const VEC3& min, const VEC3& max) const
+inline VEC3 VEC3::Clamped(const VEC3& min, const VEC3& max) const
 {
 	VEC3 result;
 	Clamp(min, max, result);
 	return result;
 }
 
-void VEC3::Cross(const VEC3& V, VEC3& result) const
+inline void VEC3::Cross(const VEC3& V, VEC3& result) const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR v2 = XMLoadFloat3(&V);
@@ -974,7 +974,7 @@ void VEC3::Cross(const VEC3& V, VEC3& result) const
 	XMStoreFloat3(&result, R);
 }
 
-VEC3 VEC3::Cross(const VEC3& V) const
+inline VEC3 VEC3::Cross(const VEC3& V) const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR v2 = XMLoadFloat3(&V);
@@ -985,7 +985,7 @@ VEC3 VEC3::Cross(const VEC3& V) const
 	return result;
 }
 
-float VEC3::Dot(const VEC3& V) const
+inline float VEC3::Dot(const VEC3& V) const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR v2 = XMLoadFloat3(&V);
@@ -993,38 +993,38 @@ float VEC3::Dot(const VEC3& V) const
 	return XMVectorGetX(X);
 }
 
-bool VEC3::Equal(const VEC3& v) const
+inline bool VEC3::Equal(const VEC3& v) const
 {
 	return ::Equal(x, v.x) && ::Equal(y, v.y) && ::Equal(z, v.z);
 }
 
-bool VEC3::InBounds(const VEC3& Bounds) const
+inline bool VEC3::InBounds(const VEC3& Bounds) const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR v2 = XMLoadFloat3(&Bounds);
 	return XMVector3InBounds(v1, v2);
 }
 
-bool VEC3::IsPositive() const
+inline bool VEC3::IsPositive() const
 {
 	return x >= 0.f && y >= 0.f && z >= 0.f;
 }
 
-float VEC3::Length() const
+inline float VEC3::Length() const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR X = XMVector3Length(v1);
 	return XMVectorGetX(X);
 }
 
-float VEC3::LengthSquared() const
+inline float VEC3::LengthSquared() const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR X = XMVector3LengthSq(v1);
 	return XMVectorGetX(X);
 }
 
-VEC3& VEC3::Normalize()
+inline VEC3& VEC3::Normalize()
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR X = XMVector3Normalize(v1);
@@ -1032,14 +1032,14 @@ VEC3& VEC3::Normalize()
 	return *this;
 }
 
-void VEC3::Normalize(VEC3& result) const
+inline void VEC3::Normalize(VEC3& result) const
 {
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR X = XMVector3Normalize(v1);
 	XMStoreFloat3(&result, X);
 }
 
-VEC3 VEC3::Normalized() const
+inline VEC3 VEC3::Normalized() const
 {
 	VEC3 result;
 	Normalize(result);
@@ -1373,56 +1373,56 @@ inline void VEC3::TransformNormal(const VEC3* varray, size_t count, const MATRIX
 // 4D float point
 //
 //*************************************************************************************************
-VEC4::VEC4()
+inline VEC4::VEC4()
 {
 
 }
 
-VEC4::VEC4(float x, float y, float z, float w) : XMFLOAT4(x, y, z, w)
+inline VEC4::VEC4(float x, float y, float z, float w) : XMFLOAT4(x, y, z, w)
 {
 
 }
 
-VEC4::VEC4(const VEC4& v) : XMFLOAT4(v.x, v.y, v.z, v.w)
+inline VEC4::VEC4(const VEC4& v) : XMFLOAT4(v.x, v.y, v.z, v.w)
 {
 
 }
 
-VEC4::VEC4(const VEC3& v, float w) : XMFLOAT4(v.x, v.y, v.z, w)
+inline VEC4::VEC4(const VEC3& v, float w) : XMFLOAT4(v.x, v.y, v.z, w)
 {
 
 }
 
-VEC4::VEC4(FXMVECTOR v)
+inline VEC4::VEC4(FXMVECTOR v)
 {
 	XMStoreFloat4(this, v);
 }
 
-VEC4::VEC4(const XMVECTORF32& v) : XMFLOAT4(v.f[0], v.f[1], v.f[2], v.f[3])
+inline VEC4::VEC4(const XMVECTORF32& v) : XMFLOAT4(v.f[0], v.f[1], v.f[2], v.f[3])
 {
 
 }
 
-VEC4::operator XMVECTOR() const
+inline VEC4::operator XMVECTOR() const
 {
 	return XMLoadFloat4(this);
 }
 
-bool VEC4::operator == (const VEC4& v) const
+inline bool VEC4::operator == (const VEC4& v) const
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR v2 = XMLoadFloat4(&v);
 	return XMVector4Equal(v1, v2);
 }
 
-bool VEC4::operator != (const VEC4& v) const
+inline bool VEC4::operator != (const VEC4& v) const
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR v2 = XMLoadFloat4(&v);
 	return XMVector4NotEqual(v1, v2);
 }
 
-VEC4& VEC4::operator = (const VEC4& v)
+inline VEC4& VEC4::operator = (const VEC4& v)
 {
 	x = v.x;
 	y = v.y;
@@ -1431,7 +1431,7 @@ VEC4& VEC4::operator = (const VEC4& v)
 	return *this;
 }
 
-VEC4& VEC4::operator = (const XMVECTORF32& v)
+inline VEC4& VEC4::operator = (const XMVECTORF32& v)
 {
 	x = v.f[0];
 	y = v.f[1];
@@ -1440,7 +1440,7 @@ VEC4& VEC4::operator = (const XMVECTORF32& v)
 	return *this;
 }
 
-VEC4& VEC4::operator += (const VEC4& v)
+inline VEC4& VEC4::operator += (const VEC4& v)
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR v2 = XMLoadFloat4(&v);
@@ -1449,7 +1449,7 @@ VEC4& VEC4::operator += (const VEC4& v)
 	return *this;
 }
 
-VEC4& VEC4::operator -= (const VEC4& v)
+inline VEC4& VEC4::operator -= (const VEC4& v)
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR v2 = XMLoadFloat4(&v);
@@ -1458,7 +1458,7 @@ VEC4& VEC4::operator -= (const VEC4& v)
 	return *this;
 }
 
-VEC4& VEC4::operator *= (float s)
+inline VEC4& VEC4::operator *= (float s)
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR r = XMVectorScale(v1, s);
@@ -1466,7 +1466,7 @@ VEC4& VEC4::operator *= (float s)
 	return *this;
 }
 
-VEC4& VEC4::operator /= (float s)
+inline VEC4& VEC4::operator /= (float s)
 {
 	assert(s != 0.f);
 	XMVECTOR v1 = XMLoadFloat4(this);
@@ -1475,12 +1475,12 @@ VEC4& VEC4::operator /= (float s)
 	return *this;
 }
 
-VEC4 VEC4::operator + () const
+inline VEC4 VEC4::operator + () const
 {
 	return *this;
 }
 
-VEC4 VEC4::operator - () const
+inline VEC4 VEC4::operator - () const
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR r = XMVectorNegate(v1);
@@ -1489,7 +1489,7 @@ VEC4 VEC4::operator - () const
 	return r;
 }
 
-VEC4 VEC4::operator + (const VEC4& v) const
+inline VEC4 VEC4::operator + (const VEC4& v) const
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR v2 = XMLoadFloat4(&v);
@@ -1499,7 +1499,7 @@ VEC4 VEC4::operator + (const VEC4& v) const
 	return result;
 }
 
-VEC4 VEC4::operator - (const VEC4& v) const
+inline VEC4 VEC4::operator - (const VEC4& v) const
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR v2 = XMLoadFloat4(&v);
@@ -1509,7 +1509,7 @@ VEC4 VEC4::operator - (const VEC4& v) const
 	return result;
 }
 
-VEC4 VEC4::operator * (float s) const
+inline VEC4 VEC4::operator * (float s) const
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR r = XMVectorScale(v1, s);
@@ -1518,7 +1518,7 @@ VEC4 VEC4::operator * (float s) const
 	return result;
 }
 
-VEC4 VEC4::operator / (float s) const
+inline VEC4 VEC4::operator / (float s) const
 {
 	assert(s != 0.f);
 	XMVECTOR v1 = XMLoadFloat4(this);
@@ -1537,7 +1537,7 @@ inline VEC4 operator * (float s, const VEC4& v)
 // Methods
 //------------------------------------------------------------------------------
 
-void VEC4::Clamp(const VEC4& vmin, const VEC4& vmax)
+inline void VEC4::Clamp(const VEC4& vmin, const VEC4& vmax)
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR v2 = XMLoadFloat4(&vmin);
@@ -1546,7 +1546,7 @@ void VEC4::Clamp(const VEC4& vmin, const VEC4& vmax)
 	XMStoreFloat4(this, X);
 }
 
-void VEC4::Clamp(const VEC4& vmin, const VEC4& vmax, VEC4& result) const
+inline void VEC4::Clamp(const VEC4& vmin, const VEC4& vmax, VEC4& result) const
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR v2 = XMLoadFloat4(&vmin);
@@ -1555,14 +1555,14 @@ void VEC4::Clamp(const VEC4& vmin, const VEC4& vmax, VEC4& result) const
 	XMStoreFloat4(&result, X);
 }
 
-VEC4 VEC4::Clamped(const VEC4& min, const VEC4& max) const
+inline VEC4 VEC4::Clamped(const VEC4& min, const VEC4& max) const
 {
 	VEC4 result;
 	Clamp(min, max, result);
 	return result;
 }
 
-void VEC4::Cross(const VEC4& v1, const VEC4& v2, VEC4& result) const
+inline void VEC4::Cross(const VEC4& v1, const VEC4& v2, VEC4& result) const
 {
 	XMVECTOR x1 = XMLoadFloat4(this);
 	XMVECTOR x2 = XMLoadFloat4(&v1);
@@ -1571,7 +1571,7 @@ void VEC4::Cross(const VEC4& v1, const VEC4& v2, VEC4& result) const
 	XMStoreFloat4(&result, R);
 }
 
-VEC4 VEC4::Cross(const VEC4& v1, const VEC4& v2) const
+inline VEC4 VEC4::Cross(const VEC4& v1, const VEC4& v2) const
 {
 	XMVECTOR x1 = XMLoadFloat4(this);
 	XMVECTOR x2 = XMLoadFloat4(&v1);
@@ -1583,7 +1583,7 @@ VEC4 VEC4::Cross(const VEC4& v1, const VEC4& v2) const
 	return result;
 }
 
-float VEC4::Dot(const VEC4& V) const
+inline float VEC4::Dot(const VEC4& V) const
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR v2 = XMLoadFloat4(&V);
@@ -1591,33 +1591,33 @@ float VEC4::Dot(const VEC4& V) const
 	return XMVectorGetX(X);
 }
 
-bool VEC4::Equal(const VEC4& v) const
+inline bool VEC4::Equal(const VEC4& v) const
 {
 	return ::Equal(x, v.x) && ::Equal(y, v.y) && ::Equal(z, v.z) && ::Equal(w, v.w);
 }
 
-bool VEC4::InBounds(const VEC4& Bounds) const
+inline bool VEC4::InBounds(const VEC4& Bounds) const
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR v2 = XMLoadFloat4(&Bounds);
 	return XMVector4InBounds(v1, v2);
 }
 
-float VEC4::Length() const
+inline float VEC4::Length() const
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR X = XMVector4Length(v1);
 	return XMVectorGetX(X);
 }
 
-float VEC4::LengthSquared() const
+inline float VEC4::LengthSquared() const
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR X = XMVector4LengthSq(v1);
 	return XMVectorGetX(X);
 }
 
-VEC4& VEC4::Normalize()
+inline VEC4& VEC4::Normalize()
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR X = XMVector4Normalize(v1);
@@ -1625,14 +1625,14 @@ VEC4& VEC4::Normalize()
 	return *this;
 }
 
-void VEC4::Normalize(VEC4& result) const
+inline void VEC4::Normalize(VEC4& result) const
 {
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR X = XMVector4Normalize(v1);
 	XMStoreFloat4(&result, X);
 }
 
-VEC4 VEC4::Normalized() const
+inline VEC4 VEC4::Normalized() const
 {
 	VEC4 result;
 	Normalize(result);
@@ -1939,56 +1939,90 @@ inline void VEC4::Transform(const VEC4* varray, size_t count, const MATRIX& m, V
 // 2d box using floats
 //
 //*************************************************************************************************
-BOX2D::BOX2D()
+inline BOX2D::BOX2D()
 {
 
 }
 
-BOX2D::BOX2D(float minx, float miny, float maxx, float maxy) : v1(minx, miny), v2(maxx, maxy)
+inline BOX2D::BOX2D(float minx, float miny, float maxx, float maxy) : v1(minx, miny), v2(maxx, maxy)
 {
 
 }
 
-BOX2D::BOX2D(const VEC2& v1, const VEC2& v2) : v1(v1), v2(v2)
+inline BOX2D::BOX2D(const VEC2& v1, const VEC2& v2) : v1(v1), v2(v2)
 {
 
 }
 
-BOX2D::BOX2D(const BOX2D& box) : v1(box.v1), v2(box.v2)
+inline BOX2D::BOX2D(const BOX2D& box) : v1(box.v1), v2(box.v2)
 {
 
 }
 
-BOX2D::BOX2D(float x, float y) : v1(x, y), v2(x, y)
+inline BOX2D::BOX2D(float x, float y) : v1(x, y), v2(x, y)
 {
 
 }
 
-BOX2D::BOX2D(const BOX2D& box, float margin) : v1(box.v1.x - margin, box.v1.y - margin), v2(box.v2.x + margin, box.v2.y + margin)
+inline BOX2D::BOX2D(const BOX2D& box, float margin) : v1(box.v1.x - margin, box.v1.y - margin), v2(box.v2.x + margin, box.v2.y + margin)
 {
 
 }
 
-BOX2D::BOX2D(const VEC2& v) : v1(v), v2(v)
+inline BOX2D::BOX2D(const VEC2& v) : v1(v), v2(v)
 {
 
 }
 
-bool BOX2D::operator == (const BOX2D& b) const
+inline bool BOX2D::operator == (const BOX2D& b) const
 {
 	return v1 == b.v1 && v2 == b.v2;
 }
 
-bool BOX2D::operator != (const BOX2D& b) const
+inline bool BOX2D::operator != (const BOX2D& b) const
 {
 	return v1 != b.v1 || v2 != b.v2;
 }
 
-BOX2D& BOX2D::operator = (const BOX2D& b)
+inline BOX2D& BOX2D::operator = (const BOX2D& b)
 {
 	v1 = b.v1;
 	v2 = b.v2;
 	return *this;
+}
+
+//------------------------------------------------------------------------------
+// Methods
+//------------------------------------------------------------------------------
+
+inline VEC2 BOX2D::GetRandomPoint() const
+{
+	return VEC2(::Random(v1.x, v2.x), ::Random(v1.y, v2.y));
+}
+
+inline bool BOX2D::IsValid() const
+{
+	return v1.x <= v2.x && v1.y <= v2.y;
+}
+
+inline VEC2 BOX2D::Midpoint() const
+{
+	return v1 + (v2 - v1) / 2;
+}
+
+inline float BOX2D::SizeX() const
+{
+	return abs(v2.x - v1.x);
+}
+
+inline float BOX2D::SizeY() const
+{
+	return abs(v2.y - v1.y);
+}
+
+inline VEC2 BOX2D::Size() const
+{
+	return VEC2(SizeX(), SizeY());
 }
 
 //*************************************************************************************************
@@ -1996,34 +2030,83 @@ BOX2D& BOX2D::operator = (const BOX2D& b)
 // 3d box using floats
 //
 //*************************************************************************************************
-BOX::BOX()
+inline BOX::BOX()
 {
 
 }
 
-BOX::BOX(float minx, float miny, float minz, float maxx, float maxy, float maxz) : v1(minx, miny, minz), v2(maxx, maxy, maxz)
+inline BOX::BOX(float minx, float miny, float minz, float maxx, float maxy, float maxz) : v1(minx, miny, minz), v2(maxx, maxy, maxz)
 {
 
 }
 
-BOX::BOX(const VEC3& v1, const VEC3& v2) : v1(v1), v2(v2)
+inline BOX::BOX(const VEC3& v1, const VEC3& v2) : v1(v1), v2(v2)
 {
 
 }
 
-BOX::BOX(const BOX& box) : v1(box.v1), v2(box.v2)
+inline BOX::BOX(const BOX& box) : v1(box.v1), v2(box.v2)
 {
 
 }
 
-BOX::BOX(float x, float y, float z) : v1(x, y, z), v2(x, y, z)
+inline BOX::BOX(float x, float y, float z) : v1(x, y, z), v2(x, y, z)
 {
 
 }
 
-BOX::BOX(const VEC3& v) : v1(v), v2(v)
+inline BOX::BOX(const VEC3& v) : v1(v), v2(v)
 {
 
+}
+
+//------------------------------------------------------------------------------
+// Methods
+//------------------------------------------------------------------------------
+
+inline VEC3 BOX::GetRandomPoint() const
+{
+	return VEC3(::Random(v1.x, v2.x), ::Random(v1.y, v2.y), ::Random(v1.z, v2.z));
+}
+
+inline bool BOX::IsInside(const VEC3& v) const
+{
+	return v.x >= v1.x && v.x <= v2.x && v.y >= v1.y && v.y <= v2.y && v.z >= v1.z && v.z <= v2.z;
+}
+
+inline bool BOX::IsValid() const
+{
+	return v1.x <= v2.x && v1.y <= v2.y && v1.z <= v2.z;
+}
+
+inline VEC3 BOX::Midpoint() const
+{
+	return v1 + (v2 - v1) / 2;
+}
+
+inline VEC3 BOX::Size() const
+{
+	return VEC3(SizeX(), SizeY(), SizeZ());
+}
+
+inline float BOX::SizeX() const
+{
+	return abs(v2.x - v1.x);
+}
+
+inline VEC2 BOX::SizeXZ() const
+{
+	return VEC2(SizeX(), SizeZ());
+}
+
+inline float BOX::SizeY() const
+{
+	return abs(v2.y - v1.y);
+}
+
+inline float BOX::SizeZ() const
+{
+	return abs(v2.z - v1.z);
 }
 
 //*************************************************************************************************
@@ -2031,12 +2114,12 @@ BOX::BOX(const VEC3& v) : v1(v), v2(v)
 // 4x4 float matrix
 //
 //*************************************************************************************************
-MATRIX::MATRIX()
+inline MATRIX::MATRIX()
 {
 
 }
 
-MATRIX::MATRIX(
+inline MATRIX::MATRIX(
 	float m00, float m01, float m02, float m03,
 	float m10, float m11, float m12, float m13,
 	float m20, float m21, float m22, float m23,
@@ -2050,7 +2133,7 @@ MATRIX::MATRIX(
 
 }
 
-MATRIX::MATRIX(const VEC3& v1, const VEC3& v2, const VEC3& v3) : XMFLOAT4X4(
+inline MATRIX::MATRIX(const VEC3& v1, const VEC3& v2, const VEC3& v3) : XMFLOAT4X4(
 	v1.x, v1.y, v1.z, 0,
 	v2.x, v2.y, v2.z, 0,
 	v3.x, v3.y, v3.z, 0,
@@ -2059,7 +2142,7 @@ MATRIX::MATRIX(const VEC3& v1, const VEC3& v2, const VEC3& v3) : XMFLOAT4X4(
 
 }
 
-MATRIX::MATRIX(const VEC4& v1, const VEC4& v2, const VEC4& v3, const VEC4& v4) : XMFLOAT4X4(
+inline MATRIX::MATRIX(const VEC4& v1, const VEC4& v2, const VEC4& v3, const VEC4& v4) : XMFLOAT4X4(
 	v1.x, v1.y, v1.z, v1.w,
 	v2.x, v2.y, v2.z, v2.w,
 	v3.x, v3.y, v3.z, v3.w,
@@ -2068,7 +2151,7 @@ MATRIX::MATRIX(const VEC4& v1, const VEC4& v2, const VEC4& v3, const VEC4& v4) :
 
 }
 
-MATRIX::MATRIX(const MATRIX& m) : XMFLOAT4X4(
+inline MATRIX::MATRIX(const MATRIX& m) : XMFLOAT4X4(
 	m._11, m._12, m._13, m._14,
 	m._21, m._22, m._23, m._24,
 	m._31, m._32, m._33, m._34,
@@ -2077,17 +2160,17 @@ MATRIX::MATRIX(const MATRIX& m) : XMFLOAT4X4(
 
 }
 
-MATRIX::MATRIX(CXMMATRIX m)
+inline MATRIX::MATRIX(CXMMATRIX m)
 {
 	XMStoreFloat4x4(this, m);
 }
 
-MATRIX::operator XMMATRIX() const
+inline MATRIX::operator XMMATRIX() const
 {
 	return XMLoadFloat4x4(this);
 }
 
-bool MATRIX::operator == (const MATRIX& M) const
+inline bool MATRIX::operator == (const MATRIX& M) const
 {
 	XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
 	XMVECTOR x2 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_21));
@@ -2105,7 +2188,7 @@ bool MATRIX::operator == (const MATRIX& M) const
 		&& XMVector4Equal(x4, y4)) != 0;
 }
 
-bool MATRIX::operator != (const MATRIX& M) const
+inline bool MATRIX::operator != (const MATRIX& M) const
 {
 	XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
 	XMVECTOR x2 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_21));
@@ -2123,13 +2206,13 @@ bool MATRIX::operator != (const MATRIX& M) const
 		|| XMVector4NotEqual(x4, y4)) != 0;
 }
 
-MATRIX& MATRIX::operator = (const MATRIX& m)
+inline MATRIX& MATRIX::operator = (const MATRIX& m)
 {
 	memcpy_s(this, sizeof(float) * 16, &m, sizeof(float) * 16);
 	return *this;
 }
 
-MATRIX& MATRIX::operator += (const MATRIX& M)
+inline MATRIX& MATRIX::operator += (const MATRIX& M)
 {
 	XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
 	XMVECTOR x2 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_21));
@@ -2153,7 +2236,7 @@ MATRIX& MATRIX::operator += (const MATRIX& M)
 	return *this;
 }
 
-MATRIX& MATRIX::operator -= (const MATRIX& M)
+inline MATRIX& MATRIX::operator -= (const MATRIX& M)
 {
 	XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
 	XMVECTOR x2 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_21));
@@ -2177,7 +2260,7 @@ MATRIX& MATRIX::operator -= (const MATRIX& M)
 	return *this;
 }
 
-MATRIX& MATRIX::operator *= (const MATRIX& M)
+inline MATRIX& MATRIX::operator *= (const MATRIX& M)
 {
 	XMMATRIX M1 = XMLoadFloat4x4(this);
 	XMMATRIX M2 = XMLoadFloat4x4(&M);
@@ -2186,7 +2269,7 @@ MATRIX& MATRIX::operator *= (const MATRIX& M)
 	return *this;
 }
 
-MATRIX& MATRIX::operator *= (float S)
+inline MATRIX& MATRIX::operator *= (float S)
 {
 	XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
 	XMVECTOR x2 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_21));
@@ -2205,7 +2288,7 @@ MATRIX& MATRIX::operator *= (float S)
 	return *this;
 }
 
-MATRIX& MATRIX::operator /= (float S)
+inline MATRIX& MATRIX::operator /= (float S)
 {
 	assert(S != 0.f);
 	XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
@@ -2227,7 +2310,7 @@ MATRIX& MATRIX::operator /= (float S)
 	return *this;
 }
 
-MATRIX& MATRIX::operator /= (const MATRIX& M)
+inline MATRIX& MATRIX::operator /= (const MATRIX& M)
 {
 	XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
 	XMVECTOR x2 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_21));
@@ -2251,12 +2334,12 @@ MATRIX& MATRIX::operator /= (const MATRIX& M)
 	return *this;
 }
 
-MATRIX MATRIX::operator + () const
+inline MATRIX MATRIX::operator + () const
 {
 	return *this;
 }
 
-MATRIX MATRIX::operator - () const
+inline MATRIX MATRIX::operator - () const
 {
 	XMVECTOR v1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
 	XMVECTOR v2 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_21));
@@ -2276,7 +2359,7 @@ MATRIX MATRIX::operator - () const
 	return R;
 }
 
-MATRIX MATRIX::operator + (const MATRIX& m) const
+inline MATRIX MATRIX::operator + (const MATRIX& m) const
 {
 	XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
 	XMVECTOR x2 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_21));
@@ -2301,7 +2384,7 @@ MATRIX MATRIX::operator + (const MATRIX& m) const
 	return R;
 }
 
-MATRIX MATRIX::operator - (const MATRIX& m) const
+inline MATRIX MATRIX::operator - (const MATRIX& m) const
 {
 	XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
 	XMVECTOR x2 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_21));
@@ -2326,7 +2409,7 @@ MATRIX MATRIX::operator - (const MATRIX& m) const
 	return R;
 }
 
-MATRIX MATRIX::operator * (const MATRIX& m) const
+inline MATRIX MATRIX::operator * (const MATRIX& m) const
 {
 	XMMATRIX m1 = XMLoadFloat4x4(this);
 	XMMATRIX m2 = XMLoadFloat4x4(&m);
@@ -2337,7 +2420,7 @@ MATRIX MATRIX::operator * (const MATRIX& m) const
 	return R;
 }
 
-MATRIX MATRIX::operator * (float S) const
+inline MATRIX MATRIX::operator * (float S) const
 {
 	XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
 	XMVECTOR x2 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_21));
@@ -2357,7 +2440,7 @@ MATRIX MATRIX::operator * (float S) const
 	return R;
 }
 
-MATRIX MATRIX::operator / (float S) const
+inline MATRIX MATRIX::operator / (float S) const
 {
 	assert(S != 0.f);
 
@@ -2381,7 +2464,7 @@ MATRIX MATRIX::operator / (float S) const
 	return R;
 }
 
-MATRIX MATRIX::operator / (const MATRIX& m) const
+inline MATRIX MATRIX::operator / (const MATRIX& m) const
 {
 	XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
 	XMVECTOR x2 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_21));
@@ -2430,7 +2513,7 @@ inline MATRIX operator * (float S, const MATRIX& M)
 // Methods
 //------------------------------------------------------------------------------
 
-bool MATRIX::Decompose(VEC3& scale, QUAT& rotation, VEC3& translation)
+inline bool MATRIX::Decompose(VEC3& scale, QUAT& rotation, VEC3& translation)
 {
 	XMVECTOR s, r, t;
 
@@ -2444,18 +2527,18 @@ bool MATRIX::Decompose(VEC3& scale, QUAT& rotation, VEC3& translation)
 	return true;
 }
 
-float MATRIX::Determinant() const
+inline float MATRIX::Determinant() const
 {
 	XMMATRIX M = XMLoadFloat4x4(this);
 	return XMVectorGetX(XMMatrixDeterminant(M));
 }
 
-void MATRIX::Identity()
+inline void MATRIX::Identity()
 {
 	*this = IdentityMatrix;
 }
 
-MATRIX MATRIX::Inverse() const
+inline MATRIX MATRIX::Inverse() const
 {
 	XMMATRIX M = XMLoadFloat4x4(this);
 	MATRIX R;
@@ -2464,14 +2547,14 @@ MATRIX MATRIX::Inverse() const
 	return R;
 }
 
-void MATRIX::Inverse(MATRIX& result) const
+inline void MATRIX::Inverse(MATRIX& result) const
 {
 	XMMATRIX M = XMLoadFloat4x4(this);
 	XMVECTOR det;
 	XMStoreFloat4x4(&result, XMMatrixInverse(&det, M));
 }
 
-MATRIX MATRIX::Transpose() const
+inline MATRIX MATRIX::Transpose() const
 {
 	XMMATRIX M = XMLoadFloat4x4(this);
 	MATRIX R;
@@ -2479,7 +2562,7 @@ MATRIX MATRIX::Transpose() const
 	return R;
 }
 
-void MATRIX::Transpose(MATRIX& result) const
+inline void MATRIX::Transpose(MATRIX& result) const
 {
 	XMMATRIX M = XMLoadFloat4x4(this);
 	XMStoreFloat4x4(&result, XMMatrixTranspose(M));
@@ -2839,61 +2922,61 @@ inline MATRIX MATRIX::Translation(float x, float y, float z)
 // Quaternion
 //
 //*************************************************************************************************
-QUAT::QUAT()
+inline QUAT::QUAT()
 {
 
 }
 
-QUAT::QUAT(float x, float y, float z, float w) : XMFLOAT4(x, y, z, w)
+inline QUAT::QUAT(float x, float y, float z, float w) : XMFLOAT4(x, y, z, w)
 {
 
 }
 
-QUAT::QUAT(const VEC3& v, float w) : XMFLOAT4(v.x, v.y, v.z, w)
+inline QUAT::QUAT(const VEC3& v, float w) : XMFLOAT4(v.x, v.y, v.z, w)
 {
 
 }
 
-QUAT::QUAT(const QUAT& q) : XMFLOAT4(q.x, q.y, q.z, q.w)
+inline QUAT::QUAT(const QUAT& q) : XMFLOAT4(q.x, q.y, q.z, q.w)
 {
 
 }
 
-QUAT::QUAT(FXMVECTOR v)
+inline QUAT::QUAT(FXMVECTOR v)
 {
 	XMStoreFloat4(this, v);
 }
 
-QUAT::QUAT(const VEC4& v) : XMFLOAT4(v.x, v.y, v.z, v.w)
+inline QUAT::QUAT(const VEC4& v) : XMFLOAT4(v.x, v.y, v.z, v.w)
 {
 
 }
 
-QUAT::QUAT(const XMVECTORF32& v) : XMFLOAT4(v.f[0], v.f[1], v.f[2], v.f[3])
+inline QUAT::QUAT(const XMVECTORF32& v) : XMFLOAT4(v.f[0], v.f[1], v.f[2], v.f[3])
 {
 
 }
 
-QUAT::operator XMVECTOR() const
+inline QUAT::operator XMVECTOR() const
 {
 	return XMLoadFloat4(this);
 }
 
-bool QUAT::operator == (const QUAT& q) const
+inline bool QUAT::operator == (const QUAT& q) const
 {
 	XMVECTOR q1 = XMLoadFloat4(this);
 	XMVECTOR q2 = XMLoadFloat4(&q);
 	return XMQuaternionEqual(q1, q2);
 }
 
-bool QUAT::operator != (const QUAT& q) const
+inline bool QUAT::operator != (const QUAT& q) const
 {
 	XMVECTOR q1 = XMLoadFloat4(this);
 	XMVECTOR q2 = XMLoadFloat4(&q);
 	return XMQuaternionNotEqual(q1, q2);
 }
 
-QUAT& QUAT::operator = (const QUAT& q)
+inline QUAT& QUAT::operator = (const QUAT& q)
 {
 	x = q.x;
 	y = q.y;
@@ -2902,7 +2985,7 @@ QUAT& QUAT::operator = (const QUAT& q)
 	return *this;
 }
 
-QUAT& QUAT::operator = (const XMVECTORF32& v)
+inline QUAT& QUAT::operator = (const XMVECTORF32& v)
 {
 	x = v.f[0];
 	y = v.f[1];
@@ -2911,7 +2994,7 @@ QUAT& QUAT::operator = (const XMVECTORF32& v)
 	return *this;
 }
 
-QUAT& QUAT::operator += (const QUAT& q)
+inline QUAT& QUAT::operator += (const QUAT& q)
 {
 	XMVECTOR q1 = XMLoadFloat4(this);
 	XMVECTOR q2 = XMLoadFloat4(&q);
@@ -2919,7 +3002,7 @@ QUAT& QUAT::operator += (const QUAT& q)
 	return *this;
 }
 
-QUAT& QUAT::operator -= (const QUAT& q)
+inline QUAT& QUAT::operator -= (const QUAT& q)
 {
 	XMVECTOR q1 = XMLoadFloat4(this);
 	XMVECTOR q2 = XMLoadFloat4(&q);
@@ -2927,7 +3010,7 @@ QUAT& QUAT::operator -= (const QUAT& q)
 	return *this;
 }
 
-QUAT& QUAT::operator *= (const QUAT& q)
+inline QUAT& QUAT::operator *= (const QUAT& q)
 {
 	XMVECTOR q1 = XMLoadFloat4(this);
 	XMVECTOR q2 = XMLoadFloat4(&q);
@@ -2935,14 +3018,14 @@ QUAT& QUAT::operator *= (const QUAT& q)
 	return *this;
 }
 
-QUAT& QUAT::operator *= (float S)
+inline QUAT& QUAT::operator *= (float S)
 {
 	XMVECTOR q = XMLoadFloat4(this);
 	XMStoreFloat4(this, XMVectorScale(q, S));
 	return *this;
 }
 
-QUAT& QUAT::operator /= (const QUAT& q)
+inline QUAT& QUAT::operator /= (const QUAT& q)
 {
 	XMVECTOR q1 = XMLoadFloat4(this);
 	XMVECTOR q2 = XMLoadFloat4(&q);
@@ -2951,12 +3034,12 @@ QUAT& QUAT::operator /= (const QUAT& q)
 	return *this;
 }
 
-QUAT QUAT::operator + () const
+inline QUAT QUAT::operator + () const
 {
 	return *this;
 }
 
-QUAT QUAT::operator - () const
+inline QUAT QUAT::operator - () const
 {
 	XMVECTOR q = XMLoadFloat4(this);
 
@@ -2965,7 +3048,7 @@ QUAT QUAT::operator - () const
 	return R;
 }
 
-QUAT QUAT::operator + (const QUAT& q) const
+inline QUAT QUAT::operator + (const QUAT& q) const
 {
 	XMVECTOR q1 = XMLoadFloat4(this);
 	XMVECTOR q2 = XMLoadFloat4(&q);
@@ -2975,7 +3058,7 @@ QUAT QUAT::operator + (const QUAT& q) const
 	return R;
 }
 
-QUAT QUAT::operator - (const QUAT& q) const
+inline QUAT QUAT::operator - (const QUAT& q) const
 {
 	XMVECTOR q1 = XMLoadFloat4(this);
 	XMVECTOR q2 = XMLoadFloat4(&q);
@@ -2985,7 +3068,7 @@ QUAT QUAT::operator - (const QUAT& q) const
 	return R;
 }
 
-QUAT QUAT::operator * (const QUAT& q) const
+inline QUAT QUAT::operator * (const QUAT& q) const
 {
 	XMVECTOR q1 = XMLoadFloat4(this);
 	XMVECTOR q2 = XMLoadFloat4(&q);
@@ -2995,7 +3078,7 @@ QUAT QUAT::operator * (const QUAT& q) const
 	return R;
 }
 
-QUAT QUAT::operator * (float s) const
+inline QUAT QUAT::operator * (float s) const
 {
 	XMVECTOR q = XMLoadFloat4(this);
 
@@ -3004,7 +3087,7 @@ QUAT QUAT::operator * (float s) const
 	return R;
 }
 
-QUAT QUAT::operator / (const QUAT& q) const
+inline QUAT QUAT::operator / (const QUAT& q) const
 {
 	XMVECTOR q1 = XMLoadFloat4(this);
 	XMVECTOR q2 = XMLoadFloat4(&q);
@@ -3028,50 +3111,50 @@ inline QUAT operator* (float s, const QUAT& q)
 // Methods
 //------------------------------------------------------------------------------
 
-void QUAT::Conjugate()
+inline void QUAT::Conjugate()
 {
 	XMVECTOR q = XMLoadFloat4(this);
 	XMStoreFloat4(this, XMQuaternionConjugate(q));
 }
 
-void QUAT::Conjugate(QUAT& result) const
+inline void QUAT::Conjugate(QUAT& result) const
 {
 	XMVECTOR q = XMLoadFloat4(this);
 	XMStoreFloat4(&result, XMQuaternionConjugate(q));
 }
 
-float QUAT::Dot(const QUAT& q) const
+inline float QUAT::Dot(const QUAT& q) const
 {
 	XMVECTOR q1 = XMLoadFloat4(this);
 	XMVECTOR q2 = XMLoadFloat4(&q);
 	return XMVectorGetX(XMQuaternionDot(q1, q2));
 }
 
-void QUAT::Inverse(QUAT& result) const
+inline void QUAT::Inverse(QUAT& result) const
 {
 	XMVECTOR q = XMLoadFloat4(this);
 	XMStoreFloat4(&result, XMQuaternionInverse(q));
 }
 
-float QUAT::Length() const
+inline float QUAT::Length() const
 {
 	XMVECTOR q = XMLoadFloat4(this);
 	return XMVectorGetX(XMQuaternionLength(q));
 }
 
-float QUAT::LengthSquared() const
+inline float QUAT::LengthSquared() const
 {
 	XMVECTOR q = XMLoadFloat4(this);
 	return XMVectorGetX(XMQuaternionLengthSq(q));
 }
 
-void QUAT::Normalize()
+inline void QUAT::Normalize()
 {
 	XMVECTOR q = XMLoadFloat4(this);
 	XMStoreFloat4(this, XMQuaternionNormalize(q));
 }
 
-void QUAT::Normalize(QUAT& result) const
+inline void QUAT::Normalize(QUAT& result) const
 {
 	XMVECTOR q = XMLoadFloat4(this);
 	XMStoreFloat4(&result, XMQuaternionNormalize(q));
@@ -3195,22 +3278,22 @@ inline QUAT QUAT::Slerp(const QUAT& q1, const QUAT& q2, float t)
 // Quaternion
 //
 //*************************************************************************************************
-PLANE::PLANE()
+inline PLANE::PLANE()
 {
 
 }
 
-PLANE::PLANE(float x, float y, float z, float w) : XMFLOAT4(x, y, z, w)
+inline PLANE::PLANE(float x, float y, float z, float w) : XMFLOAT4(x, y, z, w)
 {
 
 }
 
-PLANE::PLANE(const VEC3& normal, float d) : XMFLOAT4(normal.x, normal.y, normal.z, d)
+inline PLANE::PLANE(const VEC3& normal, float d) : XMFLOAT4(normal.x, normal.y, normal.z, d)
 {
 
 }
 
-PLANE::PLANE(const VEC3& point1, const VEC3& point2, const VEC3& point3)
+inline PLANE::PLANE(const VEC3& point1, const VEC3& point2, const VEC3& point3)
 {
 	XMVECTOR P0 = XMLoadFloat3(&point1);
 	XMVECTOR P1 = XMLoadFloat3(&point2);
@@ -3218,48 +3301,48 @@ PLANE::PLANE(const VEC3& point1, const VEC3& point2, const VEC3& point3)
 	XMStoreFloat4(this, XMPlaneFromPoints(P0, P1, P2));
 }
 
-PLANE::PLANE(const VEC3& point, const VEC3& normal)
+inline PLANE::PLANE(const VEC3& point, const VEC3& normal)
 {
 	XMVECTOR P = XMLoadFloat3(&point);
 	XMVECTOR N = XMLoadFloat3(&normal);
 	XMStoreFloat4(this, XMPlaneFromPointNormal(P, N));
 }
 
-PLANE::PLANE(FXMVECTOR v)
+inline PLANE::PLANE(FXMVECTOR v)
 {
 	XMStoreFloat4(this, v);
 }
 
-PLANE::PLANE(const VEC4& v) : XMFLOAT4(v.x, v.y, v.z, v.w)
+inline PLANE::PLANE(const VEC4& v) : XMFLOAT4(v.x, v.y, v.z, v.w)
 {
 
 }
 
-PLANE::PLANE(const XMVECTORF32& v) : XMFLOAT4(v.f[0], v.f[1], v.f[2], v.f[3])
+inline PLANE::PLANE(const XMVECTORF32& v) : XMFLOAT4(v.f[0], v.f[1], v.f[2], v.f[3])
 {
 
 }
 
-PLANE::operator XMVECTOR() const
+inline PLANE::operator XMVECTOR() const
 {
 	return XMLoadFloat4(this);
 }
 
-bool PLANE::operator == (const PLANE& p) const
+inline bool PLANE::operator == (const PLANE& p) const
 {
 	XMVECTOR p1 = XMLoadFloat4(this);
 	XMVECTOR p2 = XMLoadFloat4(&p);
 	return XMPlaneEqual(p1, p2);
 }
 
-bool PLANE::operator != (const PLANE& p) const
+inline bool PLANE::operator != (const PLANE& p) const
 {
 	XMVECTOR p1 = XMLoadFloat4(this);
 	XMVECTOR p2 = XMLoadFloat4(&p);
 	return XMPlaneNotEqual(p1, p2);
 }
 
-PLANE& PLANE::operator = (const PLANE& p)
+inline PLANE& PLANE::operator = (const PLANE& p)
 {
 	x = p.x;
 	y = p.y;
@@ -3272,33 +3355,33 @@ PLANE& PLANE::operator = (const PLANE& p)
 // Methods
 //------------------------------------------------------------------------------
 
-void PLANE::Normalize()
+inline void PLANE::Normalize()
 {
 	XMVECTOR p = XMLoadFloat4(this);
 	XMStoreFloat4(this, XMPlaneNormalize(p));
 }
 
-void PLANE::Normalize(PLANE& result) const
+inline void PLANE::Normalize(PLANE& result) const
 {
 	XMVECTOR p = XMLoadFloat4(this);
 	XMStoreFloat4(&result, XMPlaneNormalize(p));
 }
 
-float PLANE::Dot(const VEC4& v) const
+inline float PLANE::Dot(const VEC4& v) const
 {
 	XMVECTOR p = XMLoadFloat4(this);
 	XMVECTOR v0 = XMLoadFloat4(&v);
 	return XMVectorGetX(XMPlaneDot(p, v0));
 }
 
-float PLANE::DotCoordinate(const VEC3& position) const
+inline float PLANE::DotCoordinate(const VEC3& position) const
 {
 	XMVECTOR p = XMLoadFloat4(this);
 	XMVECTOR v0 = XMLoadFloat3(&position);
 	return XMVectorGetX(XMPlaneDotCoord(p, v0));
 }
 
-float PLANE::DotNormal(const VEC3& normal) const
+inline float PLANE::DotNormal(const VEC3& normal) const
 {
 	XMVECTOR p = XMLoadFloat4(this);
 	XMVECTOR n0 = XMLoadFloat3(&normal);
@@ -3309,14 +3392,14 @@ float PLANE::DotNormal(const VEC3& normal) const
 // Static functions
 //------------------------------------------------------------------------------
 
-void PLANE::Transform(const PLANE& plane, const MATRIX& M, PLANE& result)
+inline void PLANE::Transform(const PLANE& plane, const MATRIX& M, PLANE& result)
 {
 	XMVECTOR p = XMLoadFloat4(&plane);
 	XMMATRIX m0 = XMLoadFloat4x4(&M);
 	XMStoreFloat4(&result, XMPlaneTransform(p, m0));
 }
 
-PLANE PLANE::Transform(const PLANE& plane, const MATRIX& M)
+inline PLANE PLANE::Transform(const PLANE& plane, const MATRIX& M)
 {
 	XMVECTOR p = XMLoadFloat4(&plane);
 	XMMATRIX m0 = XMLoadFloat4x4(&M);
@@ -3326,7 +3409,7 @@ PLANE PLANE::Transform(const PLANE& plane, const MATRIX& M)
 	return result;
 }
 
-void PLANE::Transform(const PLANE& plane, const QUAT& rotation, PLANE& result)
+inline void PLANE::Transform(const PLANE& plane, const QUAT& rotation, PLANE& result)
 {
 	XMVECTOR p = XMLoadFloat4(&plane);
 	XMVECTOR q = XMLoadFloat4(&rotation);
@@ -3335,7 +3418,7 @@ void PLANE::Transform(const PLANE& plane, const QUAT& rotation, PLANE& result)
 	XMStoreFloat4(&result, X);
 }
 
-PLANE PLANE::Transform(const PLANE& plane, const QUAT& rotation)
+inline PLANE PLANE::Transform(const PLANE& plane, const QUAT& rotation)
 {
 	XMVECTOR p = XMLoadFloat4(&plane);
 	XMVECTOR q = XMLoadFloat4(&rotation);

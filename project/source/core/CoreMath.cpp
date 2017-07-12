@@ -37,7 +37,7 @@ const MATRIX MATRIX::IdentityMatrix = {
 
 const QUAT QUAT::Identity = { 0.f, 0.f, 0.f, 1.f };
 
-bool Intersect3Planes(const PLANE& P1, const PLANE& P2, const PLANE& P3, VEC3& OutP)
+bool PLANE::Intersect3Planes(const PLANE& P1, const PLANE& P2, const PLANE& P3, VEC3& OutP)
 {
 	float fDet;
 	float MN[9] = { P1.x, P1.y, P1.z, P2.x, P2.y, P2.z, P3.x, P3.y, P3.z };
@@ -128,14 +128,14 @@ void FrustumPlanes::GetPoints(VEC3* points) const
 {
 	assert(points);
 
-	Intersect3Planes(planes[4], planes[0], planes[3], points[0]);
-	Intersect3Planes(planes[4], planes[1], planes[3], points[1]);
-	Intersect3Planes(planes[4], planes[0], planes[2], points[2]);
-	Intersect3Planes(planes[4], planes[1], planes[2], points[3]);
-	Intersect3Planes(planes[5], planes[0], planes[3], points[4]);
-	Intersect3Planes(planes[5], planes[1], planes[3], points[5]);
-	Intersect3Planes(planes[5], planes[0], planes[2], points[6]);
-	Intersect3Planes(planes[5], planes[1], planes[2], points[7]);
+	PLANE::Intersect3Planes(planes[4], planes[0], planes[3], points[0]);
+	PLANE::Intersect3Planes(planes[4], planes[1], planes[3], points[1]);
+	PLANE::Intersect3Planes(planes[4], planes[0], planes[2], points[2]);
+	PLANE::Intersect3Planes(planes[4], planes[1], planes[2], points[3]);
+	PLANE::Intersect3Planes(planes[5], planes[0], planes[3], points[4]);
+	PLANE::Intersect3Planes(planes[5], planes[1], planes[3], points[5]);
+	PLANE::Intersect3Planes(planes[5], planes[0], planes[2], points[6]);
+	PLANE::Intersect3Planes(planes[5], planes[1], planes[2], points[7]);
 }
 
 void FrustumPlanes::GetPoints(const MATRIX& worldViewProj, VEC3* points)
