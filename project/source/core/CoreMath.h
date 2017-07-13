@@ -391,63 +391,45 @@ struct Rect
 {
 	INT2 p1, p2;
 
-	Rect() {}
-	Rect(int x1, int y1, int x2, int y2) : p1(x1, y1), p2(x2, y2) {}
-	Rect(const INT2& p1, const INT2& p2) : p1(p1), p2(p2) {}
-	Rect(const Rect& box) : p1(box.p1), p2(box.p2) {}
+	Rect();
+	Rect(int x1, int y1, int x2, int y2);
+	Rect(const INT2& p1, const INT2& p2);
+	Rect(const Rect& box);
 
-	static Rect Create(const INT2& pos, const INT2& size)
-	{
-		Rect box;
-		box.Set(pos, size);
-		return box;
-	}
+	// Comparison operators
+	bool operator == (const Rect& r) const;
+	bool operator != (const Rect& r) const;
 
-	Rect operator += (const INT2& p) const
-	{
-		return Rect(p1.x + p.x, p1.y + p.y, p2.x + p.x, p2.y + p.y);
-	}
+	// Assignment operators
+	Rect& operator = (const Rect& r);
+	Rect& operator += (const INT2& p);
+	Rect& operator -= (const INT2& p);
+	Rect& operator *= (int d);
+	Rect& operator /= (int d);
 
-	void Set(const INT2& pos, const INT2& size)
-	{
-		p1 = pos;
-		p2 = pos + size;
-	}
+	// Unary operators
+	Rect operator + () const;
+	Rect operator - () const;
 
-	void Set(int x1, int y1, int x2, int y2)
-	{
-		p1.x = x1;
-		p1.y = y1;
-		p2.x = x2;
-		p2.y = y2;
-	}
+	// Binary operators
+	Rect operator + (const INT2& p) const;
+	Rect operator - (const INT2& p) const;
+	Rect operator * (int d) const;
+	Rect operator / (int d) const;
+	friend Rect operator * (int d, const Rect& r);
 
-	INT2 Random() const
-	{
-		return INT2(::Random(p1.x, p2.x), ::Random(p1.y, p2.y));
-	}
+	// Methods
+	Rect LeftBottomPart() const;
+	Rect LeftTopPart() const;
+	INT2 Random() const;
+	Rect RightBottomPart() const;
+	Rect RightTopPart() const;
+	void Set(int x1, int y1, int x2, int y2);
+	void Set(const INT2& pos, const INT2& size);
+	INT2 Size() const;
 
-	Rect LeftBottomPart() const
-	{
-		return Rect(p1.x, p1.y, p1.x + (p2.x - p1.x) / 2, p1.y + (p2.y - p1.y) / 2);
-	}
-	Rect RightBottomPart() const
-	{
-		return Rect(p1.x + (p2.x - p1.x) / 2, p1.y, p2.x, p1.y + (p2.y - p1.y) / 2);
-	}
-	Rect LeftTopPart() const
-	{
-		return Rect(p1.x, p1.y + (p2.y - p1.y) / 2, p1.x + (p2.x - p1.x) / 2, p2.y);
-	}
-	Rect RightTopPart() const
-	{
-		return Rect(p1.x + (p2.x - p1.x) / 2, p1.y + (p2.y - p1.y) / 2, p2.x, p2.y);
-	}
-
-	INT2 Size() const
-	{
-		return INT2(p2.x - p1.x, p2.y - p1.y);
-	}
+	// Static functions
+	static Rect Create(const INT2& pos, const INT2& size);
 };
 
 //-----------------------------------------------------------------------------
@@ -488,7 +470,7 @@ struct VEC2 : XMFLOAT2
 	VEC2 operator / (float s) const;
 	friend VEC2 operator * (float s, const VEC2& v);
 
-	// Vector operations
+	// Methods
 	float Clamp(float f) const;
 	void Clamp(const VEC2& min, const VEC2& max);
 	void Clamp(const VEC2& min, const VEC2& max, VEC2& result) const;
@@ -587,7 +569,7 @@ struct VEC3 : XMFLOAT3
 	VEC3 operator / (float s) const;
 	friend VEC3 operator * (float s, const VEC3& v);
 
-	// Vector operations
+	// Methods
 	void Clamp(const VEC3& min, const VEC3& max);
 	void Clamp(const VEC3& min, const VEC3& max, VEC3& result) const;
 	VEC3 Clamped(const VEC3& min = VEC3(0, 0, 0), const VEC3& max = VEC3(1, 1, 1)) const;
@@ -691,7 +673,7 @@ struct VEC4 : XMFLOAT4
 	VEC4 operator / (float s) const;
 	friend VEC4 operator * (float s, const VEC4& v);
 
-	// Vector operations
+	// Methods
 	void Clamp(const VEC4& vmin, const VEC4& vmax);
 	void Clamp(const VEC4& vmin, const VEC4& vmax, VEC4& result) const;
 	VEC4 Clamped(const VEC4& min = VEC4(0, 0, 0, 0), const VEC4& max = VEC4(1, 1, 1, 1)) const;
@@ -765,7 +747,23 @@ struct BOX2D
 	bool operator == (const BOX2D& b) const;
 	bool operator != (const BOX2D& b) const;
 
+	// Assignment operators
 	BOX2D& operator = (const BOX2D& b);
+	BOX2D& operator += (const VEC2& v);
+	BOX2D& operator -= (const VEC2& v);
+	BOX2D& operator *= (float f);
+	BOX2D& operator /= (float f);
+
+	// Unary operators
+	BOX2D operator + () const;
+	BOX2D operator - () const;
+
+	// Binary operators
+	BOX2D operator + (const VEC2& v) const;
+	BOX2D operator - (const VEC2& v) const;
+	BOX2D operator * (float f) const;
+	BOX2D operator / (float f) const;
+	friend BOX2D operator * (float f, const BOX2D& v);
 
 	static BOX2D Create(const INT2& pos, const INT2& size)
 	{
@@ -774,19 +772,9 @@ struct BOX2D
 		return box;
 	}
 
-	void operator += (const VEC2& v)
-	{
-		v1 += v;
-		v2 += v;
-	}
-
-	BOX2D operator / (const VEC2& v)
-	{
-		return BOX2D(v1.x / v.x, v1.y / v.y, v2.x / v.x, v2.y / v.y);
-	}
-
 	// Methods
 	VEC2 GetRandomPoint() const;
+	bool IsInside(const VEC2& v) const;
 	bool IsValid() const;
 	VEC2 Midpoint() const;
 	VEC2 Size() const;
@@ -807,20 +795,7 @@ struct BOX2D
 		v1 += dif;
 		v2 += dif;
 	}
-
-	bool IsInside(const VEC3& pos) const
-	{
-		return pos.x >= v1.x && pos.x <= v2.x && pos.z >= v1.y && pos.z <= v2.y;
-	}
-
-	bool IsInside(const INT2& pos) const
-	{
-		float x = (float)pos.x;
-		float y = (float)pos.y;
-		return x >= v1.x && x <= v2.x && y >= v1.y && y <= v2.y;
-	}
-
-
+	
 	VEC3 GetRandomPos3(float y = 0.f) const
 	{
 		return VEC3(::Random(v1.x, v2.x), y, ::Random(v1.y, v2.y));
@@ -909,6 +884,28 @@ struct BOX
 	BOX(const BOX& box);
 	BOX(float x, float y, float z);
 	explicit BOX(const VEC3& v);
+
+	// Comparison operators
+	bool operator == (const BOX& b) const;
+	bool operator != (const BOX& b) const;
+
+	// Assignment operators
+	BOX& operator = (const BOX& b);
+	BOX& operator += (const VEC3& v);
+	BOX& operator -= (const VEC3& v);
+	BOX& operator *= (float f);
+	BOX& operator /= (float f);
+
+	// Unary operators
+	BOX operator + () const;
+	BOX operator - () const;
+
+	// Binary operators
+	BOX operator + (const VEC3& v) const;
+	BOX operator - (const VEC3& v) const;
+	BOX operator * (float f) const;
+	BOX operator / (float f) const;
+	friend BOX operator * (float f, const BOX& b);
 
 	// Methods
 	VEC3 GetRandomPoint() const;

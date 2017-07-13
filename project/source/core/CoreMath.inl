@@ -166,6 +166,170 @@ inline INT2 INT2::Random(const INT2& i1, const INT2& i2)
 
 //*************************************************************************************************
 //
+// Rectangle using int
+//
+//*************************************************************************************************
+inline Rect::Rect()
+{
+
+}
+
+inline Rect::Rect(int x1, int y1, int x2, int y2) : p1(x1, y1), p2(x2, y2)
+{
+
+}
+
+inline Rect::Rect(const INT2& p1, const INT2& p2) : p1(p1), p2(p2)
+{
+
+}
+
+inline Rect::Rect(const Rect& box) : p1(box.p1), p2(box.p2)
+{
+
+}
+
+inline bool Rect::operator == (const Rect& r) const
+{
+	return p1 == r.p1 && p2 == r.p2;
+}
+
+inline bool Rect::operator != (const Rect& r) const
+{
+	return p1 != r.p1 || p2 != r.p2;
+}
+
+inline Rect& Rect::operator = (const Rect& r)
+{
+	p1 = r.p1;
+	p2 = r.p2;
+	return *this;
+}
+
+inline Rect& Rect::operator += (const INT2& p)
+{
+	p1 += p;
+	p2 += p;
+	return *this;
+}
+
+inline Rect& Rect::operator -= (const INT2& p)
+{
+	p1 -= p;
+	p2 -= p;
+	return *this;
+}
+
+inline Rect& Rect::operator *= (int d)
+{
+	p1 *= d;
+	p2 *= d;
+	return *this;
+}
+
+inline Rect& Rect::operator /= (int d)
+{
+	p1 /= d;
+	p2 /= d;
+	return *this;
+}
+
+inline Rect Rect::operator + () const
+{
+	return *this;
+}
+
+inline Rect Rect::operator - () const
+{
+	return Rect(-p1, -p2);
+}
+
+inline Rect Rect::operator + (const INT2& p) const
+{
+	return Rect(p1 + p, p2 + p);
+}
+
+inline Rect Rect::operator - (const INT2& p) const
+{
+	return Rect(p1 - p, p2 - p);
+}
+
+inline Rect Rect::operator * (int d) const
+{
+	return Rect(p1 * d, p2 * d);
+}
+
+inline Rect Rect::operator / (int d) const
+{
+	return Rect(p1 / d, p2 / d);
+}
+
+inline Rect operator * (int d, const Rect& r)
+{
+	return r * d;
+}
+
+//------------------------------------------------------------------------------
+// Methods
+//------------------------------------------------------------------------------
+
+inline Rect Rect::LeftBottomPart() const
+{
+	return Rect(p1.x, p1.y, p1.x + (p2.x - p1.x) / 2, p1.y + (p2.y - p1.y) / 2);
+}
+
+inline Rect Rect::LeftTopPart() const
+{
+	return Rect(p1.x, p1.y + (p2.y - p1.y) / 2, p1.x + (p2.x - p1.x) / 2, p2.y);
+}
+
+inline INT2 Rect::Random() const
+{
+	return INT2(::Random(p1.x, p2.x), ::Random(p1.y, p2.y));
+}
+
+inline Rect Rect::RightBottomPart() const
+{
+	return Rect(p1.x + (p2.x - p1.x) / 2, p1.y, p2.x, p1.y + (p2.y - p1.y) / 2);
+}
+
+inline Rect Rect::RightTopPart() const
+{
+	return Rect(p1.x + (p2.x - p1.x) / 2, p1.y + (p2.y - p1.y) / 2, p2.x, p2.y);
+}
+
+inline void Rect::Set(const INT2& pos, const INT2& size)
+{
+	p1 = pos;
+	p2 = pos + size;
+}
+
+inline void Rect::Set(int x1, int y1, int x2, int y2)
+{
+	p1.x = x1;
+	p1.y = y1;
+	p2.x = x2;
+	p2.y = y2;
+}
+
+inline INT2 Rect::Size() const
+{
+	return INT2(p2.x - p1.x, p2.y - p1.y);
+}
+
+//------------------------------------------------------------------------------
+// Static functions
+//------------------------------------------------------------------------------
+
+inline Rect Rect::Create(const INT2& pos, const INT2& size)
+{
+	Rect box;
+	box.Set(pos, size);
+	return box;
+}
+
+//*************************************************************************************************
+//
 // 2D float point
 //
 //*************************************************************************************************
@@ -1991,6 +2155,69 @@ inline BOX2D& BOX2D::operator = (const BOX2D& b)
 	return *this;
 }
 
+inline BOX2D& BOX2D::operator += (const VEC2& v)
+{
+	v1 += v;
+	v2 += v;
+	return *this;
+}
+
+inline BOX2D& BOX2D::operator -= (const VEC2& v)
+{
+	v1 == v;
+	v2 -= v;
+	return *this;
+}
+
+inline BOX2D& BOX2D::operator *= (float f)
+{
+	v1 *= f;
+	v2 *= f;
+	return *this;
+}
+
+inline BOX2D& BOX2D::operator /= (float f)
+{
+	v1 /= f;
+	v2 /= f;
+	return *this;
+}
+
+inline BOX2D BOX2D::operator + () const
+{
+	return *this;
+}
+
+inline BOX2D BOX2D::operator - () const
+{
+	return BOX2D(-v1, -v2);
+}
+
+inline BOX2D BOX2D::operator + (const VEC2& v) const
+{
+	return BOX2D(v1 + v, v2 + v);
+}
+
+inline BOX2D BOX2D::operator - (const VEC2& v) const
+{
+	return BOX2D(v1 - v, v2 - v);
+}
+
+inline BOX2D BOX2D::operator * (float f) const
+{
+	return BOX2D(v1 * f, v2 * f);
+}
+
+inline BOX2D BOX2D::operator / (float f) const
+{
+	return BOX2D(v1 / f, v2 / f);
+}
+
+inline BOX2D operator * (float f, const BOX2D& b)
+{
+	return b * f;
+}
+
 //------------------------------------------------------------------------------
 // Methods
 //------------------------------------------------------------------------------
@@ -1998,6 +2225,11 @@ inline BOX2D& BOX2D::operator = (const BOX2D& b)
 inline VEC2 BOX2D::GetRandomPoint() const
 {
 	return VEC2(::Random(v1.x, v2.x), ::Random(v1.y, v2.y));
+}
+
+inline bool BOX2D::IsInside(const VEC2& v) const
+{
+	return v.x >= v1.x && v.y >= v1.y && v.x <= v2.x && v.y <= v2.y;
 }
 
 inline bool BOX2D::IsValid() const
@@ -2058,6 +2290,86 @@ inline BOX::BOX(float x, float y, float z) : v1(x, y, z), v2(x, y, z)
 inline BOX::BOX(const VEC3& v) : v1(v), v2(v)
 {
 
+}
+
+inline bool BOX::operator == (const BOX& b) const
+{
+	return v1 == b.v1 && v2 == b.v2;
+}
+
+inline bool BOX::operator != (const BOX& b) const
+{
+	return v1 != b.v1 || v2 != b.v2;
+}
+
+inline BOX& BOX::operator = (const BOX& b)
+{
+	v1 = b.v1;
+	v2 = b.v2;
+	return *this;
+}
+
+inline BOX& BOX::operator += (const VEC3& v)
+{
+	v1 += v;
+	v2 += v;
+	return *this;
+}
+
+inline BOX& BOX::operator -= (const VEC3& v)
+{
+	v1 == v;
+	v2 -= v;
+	return *this;
+}
+
+inline BOX& BOX::operator *= (float f)
+{
+	v1 *= f;
+	v2 *= f;
+	return *this;
+}
+
+inline BOX& BOX::operator /= (float f)
+{
+	v1 /= f;
+	v2 /= f;
+	return *this;
+}
+
+inline BOX BOX::operator + () const
+{
+	return *this;
+}
+
+inline BOX BOX::operator - () const
+{
+	return BOX(-v1, -v2);
+}
+
+inline BOX BOX::operator + (const VEC3& v) const
+{
+	return BOX(v1 + v, v2 + v);
+}
+
+inline BOX BOX::operator - (const VEC3& v) const
+{
+	return BOX(v1 - v, v2 - v);
+}
+
+inline BOX BOX::operator * (float f) const
+{
+	return BOX(v1 * f, v2 * f);
+}
+
+inline BOX BOX::operator / (float f) const
+{
+	return BOX(v1 / f, v2 / f);
+}
+
+inline BOX operator * (float f, const BOX& b)
+{
+	return b * f;
 }
 
 //------------------------------------------------------------------------------
